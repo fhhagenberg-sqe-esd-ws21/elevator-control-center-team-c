@@ -45,9 +45,10 @@ public class TestEccModel {
 
         var model = new EccModel(elevators, floors);
 
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> model.getElevator(-1));
         assertNotNull(model.getElevator(0));
         assertNotNull(model.getElevator(1));
+
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> model.getElevator(-1));
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> model.getElevator(2));
     }
 
@@ -61,9 +62,10 @@ public class TestEccModel {
 
         var model = new EccModel(elevators, floors);
 
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> model.getFloor(-1));
         assertNotNull(model.getFloor(0));
         assertNotNull(model.getFloor(1));
+
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> model.getFloor(-1));
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> model.getFloor(2));
     }
 }

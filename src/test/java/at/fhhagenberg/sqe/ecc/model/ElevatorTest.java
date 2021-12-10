@@ -54,39 +54,58 @@ public class ElevatorTest {
     @Test
     void testCurrentFloor()
     {
+        elev.setCurrentFloor(0);
+        assertEquals(0, elev.getCurrentFloor());
         elev.setCurrentFloor(2);
         assertEquals(2, elev.getCurrentFloor());
 
-        elev.setCurrentFloor(0);
-        assertEquals(0, elev.getCurrentFloor());
+        assertThrows(IllegalArgumentException.class, () -> elev.setCurrentFloor(-1));
+        assertThrows(IllegalArgumentException.class, () -> elev.setCurrentFloor(3));
     }
 
     @Test
     void testPosition()
     {
+        elev.setPosition(0);
+        assertEquals(0, elev.getPosition());
         elev.setPosition(55.25);
         assertEquals(55.25, elev.getPosition());
+
+        assertThrows(IllegalArgumentException.class, () -> elev.setPosition(-0.001));
     }
 
     @Test
     void testCurrentPassengerWeight()
     {
+        elev.setCurrentPassengerWeight(0);
+        assertEquals(0, elev.getCurrentPassengerWeight());
         elev.setCurrentPassengerWeight(47.11);
         assertEquals(47.11, elev.getCurrentPassengerWeight());
+
+        assertThrows(IllegalArgumentException.class, () -> elev.setCurrentPassengerWeight(-0.001));
     }
 
     @Test
     void testMaxPassengers()
     {
+        elev.setMaxPassengers(0);
+        assertEquals(0, elev.getMaxPassengers());
         elev.setMaxPassengers(8);
         assertEquals(8, elev.getMaxPassengers());
+
+        assertThrows(IllegalArgumentException.class, () -> elev.setMaxPassengers(-1));
     }
 
     @Test
     void testTargetFloor()
     {
-        elev.setTargetFloor(3);
-        assertEquals(3, elev.getTargetFloor());
+        elev.setTargetFloor(0);
+        assertEquals(0, elev.getTargetFloor());
+        elev.setTargetFloor(2);
+        assertEquals(2, elev.getTargetFloor());
+
+        assertThrows(IllegalArgumentException.class, () -> elev.setTargetFloor(-1));
+        assertThrows(IllegalArgumentException.class, () -> elev.setTargetFloor(3));
     }
 
     @Test
