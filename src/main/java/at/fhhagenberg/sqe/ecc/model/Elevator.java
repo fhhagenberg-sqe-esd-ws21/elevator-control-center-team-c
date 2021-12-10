@@ -19,7 +19,6 @@ public class Elevator {
     private List<Boolean> buttonPressed;
 
     private int floors;
-    // TODO: check floors
 
     public Elevator(int floors)
     {
@@ -45,71 +44,89 @@ public class Elevator {
         return speed;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    public void setSpeed(double newSpeed) {
+        this.speed = newSpeed;
     }
 
     public double getAcceleration() {
         return acceleration;
     }
 
-    public void setAcceleration(double acceleration) {
-        this.acceleration = acceleration;
+    public void setAcceleration(double newAcceleration) {
+        this.acceleration = newAcceleration;
     }
 
     public DoorState getDoorState() {
         return doorState;
     }
 
-    public void setDoorState(DoorState doorState) {
-        this.doorState = doorState;
+    public void setDoorState(DoorState newDoorState) {
+        this.doorState = newDoorState;
     }
 
     public int getCurrentFloor() {
         return currentFloor;
     }
 
-    public void setCurrentFloor(int currentFloor) {
-        this.currentFloor = currentFloor;
+    public void setCurrentFloor(int newCurrentFloor) {
+        if (newCurrentFloor < 0 || newCurrentFloor >= floors) {
+            throw new IllegalArgumentException("newCurrentFloor must be a positive number lower than floors");
+        }
+        this.currentFloor = newCurrentFloor;
     }
 
     public double getPosition() {
         return position;
     }
 
-    public void setPosition(double position) {
-        this.position = position;
+    public void setPosition(double newPosition) {
+        if (newPosition < 0) {
+            throw new IllegalArgumentException("newPosition must be greater than or equal to 0");
+        }
+
+        this.position = newPosition;
     }
 
     public double getCurrentPassengerWeight() {
         return currentPassengerWeight;
     }
 
-    public void setCurrentPassengerWeight(double currentPassengerWeight) {
-        this.currentPassengerWeight = currentPassengerWeight;
+    public void setCurrentPassengerWeight(double newCurrentPassengerWeight) {
+        if (newCurrentPassengerWeight < 0) {
+            throw new IllegalArgumentException("newCurrentPassengerWeight must be greater than or equal to 0");
+        }
+
+        this.currentPassengerWeight = newCurrentPassengerWeight;
     }
 
     public int getMaxPassengers() {
         return maxPassengers;
     }
 
-    public void setMaxPassengers(int maxPassengers) {
-        this.maxPassengers = maxPassengers;
+    public void setMaxPassengers(int newMaxPassengers) {
+        if (newMaxPassengers < 0) {
+            throw new IllegalArgumentException("newMaxPassengers must be greater than or equal to 0");
+        }
+
+        this.maxPassengers = newMaxPassengers;
     }
 
     public int getTargetFloor() {
         return targetFloor;
     }
 
-    public void setTargetFloor(int targetFloor) {
-        this.targetFloor = targetFloor;
+    public void setTargetFloor(int newTargetFloor) {
+        if (newTargetFloor < 0 || newTargetFloor >= floors) {
+            throw new IllegalArgumentException("newTargetFloor must be a positive number lower than floors");
+        }
+        this.targetFloor = newTargetFloor;
     }
 
     public CommittedDirection getDirection() {
         return direction;
     }
 
-    public void setDirection(CommittedDirection direction) {
-        this.direction = direction;
+    public void setDirection(CommittedDirection newDirection) {
+        this.direction = newDirection;
     }
 }
