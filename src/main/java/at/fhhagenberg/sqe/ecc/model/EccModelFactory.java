@@ -1,9 +1,6 @@
 package at.fhhagenberg.sqe.ecc.model;
 
 import at.fhhagenberg.sqe.ecc.IElevatorController;
-import at.fhhagenberg.sqe.ecc.model.EccModel;
-import at.fhhagenberg.sqe.ecc.model.Elevator;
-import at.fhhagenberg.sqe.ecc.model.Floor;
 
 import java.util.Vector;
 

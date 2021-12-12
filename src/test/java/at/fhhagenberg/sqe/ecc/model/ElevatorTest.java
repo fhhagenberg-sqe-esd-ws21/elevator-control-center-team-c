@@ -1,6 +1,5 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorController;
 import at.fhhagenberg.sqe.ecc.IElevatorController.CommittedDirection;
 import org.junit.jupiter.api.Test;
 

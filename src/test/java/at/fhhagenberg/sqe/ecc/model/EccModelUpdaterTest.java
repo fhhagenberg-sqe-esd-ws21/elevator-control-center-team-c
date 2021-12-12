@@ -3,18 +3,14 @@ package at.fhhagenberg.sqe.ecc.model;
 import at.fhhagenberg.sqe.ecc.IElevatorController;
 import at.fhhagenberg.sqe.ecc.IElevatorController.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.IElevatorController.DoorState;
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Vector;
-import java.util.concurrent.TimeUnit;
-
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class EccModelUpdaterTest {
