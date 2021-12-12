@@ -39,7 +39,7 @@ class EccModelFactoryTest {
         when(controller.getFloorButtonUp(1)).thenReturn(false);
         var factory = new EccModelFactory(controller);
 
-        var model = factory.CreateModel();
+        var model = factory.createModel();
 
         assertNotNull(model);
 

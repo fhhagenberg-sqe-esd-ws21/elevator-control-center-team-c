@@ -114,10 +114,6 @@ public class Elevator {
         return maxPassengers;
     }
 
-//    public void setMaxPassengers(int newMaxPassengers) {
-//
-//    }
-
     public int getTargetFloor() {
         return targetFloor;
     }

@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class EccModelUpdaterTest {
+class EccModelUpdaterTest {
 
     @Mock
     private IElevatorController controller;

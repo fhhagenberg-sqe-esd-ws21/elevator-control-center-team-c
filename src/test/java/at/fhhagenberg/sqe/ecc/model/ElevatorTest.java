@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static at.fhhagenberg.sqe.ecc.IElevatorController.DoorState;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ElevatorTest {
+class ElevatorTest {
 
     Elevator elev = new Elevator(3, 5);
 

@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EccModelTest {
+class EccModelTest {
 
     @Test
     void testGetNumberOfElevators()

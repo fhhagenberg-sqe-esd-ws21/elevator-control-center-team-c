@@ -2,6 +2,7 @@ package at.fhhagenberg.sqe.ecc.model;
 
 import at.fhhagenberg.sqe.ecc.IElevatorController;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class EccModelFactory {
@@ -11,12 +12,12 @@ public class EccModelFactory {
         this.controller = controller;
     }
 
-    public EccModel CreateModel()
+    public EccModel createModel()
     {
         var nElevators = controller.getElevatorNum();
         var nFloors = controller.getFloorNum();
 
-        var elevators = new Vector<Elevator>(nElevators);
+        var elevators = new ArrayList<Elevator>(nElevators);
         for (int e = 0; e < nElevators; e++) {
             var elevator = new Elevator(nFloors, controller.getElevatorCapacity(e));
 
@@ -35,7 +36,7 @@ public class EccModelFactory {
 
             elevators.add(elevator);
         }
-        var floors = new Vector<Floor>(nFloors);
+        var floors = new ArrayList<Floor>(nFloors);
         for (int f = 0; f < nFloors; f++) {
             var floor = new Floor();
 
@@ -45,7 +46,6 @@ public class EccModelFactory {
             floors.add(floor);
         }
 
-        var model = new EccModel(elevators, floors);
-        return model;
+        return new EccModel(elevators, floors);
     }
 }

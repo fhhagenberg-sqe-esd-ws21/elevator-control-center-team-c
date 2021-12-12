@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ElevatorConstructorTest {
+class ElevatorConstructorTest {
     @Test
     void testLegalParameters() {
         assertDoesNotThrow(() -> new Elevator(1, 1));
