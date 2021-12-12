@@ -42,7 +42,6 @@ class EccModelFactoryTest {
         var model = factory.CreateModel();
 
         assertNotNull(model);
-        assertTrue(model instanceof EccModel);
 
         verify(controller).getElevatorNum();
         verify(controller).getFloorNum();
@@ -62,22 +61,22 @@ class EccModelFactoryTest {
         verify(controller).getFloorButtonDown(1);
         verify(controller).getFloorButtonUp(1);
 
-//        assertEquals(1, model.getNumberOfElevators());
-//        assertEquals(2, model.getNumberOfFloors());
-//        assertEquals(CommittedDirection.DOWN, model.getElevator(0).getDirection());
-//        assertEquals(2.0, model.getElevator(0).getAcceleration());
-//        assertFalse(model.getElevator(0).isButtonPressed(0));
-//        assertTrue(model.getElevator(0).isButtonPressed(1));
-//        assertEquals(DoorState.OPEN, model.getElevator(0).getDoorState());
-//        assertEquals(0, model.getElevator(0).getCurrentFloor());
-//        assertEquals(1.0, model.getElevator(0).getPosition());
-//        assertEquals(3.0, model.getElevator(0).getSpeed());
-//        assertEquals(140.3, model.getElevator(0).getCurrentPassengerWeight());
-//        assertEquals(4, model.getElevator(0).getMaxPassengers());
-//        assertEquals(1, model.getElevator(0).getTargetFloor());
-//        assertFalse(model.getFloor(0).isDownButtonPressed());
-//        assertTrue(model.getFloor(0).isUpButtonPressed());
-//        assertTrue(model.getFloor(1).isDownButtonPressed());
-//        assertFalse(model.getFloor(1).isUpButtonPressed());
+        assertEquals(1, model.getNumberOfElevators());
+        assertEquals(2, model.getNumberOfFloors());
+        assertEquals(CommittedDirection.DOWN, model.getElevator(0).getDirection());
+        assertEquals(2.0, model.getElevator(0).getAcceleration());
+        assertFalse(model.getElevator(0).isButtonPressed(0));
+        assertTrue(model.getElevator(0).isButtonPressed(1));
+        assertEquals(DoorState.OPEN, model.getElevator(0).getDoorState());
+        assertEquals(0, model.getElevator(0).getCurrentFloor());
+        assertEquals(1.0, model.getElevator(0).getPosition());
+        assertEquals(3.0, model.getElevator(0).getSpeed());
+        assertEquals(140.3, model.getElevator(0).getCurrentPassengerWeight());
+        assertEquals(4, model.getElevator(0).getMaxPassengers());
+        assertEquals(1, model.getElevator(0).getTargetFloor());
+        assertFalse(model.getFloor(0).isDownButtonPressed());
+        assertTrue(model.getFloor(0).isUpButtonPressed());
+        assertTrue(model.getFloor(1).isDownButtonPressed());
+        assertFalse(model.getFloor(1).isUpButtonPressed());
     }
 }

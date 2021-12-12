@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Vector;
 
 public class Elevator {
+    // permanent parameters
+    private int maxPassengers;
+
+    // dynamic parameters
     private CommittedDirection direction;
     private double speed;
     private double acceleration;
@@ -14,15 +18,22 @@ public class Elevator {
     private int currentFloor;
     private double position;
     private double currentPassengerWeight;
-    private int maxPassengers;
     private int targetFloor;
     private List<Boolean> buttonPressed;
 
     private int floors;
 
-    public Elevator(int floors)
+    public Elevator(int floors, int maxPassengers)
     {
+        if (floors <= 0) {
+            throw new IllegalArgumentException("newCurrentFloor must be a positive number");
+        }
+        if (maxPassengers <= 0) {
+            throw new IllegalArgumentException("newMaxPassengers must be greater than or equal to 0");
+        }
+
         this.floors = floors;
+        this.maxPassengers = maxPassengers;
 
         buttonPressed = new Vector<>(floors);
         for (int i = 0; i < floors; i++) {
@@ -103,13 +114,9 @@ public class Elevator {
         return maxPassengers;
     }
 
-    public void setMaxPassengers(int newMaxPassengers) {
-        if (newMaxPassengers < 0) {
-            throw new IllegalArgumentException("newMaxPassengers must be greater than or equal to 0");
-        }
-
-        this.maxPassengers = newMaxPassengers;
-    }
+//    public void setMaxPassengers(int newMaxPassengers) {
+//
+//    }
 
     public int getTargetFloor() {
         return targetFloor;

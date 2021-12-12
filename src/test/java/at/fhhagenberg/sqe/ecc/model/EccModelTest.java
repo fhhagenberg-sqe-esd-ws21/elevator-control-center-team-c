@@ -6,14 +6,14 @@ import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestEccModel {
+public class EccModelTest {
 
     @Test
     void testGetNumberOfElevators()
     {
         var elevators = new Vector<Elevator>();
-        elevators.add(new Elevator(2));
-        elevators.add(new Elevator(2));
+        elevators.add(new Elevator(2, 3));
+        elevators.add(new Elevator(2, 4));
         var floors = new Vector<Floor>();
 
         var model = new EccModel(elevators, floors);
@@ -39,8 +39,8 @@ public class TestEccModel {
     void testGetElevator()
     {
         var elevators = new Vector<Elevator>();
-        elevators.add(new Elevator(2));
-        elevators.add(new Elevator(2));
+        elevators.add(new Elevator(2, 3));
+        elevators.add(new Elevator(2, 4));
         var floors = new Vector<Floor>();
 
         var model = new EccModel(elevators, floors);

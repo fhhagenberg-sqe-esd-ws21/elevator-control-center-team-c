@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ElevatorTest {
 
-    Elevator elev = new Elevator(3);
+    Elevator elev = new Elevator(3, 5);
 
     @Test
     void testDirection()
@@ -88,12 +88,7 @@ public class ElevatorTest {
     @Test
     void testMaxPassengers()
     {
-        elev.setMaxPassengers(0);
-        assertEquals(0, elev.getMaxPassengers());
-        elev.setMaxPassengers(8);
-        assertEquals(8, elev.getMaxPassengers());
-
-        assertThrows(IllegalArgumentException.class, () -> elev.setMaxPassengers(-1));
+        assertEquals(5, elev.getMaxPassengers());
     }
 
     @Test

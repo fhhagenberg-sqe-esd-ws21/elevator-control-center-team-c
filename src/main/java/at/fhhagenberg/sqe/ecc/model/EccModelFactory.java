@@ -21,7 +21,7 @@ public class EccModelFactory {
 
         var elevators = new Vector<Elevator>(nElevators);
         for (int e = 0; e < nElevators; e++) {
-            var elevator = new Elevator(nFloors);
+            var elevator = new Elevator(nFloors, controller.getElevatorCapacity(e));
 
             elevator.setDirection(controller.getCommittedDirection(e));
             elevator.setSpeed(controller.getElevatorSpeed(e));
@@ -30,7 +30,6 @@ public class EccModelFactory {
             elevator.setCurrentFloor(controller.getElevatorFloor(e));
             elevator.setPosition(controller.getElevatorPosition(e));
             elevator.setCurrentPassengerWeight(controller.getElevatorWeight(e));
-            elevator.setMaxPassengers(controller.getElevatorCapacity(e));
             elevator.setTargetFloor(controller.getTarget(e));
 
             for (int f = 0; f < nFloors; f++) {
