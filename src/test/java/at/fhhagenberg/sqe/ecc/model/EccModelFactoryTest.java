@@ -41,26 +41,6 @@ class EccModelFactoryTest {
 
         var model = factory.createModel();
 
-        assertNotNull(model);
-
-        verify(controller).getElevatorNum();
-        verify(controller).getFloorNum();
-        verify(controller).getCommittedDirection(0);
-        verify(controller).getElevatorAccel(0);
-        verify(controller).getElevatorButton(0,0);
-        verify(controller).getElevatorButton(0,1);
-        verify(controller).getElevatorDoorStatus(0);
-        verify(controller).getElevatorFloor(0);
-        verify(controller).getElevatorPosition(0);
-        verify(controller).getElevatorSpeed(0);
-        verify(controller).getElevatorWeight(0);
-        verify(controller).getElevatorCapacity(0);
-        verify(controller).getTarget(0);
-        verify(controller).getFloorButtonDown(0);
-        verify(controller).getFloorButtonUp(0);
-        verify(controller).getFloorButtonDown(1);
-        verify(controller).getFloorButtonUp(1);
-
         assertEquals(1, model.getNumberOfElevators());
         assertEquals(2, model.getNumberOfFloors());
         assertEquals(CommittedDirection.DOWN, model.getElevator(0).getDirection());
