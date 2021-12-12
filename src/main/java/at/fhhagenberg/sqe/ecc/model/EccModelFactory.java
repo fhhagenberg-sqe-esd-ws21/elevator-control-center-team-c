@@ -3,7 +3,6 @@ package at.fhhagenberg.sqe.ecc.model;
 import at.fhhagenberg.sqe.ecc.IElevatorController;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class EccModelFactory {
     private final IElevatorController controller;
