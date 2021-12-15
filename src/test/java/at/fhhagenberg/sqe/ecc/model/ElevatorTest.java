@@ -111,10 +111,5 @@ class ElevatorTest {
         assertFalse(elev.isButtonPressed(1));
         elev.setButtonPressed(2, true);
         assertTrue(elev.isButtonPressed(2));
-
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> elev.setButtonPressed(-1, false));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> elev.isButtonPressed(-1));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> elev.setButtonPressed(3, true));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> elev.isButtonPressed(3));
     }
 }

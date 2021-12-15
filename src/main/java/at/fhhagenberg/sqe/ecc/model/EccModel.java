@@ -3,8 +3,8 @@ package at.fhhagenberg.sqe.ecc.model;
 import java.util.List;
 
 public class EccModel {
-    private List<Elevator> elevators;
-    private List<Floor> floors;
+    private final List<Elevator> elevators;
+    private final List<Floor> floors;
 
     public EccModel(List<Elevator> elevators, List<Floor> floors)
     {
