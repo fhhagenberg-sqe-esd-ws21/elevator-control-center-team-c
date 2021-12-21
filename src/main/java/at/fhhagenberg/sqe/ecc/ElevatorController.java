@@ -193,12 +193,20 @@ public class ElevatorController implements IElevatorController {
 
     public void setCommittedDirection(int elevatorNumber, CommittedDirection direction) {
         try{
-            elevatorCenter.setCommittedDirection(elevatorNumber, direction.ordinal());
+            if(direction == CommittedDirection.UP){
+                elevatorCenter.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UP);
+            }
+            else if(direction == CommittedDirection.DOWN){
+                elevatorCenter.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_DOWN);}
+            else{
+                elevatorCenter.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+            }
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in setCommittedDirection: " + ex.getMessage()));
         }
     }
+
 
     public void setServicesFloors(int elevatorNumber, int floor, boolean service) {
         try{
