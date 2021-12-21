@@ -7,15 +7,15 @@ import java.rmi.RemoteException;
 public class ElevatorController implements IElevatorController {
 
     private final IElevator elevatorCenter;
-    private final double factorFeetToMeter = 0.3048;
-    private final double factorPoundToKg = 0.45359237;
+    private static final double factorFeetToMeter = 0.3048;
+    private static final double factorPoundToKg = 0.45359237;
 
     public ElevatorController(IElevator e) {
         elevatorCenter = e;
     }
 
     public CommittedDirection getCommittedDirection(int elevatorNumber) {
-        CommittedDirection dir = CommittedDirection.UNCOMMITED;
+        CommittedDirection dir;
         try {
             switch (elevatorCenter.getCommittedDirection(elevatorNumber)){
                 case IElevator.ELEVATOR_DIRECTION_UP:
@@ -24,7 +24,7 @@ public class ElevatorController implements IElevatorController {
                 case IElevator.ELEVATOR_DIRECTION_DOWN:
                     dir = CommittedDirection.DOWN;
                     break;
-                case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
+                default:
                     dir = CommittedDirection.UNCOMMITED;
                     break;
             }
@@ -56,20 +56,20 @@ public class ElevatorController implements IElevatorController {
 
 
     public DoorState getElevatorDoorStatus(int elevatorNumber) {
-        DoorState state = DoorState.CLOSED;
+        DoorState state;
         try{
             switch (elevatorCenter.getElevatorDoorStatus(elevatorNumber)){
                 case IElevator.ELEVATOR_DOORS_OPEN:
                     state = DoorState.OPEN;
-                    break;
-                case IElevator.ELEVATOR_DOORS_CLOSED:
-                    state = DoorState.CLOSED;
                     break;
                 case IElevator.ELEVATOR_DOORS_OPENING:
                     state = DoorState.OPENING;
                     break;
                 case IElevator.ELEVATOR_DOORS_CLOSING:
                     state = DoorState.CLOSING;
+                    break;
+                default:
+                    state = DoorState.CLOSED;
                     break;
             }
         }
