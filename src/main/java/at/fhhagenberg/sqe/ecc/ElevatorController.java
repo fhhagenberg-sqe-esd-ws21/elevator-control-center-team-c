@@ -1,25 +1,38 @@
-package at.fhhagenberg.sqe.ecc.model;
+package at.fhhagenberg.sqe.ecc;
 import sqelevator.IElevator;
 
 import java.rmi.RemoteException;
 
 
-public class ElevatorController {
+public class ElevatorController implements IElevatorController {
 
     private final IElevator elevatorCenter;
     private final double factorFeetToMeter = 0.3048;
+    private final double factorPoundToKg = 0.45359237;
 
     public ElevatorController(IElevator e) {
         elevatorCenter = e;
     }
 
-    public int getCommittedDirection(int elevatorNumber) {
+    public CommittedDirection getCommittedDirection(int elevatorNumber) {
+        CommittedDirection dir = CommittedDirection.UNCOMMITED;
         try {
-            return elevatorCenter.getCommittedDirection(elevatorNumber);
+            switch (elevatorCenter.getCommittedDirection(elevatorNumber)){
+                case IElevator.ELEVATOR_DIRECTION_UP:
+                    dir = CommittedDirection.UP;
+                    break;
+                case IElevator.ELEVATOR_DIRECTION_DOWN:
+                    dir = CommittedDirection.DOWN;
+                    break;
+                case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
+                    dir = CommittedDirection.UNCOMMITED;
+                    break;
+            }
         }
         catch (RemoteException ex) {
             throw(new RuntimeException("Error in getCommittedDirection: " + ex.getMessage()));
         }
+        return dir;
     }
 
     public double getElevatorAccel(int elevatorNumber) {
@@ -42,13 +55,28 @@ public class ElevatorController {
     }
 
 
-    public int getElevatorDoorStatus(int elevatorNumber) {
+    public DoorState getElevatorDoorStatus(int elevatorNumber) {
+        DoorState state = DoorState.CLOSED;
         try{
-            return elevatorCenter.getElevatorDoorStatus(elevatorNumber);
+            switch (elevatorCenter.getElevatorDoorStatus(elevatorNumber)){
+                case IElevator.ELEVATOR_DOORS_OPEN:
+                    state = DoorState.OPEN;
+                    break;
+                case IElevator.ELEVATOR_DOORS_CLOSED:
+                    state = DoorState.CLOSED;
+                    break;
+                case IElevator.ELEVATOR_DOORS_OPENING:
+                    state = DoorState.OPENING;
+                    break;
+                case IElevator.ELEVATOR_DOORS_CLOSING:
+                    state = DoorState.CLOSING;
+                    break;
+            }
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getElevatorDoorStatus: " + ex.getMessage()));
         }
+        return state;
     }
 
     public int getElevatorFloor(int elevatorNumber) {
@@ -89,9 +117,10 @@ public class ElevatorController {
         }
     }
 
-    public int getElevatorWeight(int elevatorNumber) {
+    public double getElevatorWeight(int elevatorNumber) {
         try{
-            return elevatorCenter.getElevatorWeight(elevatorNumber);
+            // convert lbs to kg
+            return (elevatorCenter.getElevatorWeight(elevatorNumber) * factorPoundToKg);
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getElevatorWeight: " + ex.getMessage()));
@@ -125,9 +154,10 @@ public class ElevatorController {
         }
     }
 
-    public int getFloorHeight() {
+    public double getFloorHeight() {
         try{
-            return elevatorCenter.getFloorHeight();
+            // convert feet to meter
+            return (elevatorCenter.getFloorHeight() * factorFeetToMeter);
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getFloorHeight: " + ex.getMessage()));
@@ -161,9 +191,21 @@ public class ElevatorController {
         }
     }
 
-    public void setCommittedDirection(int elevatorNumber, int direction) {
+    public void setCommittedDirection(int elevatorNumber, CommittedDirection direction) {
         try{
-            elevatorCenter.setCommittedDirection(elevatorNumber, direction);
+            int dir = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
+            switch(direction){
+                case UP:
+                    dir = IElevator.ELEVATOR_DIRECTION_UP;
+                    break;
+                case DOWN:
+                    dir = IElevator.ELEVATOR_DIRECTION_DOWN;
+                    break;
+                case UNCOMMITED:
+                    dir = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
+                    break;
+            }
+            elevatorCenter.setCommittedDirection(elevatorNumber, dir);
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in setCommittedDirection: " + ex.getMessage()));
