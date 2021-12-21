@@ -50,7 +50,7 @@ public class ElevatorControllerTest {
     @Test
     void testGetSpeedConversion() throws RemoteException {
         when(mockedIElevator.getElevatorSpeed(0)).thenReturn(1);
-        assertEquals(1*factorFeetToMeter, elevatorController.getElevatorAccel(0));
+        assertEquals(1*factorFeetToMeter, elevatorController.getElevatorSpeed(0));
     }
 
     @Test
@@ -112,19 +112,19 @@ public class ElevatorControllerTest {
 
     @Test
     void testGetDoorStateCLOSED() throws RemoteException{
-        when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DOORS_CLOSED);
+        when(mockedIElevator.getElevatorDoorStatus(0)).thenReturn(ELEVATOR_DOORS_CLOSED);
         assertEquals(IElevatorController.DoorState.CLOSED, elevatorController.getElevatorDoorStatus(0));
     }
 
     @Test
     void testGetDoorStateOPENING() throws RemoteException{
-        when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DOORS_OPENING);
+        when(mockedIElevator.getElevatorDoorStatus(0)).thenReturn(ELEVATOR_DOORS_OPENING);
         assertEquals(IElevatorController.DoorState.OPENING, elevatorController.getElevatorDoorStatus(0));
     }
 
     @Test
     void testGetDoorStateCLOSING() throws RemoteException{
-        when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DOORS_CLOSING);
+        when(mockedIElevator.getElevatorDoorStatus(0)).thenReturn(ELEVATOR_DOORS_CLOSING);
         assertEquals(IElevatorController.DoorState.CLOSING, elevatorController.getElevatorDoorStatus(0));
     }
 }
