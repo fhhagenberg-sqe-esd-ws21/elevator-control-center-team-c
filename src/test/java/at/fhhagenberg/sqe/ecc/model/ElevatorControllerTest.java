@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sqelevator.IElevator;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,89 +36,95 @@ public class ElevatorControllerTest {
     }
 
     @Test
-    void testConversionGetElevatorAccel() throws RemoteException {
-        when(mockedIElevator.getElevatorAccel(0)).thenReturn(0);
-        assertEquals(0, elevatorController.getElevatorAccel(0));
-
-        when(mockedIElevator.getElevatorAccel(1)).thenReturn(1);
-        assertEquals(1*factorFeetToMeter, elevatorController.getElevatorAccel(1));
+    void testGetAccelConversion() throws RemoteException {
+        when(mockedIElevator.getElevatorAccel(0)).thenReturn(1);
+        assertEquals(1*factorFeetToMeter, elevatorController.getElevatorAccel(0));
     }
 
     @Test
-    void testConversionGetElevatorPosition() throws RemoteException {
-        when(mockedIElevator.getElevatorPosition(0)).thenReturn(0);
-        assertEquals(0, elevatorController.getElevatorPosition(0));
-
-        when(mockedIElevator.getElevatorPosition(1)).thenReturn(1);
-        assertEquals(1*factorFeetToMeter, elevatorController.getElevatorPosition(1));
+    void testGetPositionConversion() throws RemoteException {
+        when(mockedIElevator.getElevatorPosition(0)).thenReturn(1);
+        assertEquals(1*factorFeetToMeter, elevatorController.getElevatorPosition(0));
     }
 
     @Test
-    void testConversionGetElevatorSpeed() throws RemoteException {
-        when(mockedIElevator.getElevatorSpeed(0)).thenReturn(0);
-        assertEquals(0, elevatorController.getElevatorSpeed(0));
-
-        when(mockedIElevator.getElevatorSpeed(1)).thenReturn(1);
-        assertEquals(1*factorFeetToMeter, elevatorController.getElevatorAccel(1));
+    void testGetSpeedConversion() throws RemoteException {
+        when(mockedIElevator.getElevatorSpeed(0)).thenReturn(1);
+        assertEquals(1*factorFeetToMeter, elevatorController.getElevatorAccel(0));
     }
 
     @Test
-    void testConversionGetElevatorWeight() throws RemoteException {
-        when(mockedIElevator.getElevatorWeight(0)).thenReturn(0);
-        assertEquals(0, elevatorController.getElevatorWeight(0));
-
-        when(mockedIElevator.getElevatorWeight(1)).thenReturn(1);
-        assertEquals(1*factorPoundToKg, elevatorController.getElevatorWeight(1));
+    void testGetWeightConversion() throws RemoteException {
+        when(mockedIElevator.getElevatorWeight(0)).thenReturn(1);
+        assertEquals(1*factorPoundToKg, elevatorController.getElevatorWeight(0));
     }
 
     @Test
-    void testConversionGetFloorHeight() throws RemoteException {
-        when(mockedIElevator.getFloorHeight()).thenReturn(0);
-        assertEquals(0, elevatorController.getFloorHeight());
-
+    void testGetFloorHeightConversion() throws RemoteException {
         when(mockedIElevator.getFloorHeight()).thenReturn(1);
         assertEquals(1*factorFeetToMeter, elevatorController.getFloorHeight());
     }
 
     @Test
-    void testEnumeratedGetCommittedDirection() throws RemoteException {
+    void testGetDirectionUP() throws RemoteException {
         when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DIRECTION_UP);
         assertEquals(IElevatorController.CommittedDirection.UP, elevatorController.getCommittedDirection(0));
-
-        when(mockedIElevator.getCommittedDirection(1)).thenReturn(ELEVATOR_DIRECTION_DOWN);
-        assertEquals(IElevatorController.CommittedDirection.DOWN, elevatorController.getCommittedDirection(1));
-
-        when(mockedIElevator.getCommittedDirection(2)).thenReturn(ELEVATOR_DIRECTION_UNCOMMITTED);
-        assertEquals(IElevatorController.CommittedDirection.UNCOMMITED, elevatorController.getCommittedDirection(2));
     }
 
     @Test
-    void testEnumeratedSetCommittedDirection() throws RemoteException {
+    void testGetDirectionDOWN() throws RemoteException{
+        when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DIRECTION_DOWN);
+        assertEquals(IElevatorController.CommittedDirection.DOWN, elevatorController.getCommittedDirection(0));
+    }
+
+    @Test
+    void testGetDirectionUNCOMMITED() throws RemoteException{
+        when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DIRECTION_UNCOMMITTED);
+        assertEquals(IElevatorController.CommittedDirection.UNCOMMITED, elevatorController.getCommittedDirection(0));
+    }
+
+    @Test
+    void testSetDirectionUP() throws RemoteException {
         doNothing().when(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_UP);
         verify(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_UP);
         elevatorController.setCommittedDirection(0, IElevatorController.CommittedDirection.UP);
-
-        doNothing().when(mockedIElevator).setCommittedDirection(1, ELEVATOR_DIRECTION_DOWN);
-        verify(mockedIElevator).setCommittedDirection(1, ELEVATOR_DIRECTION_DOWN);
-        elevatorController.setCommittedDirection(1, IElevatorController.CommittedDirection.DOWN);
-
-        doNothing().when(mockedIElevator).setCommittedDirection(2, ELEVATOR_DIRECTION_UNCOMMITTED);
-        verify(mockedIElevator).setCommittedDirection(2, ELEVATOR_DIRECTION_UNCOMMITTED);
-        elevatorController.setCommittedDirection(2, IElevatorController.CommittedDirection.UNCOMMITED);
     }
 
     @Test
-    void testEnumeratedGetElevatorDoorStatus() throws RemoteException {
+    void testSetDirectionDOWN() throws RemoteException{
+        doNothing().when(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_DOWN);
+        verify(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_DOWN);
+        elevatorController.setCommittedDirection(0, IElevatorController.CommittedDirection.DOWN);
+    }
+
+    @Test
+    void testSetDirectionUNCOMMITED() throws RemoteException{
+        doNothing().when(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_UNCOMMITTED);
+        verify(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_UNCOMMITTED);
+        elevatorController.setCommittedDirection(0, IElevatorController.CommittedDirection.UNCOMMITED);
+    }
+
+    @Test
+    void testGetDoorStateOPEN() throws RemoteException {
         when(mockedIElevator.getElevatorDoorStatus(0)).thenReturn(ELEVATOR_DOORS_OPEN);
         assertEquals(IElevatorController.DoorState.OPEN, elevatorController.getElevatorDoorStatus(0));
+    }
 
-        when(mockedIElevator.getCommittedDirection(1)).thenReturn(ELEVATOR_DOORS_CLOSED);
-        assertEquals(IElevatorController.DoorState.CLOSED, elevatorController.getElevatorDoorStatus(1));
+    @Test
+    void testGetDoorStateCLOSED() throws RemoteException{
+        when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DOORS_CLOSED);
+        assertEquals(IElevatorController.DoorState.CLOSED, elevatorController.getElevatorDoorStatus(0));
+    }
 
-        when(mockedIElevator.getCommittedDirection(2)).thenReturn(ELEVATOR_DOORS_OPENING);
-        assertEquals(IElevatorController.DoorState.OPENING, elevatorController.getElevatorDoorStatus(2));
+    @Test
+    void testGetDoorStateOPENING() throws RemoteException{
+        when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DOORS_OPENING);
+        assertEquals(IElevatorController.DoorState.OPENING, elevatorController.getElevatorDoorStatus(0));
+    }
 
-        when(mockedIElevator.getCommittedDirection(3)).thenReturn(ELEVATOR_DOORS_CLOSING);
-        assertEquals(IElevatorController.DoorState.CLOSING, elevatorController.getElevatorDoorStatus(3));
+    @Test
+    void testGetDoorStateCLOSING() throws RemoteException{
+        when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DOORS_CLOSING);
+        assertEquals(IElevatorController.DoorState.CLOSING, elevatorController.getElevatorDoorStatus(0));
     }
 }
