@@ -191,6 +191,15 @@ public class ElevatorController implements IElevatorController {
         }
     }
 
+    public long getClockTick() {
+        try{
+            return elevatorCenter.getClockTick();
+        }
+        catch(RemoteException ex){
+            throw(new RuntimeException("Error in getClockTick: " + ex.getMessage()));
+        }
+    }
+
     public void setCommittedDirection(int elevatorNumber, CommittedDirection direction) {
         try{
             if(direction == CommittedDirection.UP){
@@ -223,15 +232,6 @@ public class ElevatorController implements IElevatorController {
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in setTarget: " + ex.getMessage()));
-        }
-    }
-
-    public long getClockTick() {
-        try{
-            return elevatorCenter.getClockTick();
-        }
-        catch(RemoteException ex){
-            throw(new RuntimeException("Error in getClockTick: " + ex.getMessage()));
         }
     }
 }
