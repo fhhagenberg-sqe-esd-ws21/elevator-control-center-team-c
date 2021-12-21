@@ -7,8 +7,8 @@ import java.rmi.RemoteException;
 public class ElevatorController implements IElevatorController {
 
     private final IElevator elevatorCenter;
-    private static final double factorFeetToMeter = 0.3048;
-    private static final double factorPoundToKg = 0.45359237;
+    private static final double FactorFeetToMeter = 0.3048;
+    private static final double FactorPoundToKg = 0.45359237;
 
     public ElevatorController(IElevator e) {
         elevatorCenter = e;
@@ -38,7 +38,7 @@ public class ElevatorController implements IElevatorController {
     public double getElevatorAccel(int elevatorNumber) {
         try {
             // convert feet/sec^2 into meter/sec^2
-            return (elevatorCenter.getElevatorAccel(elevatorNumber) * factorFeetToMeter);
+            return (elevatorCenter.getElevatorAccel(elevatorNumber) * FactorFeetToMeter);
         }
         catch (RemoteException ex) {
             throw(new RuntimeException("Error in getElevatorAccel: " + ex.getMessage()));
@@ -100,7 +100,7 @@ public class ElevatorController implements IElevatorController {
     public double getElevatorPosition(int elevatorNumber) {
         try{
             // convert feet into meters
-            return (elevatorCenter.getElevatorPosition(elevatorNumber) * factorFeetToMeter);
+            return (elevatorCenter.getElevatorPosition(elevatorNumber) * FactorFeetToMeter);
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getElevatorPosition: " + ex.getMessage()));
@@ -110,7 +110,7 @@ public class ElevatorController implements IElevatorController {
     public double getElevatorSpeed(int elevatorNumber) {
         try{
             // convert feet/sec into meter/sec
-            return (elevatorCenter.getElevatorSpeed(elevatorNumber) * factorFeetToMeter);
+            return (elevatorCenter.getElevatorSpeed(elevatorNumber) * FactorFeetToMeter);
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getElevatorSpeed: " + ex.getMessage()));
@@ -120,7 +120,7 @@ public class ElevatorController implements IElevatorController {
     public double getElevatorWeight(int elevatorNumber) {
         try{
             // convert lbs to kg
-            return (elevatorCenter.getElevatorWeight(elevatorNumber) * factorPoundToKg);
+            return (elevatorCenter.getElevatorWeight(elevatorNumber) * FactorPoundToKg);
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getElevatorWeight: " + ex.getMessage()));
@@ -157,7 +157,7 @@ public class ElevatorController implements IElevatorController {
     public double getFloorHeight() {
         try{
             // convert feet to meter
-            return (elevatorCenter.getFloorHeight() * factorFeetToMeter);
+            return (elevatorCenter.getFloorHeight() * FactorFeetToMeter);
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getFloorHeight: " + ex.getMessage()));
