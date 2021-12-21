@@ -3,12 +3,13 @@ package at.fhhagenberg.sqe.ecc.model;
 import at.fhhagenberg.sqe.ecc.IElevatorController.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.IElevatorController.DoorState;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class Elevator {
     // permanent parameters
-    private int maxPassengers;
+    private final int maxPassengers;
+    private final int floors;
 
     // dynamic parameters
     private CommittedDirection direction;
@@ -19,9 +20,7 @@ public class Elevator {
     private double position;
     private double currentPassengerWeight;
     private int targetFloor;
-    private List<Boolean> buttonPressed;
-
-    private int floors;
+    private final List<Boolean> buttonPressed;
 
     public Elevator(int floors, int maxPassengers)
     {
@@ -35,7 +34,7 @@ public class Elevator {
         this.floors = floors;
         this.maxPassengers = maxPassengers;
 
-        buttonPressed = new Vector<>(floors);
+        buttonPressed = new ArrayList<>(floors);
         for (int i = 0; i < floors; i++) {
             buttonPressed.add(false);
         }

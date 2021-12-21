@@ -7,7 +7,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class ElevatorConstructorTest {
     @Test
     void testLegalParameters() {
-        assertDoesNotThrow(() -> new Elevator(1, 1));
+        Elevator elev = new Elevator(2, 3);
+
+        assertEquals(3, elev.getMaxPassengers());
+
+        assertThrows(IndexOutOfBoundsException.class, () -> elev.isButtonPressed(-1));
+        assertDoesNotThrow(() -> elev.isButtonPressed(0));
+        assertDoesNotThrow(() -> elev.isButtonPressed(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> elev.isButtonPressed(2));
+
+        assertThrows(IndexOutOfBoundsException.class, () -> elev.setButtonPressed(-1, true));
+        assertDoesNotThrow(() -> elev.setButtonPressed(0, true));
+        assertDoesNotThrow(() -> elev.setButtonPressed(1, true));
+        assertThrows(IndexOutOfBoundsException.class, () -> elev.setButtonPressed(2, true));
     }
 
     @Test
