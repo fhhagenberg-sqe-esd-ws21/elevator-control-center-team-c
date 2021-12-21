@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 public class ElevatorController {
 
     private final IElevator elevatorCenter;
+    private final double factorFeetToMeter = 0.3048;
 
     public ElevatorController(IElevator e) {
         elevatorCenter = e;
@@ -21,9 +22,10 @@ public class ElevatorController {
         }
     }
 
-    public int getElevatorAccel(int elevatorNumber) {
+    public double getElevatorAccel(int elevatorNumber) {
         try {
-            return elevatorCenter.getElevatorAccel(elevatorNumber);
+            // convert feet/sec^2 into meter/sec^2
+            return (elevatorCenter.getElevatorAccel(elevatorNumber) * factorFeetToMeter);
         }
         catch (RemoteException ex) {
             throw(new RuntimeException("Error in getElevatorAccel: " + ex.getMessage()));
@@ -67,18 +69,20 @@ public class ElevatorController {
         }
     }
 
-    public int getElevatorPosition(int elevatorNumber) {
+    public double getElevatorPosition(int elevatorNumber) {
         try{
-            return elevatorCenter.getElevatorPosition(elevatorNumber);
+            // convert feet into meters
+            return (elevatorCenter.getElevatorPosition(elevatorNumber) * factorFeetToMeter);
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getElevatorPosition: " + ex.getMessage()));
         }
     }
 
-    public int getElevatorSpeed(int elevatorNumber) {
+    public double getElevatorSpeed(int elevatorNumber) {
         try{
-            return elevatorCenter.getElevatorSpeed(elevatorNumber);
+            // convert feet/sec into meter/sec
+            return (elevatorCenter.getElevatorSpeed(elevatorNumber) * factorFeetToMeter);
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getElevatorSpeed: " + ex.getMessage()));
@@ -162,7 +166,7 @@ public class ElevatorController {
             elevatorCenter.setCommittedDirection(elevatorNumber, direction);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in setCommitedDirection: " + ex.getMessage()));
+            throw(new RuntimeException("Error in setCommittedDirection: " + ex.getMessage()));
         }
     }
 
