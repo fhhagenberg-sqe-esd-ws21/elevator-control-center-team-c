@@ -86,21 +86,18 @@ public class ElevatorControllerTest {
     @Test
     void testSetDirectionUP() throws RemoteException {
         elevatorController.setCommittedDirection(0, IElevatorController.CommittedDirection.UP);
-        assertEquals(IElevatorController.CommittedDirection.UP, elevatorController.getCommittedDirection(0));
         verify(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_UP);
     }
 
     @Test
     void testSetDirectionDOWN() throws RemoteException{
         elevatorController.setCommittedDirection(0, IElevatorController.CommittedDirection.DOWN);
-        assertEquals(IElevatorController.CommittedDirection.DOWN, elevatorController.getCommittedDirection(0));
         verify(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_DOWN);
     }
 
     @Test
     void testSetDirectionUNCOMMITED() throws RemoteException{
         elevatorController.setCommittedDirection(0, IElevatorController.CommittedDirection.UNCOMMITED);
-        assertEquals(IElevatorController.CommittedDirection.UNCOMMITED, elevatorController.getCommittedDirection(0));
         verify(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_UNCOMMITTED);
     }
 
