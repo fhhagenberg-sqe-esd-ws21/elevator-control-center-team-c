@@ -216,6 +216,112 @@ public class ElevatorControllerTest {
         when(mockedIElevator.getClockTick()).thenReturn(10L);
         assertEquals(10L, elevatorController.getClockTick());
     }
+
+
+    // also test catching exceptions
+
+    @Test
+    public void testGetCommittedDirectionException() throws RemoteException {
+        when(mockedIElevator.getCommittedDirection(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getCommittedDirection(0));
+    }
+
+    @Test
+    public void testGetElevatorAccelException() throws RemoteException {
+        when(mockedIElevator.getElevatorAccel(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorAccel(0));
+    }
+
+    @Test
+    public void testGetElevatorButtonException() throws RemoteException {
+        when(mockedIElevator.getElevatorButton(0, 0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorButton(0, 0));
+    }
+
+    @Test
+    public void testGetElevatorDoorStatusException() throws RemoteException {
+        when(mockedIElevator.getElevatorDoorStatus(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorDoorStatus(0));
+    }
+
+
+    @Test
+    public void testGetElevatorFloorException() throws RemoteException {
+        when(mockedIElevator.getElevatorFloor(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorDoorStatus(0));
+    }
+
+    @Test
+    public void testGetElevatorNumException() throws RemoteException {
+        when(mockedIElevator.getElevatorNum()).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorNum());
+    }
+
+    @Test
+    public void testGetElevatorPositionException() throws RemoteException {
+        when(mockedIElevator.getElevatorPosition(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorPosition(0));
+    }
+
+    @Test
+    public void testGetElevatorSpeedException() throws RemoteException {
+        when(mockedIElevator.getElevatorSpeed(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorSpeed(0));
+    }
+
+    @Test
+    public void testGetElevatorWeightException() throws RemoteException {
+        when(mockedIElevator.getElevatorWeight(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorWeight(0));
+    }
+
+    @Test
+    public void testGetElevatorCapacityException() throws RemoteException {
+        when(mockedIElevator.getElevatorCapacity(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorCapacity(0));
+    }
+
+    @Test
+    public void testGetFloorButtonDownException() throws RemoteException {
+        when(mockedIElevator.getFloorButtonDown(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getFloorButtonDown(0));
+    }
+
+    @Test
+    public void testGetFloorButtonUpException() throws RemoteException {
+        when(mockedIElevator.getFloorButtonUp(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getFloorButtonUp(0));
+    }
+
+    @Test
+    public void testGetFloorHeightException() throws RemoteException {
+        when(mockedIElevator.getFloorHeight()).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getFloorHeight());
+    }
+
+    @Test
+    public void testGetFloorNumException() throws RemoteException {
+        when(mockedIElevator.getFloorNum()).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getFloorNum());
+    }
+
+    @Test
+    public void testGetServicesFloorsException() throws RemoteException {
+        when(mockedIElevator.getServicesFloors(0, 0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getServicesFloors(0, 0));
+    }
+
+    @Test
+    public void testGetTargetException() throws RemoteException {
+        when(mockedIElevator.getTarget(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getTarget(0));
+    }
+
+    @Test
+    public void testGetClockTickException() throws RemoteException {
+        when(mockedIElevator.getClockTick()).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getClockTick());
+    }
 }
 
 
