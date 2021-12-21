@@ -247,8 +247,8 @@ public class ElevatorControllerTest {
 
     @Test
     public void testGetElevatorFloorException() throws RemoteException {
-        when(mockedIElevator.getElevatorFloor(-1)).thenThrow(new RemoteException("Trigger Exception"));
-        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorDoorStatus(-1));
+        when(mockedIElevator.getElevatorFloor(0)).thenThrow(new RemoteException("Trigger Exception"));
+        assertThrows(RuntimeException.class, () -> elevatorController.getElevatorFloor(0));
     }
 
     @Test
