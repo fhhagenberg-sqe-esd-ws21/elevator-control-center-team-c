@@ -135,4 +135,8 @@ public class Elevator {
     public void setDirection(CommittedDirection newDirection) {
         this.direction.set(newDirection);
     }
+
+    public ObjectProperty<CommittedDirection> directionProperty() {
+        return direction;
+    }
 }
