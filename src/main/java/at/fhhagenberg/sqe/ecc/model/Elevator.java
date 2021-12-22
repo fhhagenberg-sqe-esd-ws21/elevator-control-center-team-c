@@ -2,6 +2,10 @@ package at.fhhagenberg.sqe.ecc.model;
 
 import at.fhhagenberg.sqe.ecc.IElevatorController.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.IElevatorController.DoorState;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +16,7 @@ public class Elevator {
     private final int floors;
 
     // dynamic parameters
-    private CommittedDirection direction;
+    private ObjectProperty<CommittedDirection> direction = new SimpleObjectProperty<>();
     private double speed;
     private double acceleration;
     private DoorState doorState;
@@ -125,10 +129,10 @@ public class Elevator {
     }
 
     public CommittedDirection getDirection() {
-        return direction;
+        return direction.get();
     }
 
     public void setDirection(CommittedDirection newDirection) {
-        this.direction = newDirection;
+        this.direction.set(newDirection);
     }
 }
