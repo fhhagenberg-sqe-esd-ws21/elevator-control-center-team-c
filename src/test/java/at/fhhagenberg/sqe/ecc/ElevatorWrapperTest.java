@@ -322,16 +322,19 @@ public class ElevatorWrapperTest {
 
     @Test
     void testSetDirectionException() throws RuntimeException {
+        doThrow(RemoteException.class).when(elevatorWrapper).setCommittedDirection(-1, IElevatorWrapper.CommittedDirection.UP);
         assertThrows(RuntimeException.class, () -> elevatorWrapper.setCommittedDirection(-1, IElevatorWrapper.CommittedDirection.UP));
     }
 
     @Test
     void testSetServicesFloorException() throws RuntimeException {
+        doThrow(RemoteException.class).when(elevatorWrapper).setServicesFloors(0, -1, true);
         assertThrows(RuntimeException.class, () -> elevatorWrapper.setServicesFloors(0, -1, true));
     }
 
     @Test
     void testSetTargetException() throws RuntimeException {
+        doThrow(RemoteException.class).when(elevatorWrapper).setTarget(0, -1);
         assertThrows(RuntimeException.class, () -> elevatorWrapper.setTarget(0, -1));
     }
 
