@@ -321,20 +321,20 @@ public class ElevatorWrapperTest {
     // also test exception throwing on setters
 
     @Test
-    void testSetDirectionException() throws RuntimeException {
-        doThrow(RemoteException.class).when(elevatorWrapper).setCommittedDirection(-1, IElevatorWrapper.CommittedDirection.UP);
+    void testSetDirectionException() throws RemoteException {
+        doThrow(RemoteException.class).when(mockedIElevator).setCommittedDirection(-1, ELEVATOR_DIRECTION_UP);
         assertThrows(RuntimeException.class, () -> elevatorWrapper.setCommittedDirection(-1, IElevatorWrapper.CommittedDirection.UP));
     }
 
     @Test
-    void testSetServicesFloorException() throws RuntimeException {
-        doThrow(RemoteException.class).when(elevatorWrapper).setServicesFloors(0, -1, true);
+    void testSetServicesFloorException() throws RemoteException {
+        doThrow(RemoteException.class).when(mockedIElevator).setServicesFloors(0, -1, true);
         assertThrows(RuntimeException.class, () -> elevatorWrapper.setServicesFloors(0, -1, true));
     }
 
     @Test
-    void testSetTargetException() throws RuntimeException {
-        doThrow(RemoteException.class).when(elevatorWrapper).setTarget(0, -1);
+    void testSetTargetException() throws RemoteException {
+        doThrow(RemoteException.class).when(mockedIElevator).setTarget(0, -1);
         assertThrows(RuntimeException.class, () -> elevatorWrapper.setTarget(0, -1));
     }
 
