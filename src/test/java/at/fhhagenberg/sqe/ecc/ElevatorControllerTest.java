@@ -19,7 +19,7 @@ import static sqelevator.IElevator.*;
 public class ElevatorControllerTest {
 
     @Mock
-    private IElevator mockedIElevator ;
+    private IElevator mockedIElevator;
 
     private ElevatorController elevatorController;
 
@@ -27,10 +27,7 @@ public class ElevatorControllerTest {
 
     @BeforeEach
     void Setup(){
-        mockedIElevator = mock(IElevator.class);
-        assertNotNull(mockedIElevator);
         elevatorController = new ElevatorController(mockedIElevator);
-        assertNotNull(elevatorController);
     }
 
     @Test
