@@ -28,7 +28,7 @@ public class ElevatorController implements IElevatorController {
             }
         }
         catch (RemoteException ex) {
-            throw(new RuntimeException("Error in getCommittedDirection: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getCommittedDirection: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -38,7 +38,7 @@ public class ElevatorController implements IElevatorController {
             return (elevatorCenter.getElevatorAccel(elevatorNumber) * FACTOR_FEET_TO_METER);
         }
         catch (RemoteException ex) {
-            throw(new RuntimeException("Error in getElevatorAccel: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getElevatorAccel: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -47,7 +47,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getElevatorButton(elevatorNumber, floor);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorButton: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getElevatorButton: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -68,7 +68,7 @@ public class ElevatorController implements IElevatorController {
             }
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorDoorStatus: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getElevatorDoorStatus: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -77,7 +77,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getElevatorFloor(elevatorNumber);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorFloor: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getElevatorFloor: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -86,7 +86,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getElevatorNum();
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorNum: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getElevatorNum: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -96,7 +96,7 @@ public class ElevatorController implements IElevatorController {
             return (elevatorCenter.getElevatorPosition(elevatorNumber) * FACTOR_FEET_TO_METER);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorPosition: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getElevatorPosition: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -106,7 +106,7 @@ public class ElevatorController implements IElevatorController {
             return (elevatorCenter.getElevatorSpeed(elevatorNumber) * FACTOR_FEET_TO_METER);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorSpeed: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getElevatorSpeed: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -116,7 +116,7 @@ public class ElevatorController implements IElevatorController {
             return (elevatorCenter.getElevatorWeight(elevatorNumber) * FACTOR_POUND_TO_KG);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorWeight: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getElevatorWeight: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -125,7 +125,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getElevatorCapacity(elevatorNumber);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorCapacity: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getElevatorCapacity: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -134,7 +134,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getFloorButtonDown(floor);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getFloorButtonDown: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getFloorButtonDown: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -143,7 +143,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getFloorButtonUp(floor);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getFloorButtonUp: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getFloorButtonUp: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -153,7 +153,7 @@ public class ElevatorController implements IElevatorController {
             return (elevatorCenter.getFloorHeight() * FACTOR_FEET_TO_METER);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getFloorHeight: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getFloorHeight: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -162,7 +162,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getFloorNum();
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getFloorNum: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getFloorNum: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -171,7 +171,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getServicesFloors(elevatorNumber, floor);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getServicesFloors: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getServicesFloors: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -180,7 +180,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getTarget(elevatorNumber);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getTarget: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getTarget: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -189,7 +189,7 @@ public class ElevatorController implements IElevatorController {
             return elevatorCenter.getClockTick();
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getClockTick: " + ex.getMessage()));
+            throw(new RuntimeException("Error in getClockTick: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -205,7 +205,7 @@ public class ElevatorController implements IElevatorController {
             }
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in setCommittedDirection: " + ex.getMessage()));
+            throw(new RuntimeException("Error in setCommittedDirection: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -215,7 +215,7 @@ public class ElevatorController implements IElevatorController {
             elevatorCenter.setServicesFloors(elevatorNumber, floor, service);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in setServicesFloors: " + ex.getMessage()));
+            throw(new RuntimeException("Error in setServicesFloors: " + ex.getMessage(), ex.getCause()));
         }
     }
 
@@ -224,7 +224,7 @@ public class ElevatorController implements IElevatorController {
             elevatorCenter.setTarget(elevatorNumber, target);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in setTarget: " + ex.getMessage()));
+            throw(new RuntimeException("Error in setTarget: " + ex.getMessage(), ex.getCause()));
         }
     }
 }
