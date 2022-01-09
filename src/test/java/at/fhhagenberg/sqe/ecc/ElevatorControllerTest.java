@@ -74,7 +74,7 @@ public class ElevatorControllerTest {
     @Test
     void testGetDirectionUNCOMMITED() throws RemoteException{
         when(mockedIElevator.getCommittedDirection(0)).thenReturn(ELEVATOR_DIRECTION_UNCOMMITTED);
-        assertEquals(IElevatorController.CommittedDirection.UNCOMMITED, elevatorController.getCommittedDirection(0));
+        assertEquals(IElevatorController.CommittedDirection.UNCOMMITTED, elevatorController.getCommittedDirection(0));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class ElevatorControllerTest {
 
     @Test
     void testSetDirectionUNCOMMITED() throws RemoteException{
-        elevatorController.setCommittedDirection(0, IElevatorController.CommittedDirection.UNCOMMITED);
+        elevatorController.setCommittedDirection(0, IElevatorController.CommittedDirection.UNCOMMITTED);
         verify(mockedIElevator).setCommittedDirection(0, ELEVATOR_DIRECTION_UNCOMMITTED);
     }
 

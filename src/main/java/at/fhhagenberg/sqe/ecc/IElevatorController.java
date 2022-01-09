@@ -11,7 +11,7 @@ public interface IElevatorController {
     enum CommittedDirection {
         UP,
         DOWN,
-        UNCOMMITED
+        UNCOMMITTED
     }
 
     /**

@@ -13,8 +13,8 @@ class ElevatorTest {
     @Test
     void testDirection()
     {
-        elev.setDirection(CommittedDirection.UNCOMMITED);
-        assertEquals(CommittedDirection.UNCOMMITED, elev.getDirection());
+        elev.setDirection(CommittedDirection.UNCOMMITTED);
+        assertEquals(CommittedDirection.UNCOMMITTED, elev.getDirection());
 
         elev.setDirection(CommittedDirection.UP);
         assertEquals(CommittedDirection.UP, elev.getDirection());

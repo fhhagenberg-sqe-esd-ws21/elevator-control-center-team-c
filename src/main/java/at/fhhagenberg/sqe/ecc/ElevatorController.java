@@ -25,7 +25,7 @@ public class ElevatorController implements IElevatorController {
                     dir = CommittedDirection.DOWN;
                     break;
                 default:
-                    dir = CommittedDirection.UNCOMMITED;
+                    dir = CommittedDirection.UNCOMMITTED;
                     break;
             }
         }
