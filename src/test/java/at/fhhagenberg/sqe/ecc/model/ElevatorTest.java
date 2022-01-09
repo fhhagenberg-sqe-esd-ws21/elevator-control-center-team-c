@@ -91,6 +91,9 @@ class ElevatorTest {
     }
 
     @Test
+    void testNumOfFloors(){ assertEquals(3, elev.getNumOfFloors()); }
+
+    @Test
     void testTargetFloor()
     {
         elev.setTargetFloor(0);
@@ -112,4 +115,34 @@ class ElevatorTest {
         elev.setButtonPressed(2, true);
         assertTrue(elev.isButtonPressed(2));
     }
+
+
+    // for code coverage
+
+    @Test
+    void testDirectionProperty(){ assertNotNull(elev.directionProperty());}
+
+    @Test
+    void testSpeedProperty(){ assertNotNull(elev.speedProperty());}
+
+    @Test
+    void testAccelProperty(){ assertNotNull(elev.accelerationProperty());}
+
+    @Test
+    void testDoorStateProperty(){ assertNotNull(elev.doorStateProperty());}
+
+    @Test
+    void testCurrentFloorProperty(){ assertNotNull(elev.currentFloorProperty());}
+
+    @Test
+    void testPositionProperty(){ assertNotNull(elev.positionProperty());}
+
+    @Test
+    void testCurrentPassengerWeightProperty(){ assertNotNull(elev.currentPassengerWeightProperty());}
+
+    @Test
+    void testTargetFloorProperty(){ assertNotNull(elev.targetFloorProperty());}
+
+    @Test
+    void testButtonsPressed(){ assertNotNull(elev.buttonsPressedProperty());}
 }

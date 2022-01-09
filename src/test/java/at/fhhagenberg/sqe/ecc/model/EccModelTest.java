@@ -68,4 +68,28 @@ class EccModelTest {
         assertThrows(IndexOutOfBoundsException.class, () -> model.getFloor(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> model.getFloor(2));
     }
+
+    // for code coverage
+
+    @Test
+    void testGetElevatorsProperty(){
+        var elevators = new ArrayList<Elevator>();
+        var floors = new ArrayList<Floor>();
+        elevators.add(new Elevator(2, 3));
+        floors.add(new Floor());
+        var model = new EccModel(elevators, floors);
+
+        assertNotNull(model.getElevatorsProperty());
+    }
+
+    @Test
+    void testGetFloorsProperty(){
+        var elevators = new ArrayList<Elevator>();
+        var floors = new ArrayList<Floor>();
+        elevators.add(new Elevator(2, 3));
+        floors.add(new Floor());
+        var model = new EccModel(elevators, floors);
+
+        assertNotNull(model.getFloorsProperty());
+    }
 }
