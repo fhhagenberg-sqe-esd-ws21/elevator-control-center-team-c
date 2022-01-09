@@ -15,24 +15,21 @@ public class ElevatorController implements IElevatorController {
     }
 
     public CommittedDirection getCommittedDirection(int elevatorNumber) {
-        CommittedDirection dir;
         try {
             switch (elevatorCenter.getCommittedDirection(elevatorNumber)){
                 case IElevator.ELEVATOR_DIRECTION_UP:
-                    dir = CommittedDirection.UP;
-                    break;
+                    return CommittedDirection.UP;
                 case IElevator.ELEVATOR_DIRECTION_DOWN:
-                    dir = CommittedDirection.DOWN;
-                    break;
+                    return CommittedDirection.DOWN;
+                case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
+                    return CommittedDirection.UNCOMMITTED;
                 default:
-                    dir = CommittedDirection.UNCOMMITTED;
-                    break;
+                    throw(new RuntimeException("getCommittedDirection returned unknown IElevator state"));
             }
         }
         catch (RemoteException ex) {
             throw(new RuntimeException("Error in getCommittedDirection: " + ex.getMessage()));
         }
-        return dir;
     }
 
     public double getElevatorAccel(int elevatorNumber) {
@@ -56,27 +53,23 @@ public class ElevatorController implements IElevatorController {
 
 
     public DoorState getElevatorDoorStatus(int elevatorNumber) {
-        DoorState state;
         try{
             switch (elevatorCenter.getElevatorDoorStatus(elevatorNumber)){
                 case IElevator.ELEVATOR_DOORS_OPEN:
-                    state = DoorState.OPEN;
-                    break;
+                    return DoorState.OPEN;
                 case IElevator.ELEVATOR_DOORS_OPENING:
-                    state = DoorState.OPENING;
-                    break;
+                    return DoorState.OPENING;
                 case IElevator.ELEVATOR_DOORS_CLOSING:
-                    state = DoorState.CLOSING;
-                    break;
+                    return DoorState.CLOSING;
+                case IElevator.ELEVATOR_DOORS_CLOSED:
+                    return DoorState.CLOSED;
                 default:
-                    state = DoorState.CLOSED;
-                    break;
+                    throw(new RuntimeException("getElevatorDoorStatus returned unknown IElevator state"));
             }
         }
         catch(RemoteException ex){
             throw(new RuntimeException("Error in getElevatorDoorStatus: " + ex.getMessage()));
         }
-        return state;
     }
 
     public int getElevatorFloor(int elevatorNumber) {
