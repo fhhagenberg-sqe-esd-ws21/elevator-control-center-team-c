@@ -4,13 +4,13 @@ import sqelevator.IElevator;
 import java.rmi.RemoteException;
 
 
-public class ElevatorController implements IElevatorController {
+public class ElevatorWrapper implements IElevatorWrapper {
 
     private final IElevator elevatorCenter;
     private static final double FACTOR_FEET_TO_METER = 0.3048;
     private static final double FACTOR_POUND_TO_KG = 0.45359237;
 
-    public ElevatorController(IElevator e) {
+    public ElevatorWrapper(IElevator e) {
         elevatorCenter = e;
     }
 

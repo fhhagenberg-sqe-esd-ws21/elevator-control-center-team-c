@@ -1,9 +1,9 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorController.CommittedDirection;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import org.junit.jupiter.api.Test;
 
-import static at.fhhagenberg.sqe.ecc.IElevatorController.DoorState;
+import static at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ElevatorTest {
