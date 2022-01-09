@@ -195,13 +195,16 @@ public class ElevatorWrapper implements IElevatorWrapper {
 
     public void setCommittedDirection(int elevatorNumber, CommittedDirection direction) {
         try{
-            if(direction == CommittedDirection.UP){
-                elevatorCenter.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UP);
-            }
-            else if(direction == CommittedDirection.DOWN){
-                elevatorCenter.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_DOWN);}
-            else{
-                elevatorCenter.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+            switch (direction){
+                case UP:
+                    elevatorCenter.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UP);
+                    break;
+                case DOWN:
+                    elevatorCenter.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_DOWN);
+                    break;
+                default:
+                    elevatorCenter.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+                    break;
             }
         }
         catch(RemoteException ex){
