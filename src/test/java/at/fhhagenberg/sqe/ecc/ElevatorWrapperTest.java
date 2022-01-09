@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 import static sqelevator.IElevator.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ElevatorWrapperTest {
+class ElevatorWrapperTest {
 
     @Mock
     private IElevator mockedIElevator;
