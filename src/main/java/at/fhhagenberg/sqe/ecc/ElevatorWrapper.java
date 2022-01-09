@@ -28,7 +28,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             }
         }
         catch (RemoteException ex) {
-            throw(new RuntimeException("Error in getCommittedDirection: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getCommittedDirection: " + ex.getMessage(), ex));
         }
     }
 
@@ -38,7 +38,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return (elevatorCenter.getElevatorAccel(elevatorNumber) * FACTOR_FEET_TO_METER);
         }
         catch (RemoteException ex) {
-            throw(new RuntimeException("Error in getElevatorAccel: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getElevatorAccel: " + ex.getMessage(), ex));
         }
     }
 
@@ -47,7 +47,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getElevatorButton(elevatorNumber, floor);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorButton: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getElevatorButton: " + ex.getMessage(), ex));
         }
     }
 
@@ -68,7 +68,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             }
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorDoorStatus: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getElevatorDoorStatus: " + ex.getMessage(), ex));
         }
     }
 
@@ -77,7 +77,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getElevatorFloor(elevatorNumber);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorFloor: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getElevatorFloor: " + ex.getMessage(), ex));
         }
     }
 
@@ -86,7 +86,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getElevatorNum();
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorNum: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getElevatorNum: " + ex.getMessage(), ex));
         }
     }
 
@@ -96,7 +96,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return (elevatorCenter.getElevatorPosition(elevatorNumber) * FACTOR_FEET_TO_METER);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorPosition: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getElevatorPosition: " + ex.getMessage(), ex));
         }
     }
 
@@ -106,7 +106,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return (elevatorCenter.getElevatorSpeed(elevatorNumber) * FACTOR_FEET_TO_METER);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorSpeed: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getElevatorSpeed: " + ex.getMessage(), ex));
         }
     }
 
@@ -116,7 +116,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return (elevatorCenter.getElevatorWeight(elevatorNumber) * FACTOR_POUND_TO_KG);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorWeight: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getElevatorWeight: " + ex.getMessage(), ex));
         }
     }
 
@@ -125,7 +125,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getElevatorCapacity(elevatorNumber);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getElevatorCapacity: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getElevatorCapacity: " + ex.getMessage(), ex));
         }
     }
 
@@ -134,7 +134,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getFloorButtonDown(floor);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getFloorButtonDown: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getFloorButtonDown: " + ex.getMessage(), ex));
         }
     }
 
@@ -143,7 +143,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getFloorButtonUp(floor);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getFloorButtonUp: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getFloorButtonUp: " + ex.getMessage(), ex));
         }
     }
 
@@ -153,7 +153,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return (elevatorCenter.getFloorHeight() * FACTOR_FEET_TO_METER);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getFloorHeight: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getFloorHeight: " + ex.getMessage(), ex));
         }
     }
 
@@ -162,7 +162,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getFloorNum();
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getFloorNum: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getFloorNum: " + ex.getMessage(), ex));
         }
     }
 
@@ -171,7 +171,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getServicesFloors(elevatorNumber, floor);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getServicesFloors: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getServicesFloors: " + ex.getMessage(), ex));
         }
     }
 
@@ -180,7 +180,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getTarget(elevatorNumber);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getTarget: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getTarget: " + ex.getMessage(), ex));
         }
     }
 
@@ -189,7 +189,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             return elevatorCenter.getClockTick();
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in getClockTick: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in getClockTick: " + ex.getMessage(), ex));
         }
     }
 
@@ -208,7 +208,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             }
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in setCommittedDirection: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in setCommittedDirection: " + ex.getMessage(), ex));
         }
     }
 
@@ -218,7 +218,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             elevatorCenter.setServicesFloors(elevatorNumber, floor, service);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in setServicesFloors: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in setServicesFloors: " + ex.getMessage(), ex));
         }
     }
 
@@ -227,7 +227,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
             elevatorCenter.setTarget(elevatorNumber, target);
         }
         catch(RemoteException ex){
-            throw(new RuntimeException("Error in setTarget: " + ex.getMessage(), ex.getCause()));
+            throw(new RuntimeException("Error in setTarget: " + ex.getMessage(), ex));
         }
     }
 }
