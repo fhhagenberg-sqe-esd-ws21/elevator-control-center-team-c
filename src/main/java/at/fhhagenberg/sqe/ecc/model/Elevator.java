@@ -1,7 +1,7 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorController.CommittedDirection;
-import at.fhhagenberg.sqe.ecc.IElevatorController.DoorState;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
