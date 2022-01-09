@@ -1,8 +1,8 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorController;
-import at.fhhagenberg.sqe.ecc.IElevatorController.CommittedDirection;
-import at.fhhagenberg.sqe.ecc.IElevatorController.DoorState;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 class EccModelUpdaterTest {
 
     @Mock
-    private IElevatorController controller;
+    private IElevatorWrapper controller;
     @Mock
     private EccModel model;
     @Mock

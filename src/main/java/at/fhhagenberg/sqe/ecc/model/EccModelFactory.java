@@ -1,13 +1,13 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorController;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
 
 import java.util.ArrayList;
 
 public class EccModelFactory {
-    private final IElevatorController controller;
+    private final IElevatorWrapper controller;
 
-    public EccModelFactory(IElevatorController controller) {
+    public EccModelFactory(IElevatorWrapper controller) {
         this.controller = controller;
     }
 

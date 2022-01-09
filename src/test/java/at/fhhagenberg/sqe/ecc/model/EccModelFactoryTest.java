@@ -1,6 +1,6 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorController;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 class EccModelFactoryTest {
 
     @Mock
-    private IElevatorController controller;
+    private IElevatorWrapper controller;
 
     @Test
     void testCreateModel() {
