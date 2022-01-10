@@ -9,22 +9,22 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class EccController {
 
-    private EccModel model;
-    private ElevatorWrapper wrapper;
-    private EccModelUpdater updater;
+    protected IElevatorWrapper wrapper;
+    protected EccModelUpdater updater;
+    ScheduledThreadPoolExecutor scheduledExecutor;
 
-    public boolean init()
-    {
+    private final long UpdatePeriod = 500;
+
+    public boolean connect() {
         try {
-            connect();
-            createModel();
-            updater = new EccModelUpdater(wrapper, model);
-            scheduleModelUpdater();
+            IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+            wrapper = new ElevatorWrapper(controller);
             return true;
         } catch (NotBoundException e) {
             System.err.println("Remote server not started. " + e.getMessage());
@@ -33,28 +33,32 @@ public class EccController {
         } catch (RemoteException e) {
             System.err.println("Some remote exception on connecting: " + e.getMessage());
         }
-
         return false;
     }
 
-    public void reconnect() throws MalformedURLException, NotBoundException, RemoteException {
-        IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
-        wrapper.setElevatorCenter(controller);
+    public EccModel createModel() {
+        if (wrapper == null) {
+            throw new RuntimeException("Not connected");
+        }
+
+        return new EccModelFactory(wrapper).createModel();
     }
 
-    private void connect() throws MalformedURLException, NotBoundException, RemoteException {
-        IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
-        wrapper = new ElevatorWrapper(controller);
+    protected void createUpdater(EccModel model) {
+        updater = new EccModelUpdater(wrapper, model);
     }
 
-    private void createModel()
-    {
-        model = new EccModelFactory(wrapper).createModel();
+    public ScheduledFuture<?> scheduleModelUpdater(EccModel model) {
+        if (wrapper == null) {
+            throw new RuntimeException("Not connected");
+        }
+
+        createUpdater(model);
+        scheduledExecutor = new ScheduledThreadPoolExecutor(1);
+        return scheduledExecutor.scheduleAtFixedRate(() -> updater.updateModel(), UpdatePeriod, UpdatePeriod, TimeUnit.MILLISECONDS);
     }
 
-    private void scheduleModelUpdater()
-    {
-        ScheduledThreadPoolExecutor scheduledExecutor = new ScheduledThreadPoolExecutor(1);
-        scheduledExecutor.scheduleAtFixedRate(() -> updater.updateModel(), 500, 500, TimeUnit.MILLISECONDS);
+    public void cancelUpdater() {
+        scheduledExecutor.shutdown();
     }
 }
