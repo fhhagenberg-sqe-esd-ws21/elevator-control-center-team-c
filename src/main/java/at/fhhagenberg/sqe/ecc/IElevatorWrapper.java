@@ -1,6 +1,6 @@
 package at.fhhagenberg.sqe.ecc;
 
-public interface IElevatorController {
+public interface IElevatorWrapper {
     enum DoorState {
         OPEN,
         CLOSED,
@@ -11,7 +11,7 @@ public interface IElevatorController {
     enum CommittedDirection {
         UP,
         DOWN,
-        UNCOMMITED
+        UNCOMMITTED
     }
 
     /**

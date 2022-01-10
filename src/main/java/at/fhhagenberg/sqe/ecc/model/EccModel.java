@@ -1,46 +1,51 @@
 package at.fhhagenberg.sqe.ecc.model;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class EccModel {
-    private final List<Elevator> elevators;
-    private final List<Floor> floors;
+    private final ObjectProperty<List<Elevator>> elevators = new SimpleObjectProperty<>();
+    private final ObjectProperty<List<Floor>> floors = new SimpleObjectProperty<>();
+
+    public ObjectProperty<List<Elevator>> getElevatorsProperty() { return elevators; }
+    public ObjectProperty<List<Floor>> getFloorsProperty() { return floors; }
 
     public EccModel(List<Elevator> elevators, List<Floor> floors)
     {
-        this.elevators = elevators;
-        this.floors = floors;
+        this.elevators.set(elevators);
+        this.floors.set(floors);
     }
 
     public EccModel(EccModel other) {
-        elevators = new ArrayList<>();
-        for (var elev : other.elevators) {
+        var elevators = new ArrayList<Elevator>();
+        for (var elev : other.elevators.get()) {
             elevators.add(new Elevator(elev));
         }
 
-        floors = new ArrayList<>();
-        for (var floor : floors) {
+        this.elevators.set(elevators);
+
+        var floors = new ArrayList<Floor>();
+        for (var floor : other.floors.get()) {
             floors.add(new Floor(floor));
         }
+
+        this.floors.set(floors);
     }
 
-    public Elevator getElevator(int elevatorNumber)
-    {
-        return elevators.get(elevatorNumber);
-    }
+    public Elevator getElevator(int elevatorNumber) { return elevators.get().get(elevatorNumber); }
 
     public Floor getFloor(int floor)
     {
-        return floors.get(floor);
+        return floors.get().get(floor);
     }
 
     public int getNumberOfElevators()
     {
-        return elevators.size();
+        return elevators.get().size();
     }
 
-    public int getNumberOfFloors() {
-        return floors.size();
-    }
+    public int getNumberOfFloors() { return floors.get().size(); }
 }

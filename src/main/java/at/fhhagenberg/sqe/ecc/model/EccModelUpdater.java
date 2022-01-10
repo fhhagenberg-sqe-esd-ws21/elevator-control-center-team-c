@@ -1,13 +1,13 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorController;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
 
 public class EccModelUpdater {
 
-    IElevatorController controller;
+    IElevatorWrapper controller;
     EccModel model;
 
-    public EccModelUpdater(IElevatorController controller, EccModel model)
+    public EccModelUpdater(IElevatorWrapper controller, EccModel model)
     {
         this.controller = controller;
         this.model = model;

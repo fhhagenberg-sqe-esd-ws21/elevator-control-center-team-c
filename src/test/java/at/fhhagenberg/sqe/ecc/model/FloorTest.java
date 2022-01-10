@@ -25,4 +25,12 @@ class FloorTest {
         floor.setDownButtonPressed(false);
         assertFalse(floor.isDownButtonPressed());
     }
+
+    // for code coverage
+
+    @Test
+    void testUpButtonProperty(){ assertNotNull(floor.upButtonPressedProperty());}
+
+    @Test
+    void testDownButtonProperty(){ assertNotNull(floor.downButtonPressedProperty());}
 }

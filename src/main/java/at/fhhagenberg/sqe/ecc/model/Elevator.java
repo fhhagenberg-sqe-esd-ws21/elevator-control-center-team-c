@@ -1,26 +1,108 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorController.CommittedDirection;
-import at.fhhagenberg.sqe.ecc.IElevatorController.DoorState;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
+import javafx.beans.property.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Elevator {
+
     // permanent parameters
     private final int maxPassengers;
     private final int floors;
 
     // dynamic parameters
-    private CommittedDirection direction;
-    private double speed;
-    private double acceleration;
-    private DoorState doorState;
-    private int currentFloor;
-    private double position;
-    private double currentPassengerWeight;
-    private int targetFloor;
-    private final List<Boolean> buttonPressed;
+    private final ObjectProperty<CommittedDirection> direction = new SimpleObjectProperty<>();
+    private final DoubleProperty speed = new SimpleDoubleProperty();
+    private final DoubleProperty acceleration = new SimpleDoubleProperty();
+    private final ObjectProperty<DoorState> doorState = new SimpleObjectProperty<>();
+    private final IntegerProperty currentFloor = new SimpleIntegerProperty();
+    private final DoubleProperty position = new SimpleDoubleProperty();
+    private final DoubleProperty currentPassengerWeight = new SimpleDoubleProperty();
+    private final IntegerProperty targetFloor = new SimpleIntegerProperty();
+    private final ObjectProperty<List<Boolean>> buttonsPressed = new SimpleObjectProperty<>();
+
+
+    // Setters and Getters (property based)
+
+    public CommittedDirection getDirection() {
+        return direction.get();
+    }
+    public void setDirection(CommittedDirection newDirection) {
+        this.direction.set(newDirection);
+    }
+    public ObjectProperty<CommittedDirection> directionProperty() {
+        return direction;
+    }
+
+    public double getSpeed() {
+        return speed.get();
+    }
+    public void setSpeed(double newSpeed) {
+        this.speed.set(newSpeed);
+    }
+    public DoubleProperty speedProperty(){ return speed; }
+
+    public double getAcceleration() {
+        return acceleration.get();
+    }
+    public void setAcceleration(double newAcceleration) { this.acceleration.set(newAcceleration); }
+    public DoubleProperty accelerationProperty(){ return acceleration; }
+
+    public DoorState getDoorState() {
+        return doorState.get();
+    }
+    public void setDoorState(DoorState newDoorState) { this.doorState.set(newDoorState); }
+    public ObjectProperty<DoorState> doorStateProperty() {
+        return doorState;
+    }
+
+    public int getCurrentFloor() {
+        return currentFloor.get();
+    }
+    public void setCurrentFloor(int newCurrentFloor) {
+        if (newCurrentFloor < 0 || newCurrentFloor >= floors) {
+            throw new IllegalArgumentException("newCurrentFloor must be a positive number lower than floors");
+        }
+        this.currentFloor.set(newCurrentFloor);
+    }
+    public IntegerProperty currentFloorProperty() { return currentFloor; }
+
+    public double getPosition() { return position.get(); }
+    public void setPosition(double newPosition) {
+        if (newPosition < 0) {
+            throw new IllegalArgumentException("newPosition must be greater than or equal to 0");
+        }
+        this.position.set(newPosition);
+    }
+    public DoubleProperty positionProperty() { return position; }
+
+    public double getCurrentPassengerWeight() { return currentPassengerWeight.get(); }
+    public void setCurrentPassengerWeight(double newCurrentPassengerWeight) {
+        if (newCurrentPassengerWeight < 0) {
+            throw new IllegalArgumentException("newCurrentPassengerWeight must be greater than or equal to 0");
+        }
+        this.currentPassengerWeight.set(newCurrentPassengerWeight);
+    }
+    public DoubleProperty currentPassengerWeightProperty() { return currentPassengerWeight; }
+
+    public int getTargetFloor() { return targetFloor.get(); }
+    public void setTargetFloor(int newTargetFloor) {
+        if (newTargetFloor < 0 || newTargetFloor >= floors) {
+            throw new IllegalArgumentException("newTargetFloor must be a positive number lower than floors");
+        }
+        this.targetFloor.set(newTargetFloor);
+    }
+    public IntegerProperty targetFloorProperty() { return targetFloor; }
+
+    public boolean isButtonPressed(int floor) { return buttonsPressed.get().get(floor); }
+    public void setButtonPressed(int floor, boolean value) { buttonsPressed.get().set(floor, value); }
+    public ObjectProperty<List<Boolean>> buttonsPressedProperty() { return buttonsPressed; }
+
+
+    // constructor
 
     public Elevator(int floors, int maxPassengers)
     {
@@ -34,116 +116,35 @@ public class Elevator {
         this.floors = floors;
         this.maxPassengers = maxPassengers;
 
-        buttonPressed = new ArrayList<>(floors);
+        buttonsPressed.set(new ArrayList<>(floors));
         for (int i = 0; i < floors; i++) {
-            buttonPressed.add(false);
+            buttonsPressed.get().add(false);
         }
     }
 
     public Elevator(Elevator other) {
         maxPassengers = other.maxPassengers;
         floors = other.floors;
-        direction = other.direction;
-        speed = other.speed;
-        acceleration = other.acceleration;
-        doorState = other.doorState;
-        currentFloor = other.currentFloor;
-        position = other.position;
-        currentPassengerWeight = other.currentPassengerWeight;
-        targetFloor = other.targetFloor;
-        buttonPressed = new ArrayList<>(floors);
-        buttonPressed.addAll(other.buttonPressed);
+        direction.set(other.direction.get());
+        speed.set(other.speed.get());
+        acceleration.set(other.acceleration.get());
+        doorState.set(other.doorState.get());
+        currentFloor.set(other.currentFloor.get());
+        position.set(other.position.get());
+        currentPassengerWeight.set(other.currentPassengerWeight.get());
+        targetFloor.set(other.targetFloor.get());
+        var buttonsPressed = new ArrayList<Boolean>(floors);
+        buttonsPressed.addAll(other.buttonsPressed.get());
+        this.buttonsPressed.set(buttonsPressed);
     }
 
-    public boolean isButtonPressed(int floor)
-    {
-        return buttonPressed.get(floor);
-    }
-
-    public void setButtonPressed(int floor, boolean value)
-    {
-        buttonPressed.set(floor, value);
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double newSpeed) {
-        this.speed = newSpeed;
-    }
-
-    public double getAcceleration() {
-        return acceleration;
-    }
-
-    public void setAcceleration(double newAcceleration) {
-        this.acceleration = newAcceleration;
-    }
-
-    public DoorState getDoorState() {
-        return doorState;
-    }
-
-    public void setDoorState(DoorState newDoorState) {
-        this.doorState = newDoorState;
-    }
-
-    public int getCurrentFloor() {
-        return currentFloor;
-    }
-
-    public void setCurrentFloor(int newCurrentFloor) {
-        if (newCurrentFloor < 0 || newCurrentFloor >= floors) {
-            throw new IllegalArgumentException("newCurrentFloor must be a positive number lower than floors");
-        }
-        this.currentFloor = newCurrentFloor;
-    }
-
-    public double getPosition() {
-        return position;
-    }
-
-    public void setPosition(double newPosition) {
-        if (newPosition < 0) {
-            throw new IllegalArgumentException("newPosition must be greater than or equal to 0");
-        }
-
-        this.position = newPosition;
-    }
-
-    public double getCurrentPassengerWeight() {
-        return currentPassengerWeight;
-    }
-
-    public void setCurrentPassengerWeight(double newCurrentPassengerWeight) {
-        if (newCurrentPassengerWeight < 0) {
-            throw new IllegalArgumentException("newCurrentPassengerWeight must be greater than or equal to 0");
-        }
-
-        this.currentPassengerWeight = newCurrentPassengerWeight;
-    }
+    // other getters/setters
 
     public int getMaxPassengers() {
         return maxPassengers;
     }
 
-    public int getTargetFloor() {
-        return targetFloor;
-    }
-
-    public void setTargetFloor(int newTargetFloor) {
-        if (newTargetFloor < 0 || newTargetFloor >= floors) {
-            throw new IllegalArgumentException("newTargetFloor must be a positive number lower than floors");
-        }
-        this.targetFloor = newTargetFloor;
-    }
-
-    public CommittedDirection getDirection() {
-        return direction;
-    }
-
-    public void setDirection(CommittedDirection newDirection) {
-        this.direction = newDirection;
+    public int getNumOfFloors(){
+        return floors;
     }
 }

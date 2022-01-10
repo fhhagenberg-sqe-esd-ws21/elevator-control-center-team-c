@@ -1,9 +1,9 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorController.CommittedDirection;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import org.junit.jupiter.api.Test;
 
-import static at.fhhagenberg.sqe.ecc.IElevatorController.DoorState;
+import static at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ElevatorTest {
@@ -13,8 +13,8 @@ class ElevatorTest {
     @Test
     void testDirection()
     {
-        elev.setDirection(CommittedDirection.UNCOMMITED);
-        assertEquals(CommittedDirection.UNCOMMITED, elev.getDirection());
+        elev.setDirection(CommittedDirection.UNCOMMITTED);
+        assertEquals(CommittedDirection.UNCOMMITTED, elev.getDirection());
 
         elev.setDirection(CommittedDirection.UP);
         assertEquals(CommittedDirection.UP, elev.getDirection());
@@ -91,6 +91,9 @@ class ElevatorTest {
     }
 
     @Test
+    void testNumOfFloors(){ assertEquals(3, elev.getNumOfFloors()); }
+
+    @Test
     void testTargetFloor()
     {
         elev.setTargetFloor(0);
@@ -112,4 +115,34 @@ class ElevatorTest {
         elev.setButtonPressed(2, true);
         assertTrue(elev.isButtonPressed(2));
     }
+
+
+    // for code coverage
+
+    @Test
+    void testDirectionProperty(){ assertNotNull(elev.directionProperty());}
+
+    @Test
+    void testSpeedProperty(){ assertNotNull(elev.speedProperty());}
+
+    @Test
+    void testAccelProperty(){ assertNotNull(elev.accelerationProperty());}
+
+    @Test
+    void testDoorStateProperty(){ assertNotNull(elev.doorStateProperty());}
+
+    @Test
+    void testCurrentFloorProperty(){ assertNotNull(elev.currentFloorProperty());}
+
+    @Test
+    void testPositionProperty(){ assertNotNull(elev.positionProperty());}
+
+    @Test
+    void testCurrentPassengerWeightProperty(){ assertNotNull(elev.currentPassengerWeightProperty());}
+
+    @Test
+    void testTargetFloorProperty(){ assertNotNull(elev.targetFloorProperty());}
+
+    @Test
+    void testButtonsPressed(){ assertNotNull(elev.buttonsPressedProperty());}
 }
