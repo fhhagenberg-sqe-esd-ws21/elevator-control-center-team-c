@@ -107,10 +107,10 @@ public class Elevator {
     public Elevator(int floors, int maxPassengers)
     {
         if (floors <= 0) {
-            throw new IllegalArgumentException("newCurrentFloor must be a positive number");
+            throw new IllegalArgumentException("currentFloor must be a positive number");
         }
         if (maxPassengers <= 0) {
-            throw new IllegalArgumentException("newMaxPassengers must be greater than or equal to 0");
+            throw new IllegalArgumentException("maxPassengers must be greater than or equal to 0");
         }
 
         this.floors = floors;
