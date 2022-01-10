@@ -7,9 +7,9 @@ public class Floor {
     private final BooleanProperty upButtonPressed = new SimpleBooleanProperty();
     private final BooleanProperty downButtonPressed = new SimpleBooleanProperty();
 
-    Floor() {}
+    public Floor() {}
 
-    Floor(Floor other) {
+    public Floor(Floor other) {
         upButtonPressed.set(other.upButtonPressed.get());
         downButtonPressed.set(other.downButtonPressed.get());
     }
