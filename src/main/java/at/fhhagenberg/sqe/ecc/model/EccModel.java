@@ -20,19 +20,19 @@ public class EccModel {
     }
 
     public EccModel(EccModel other) {
-        var elevators = new ArrayList<Elevator>();
+        var elevatorList = new ArrayList<Elevator>();
         for (var elev : other.elevators.get()) {
-            elevators.add(new Elevator(elev));
+            elevatorList.add(new Elevator(elev));
         }
 
-        this.elevators.set(elevators);
+        this.elevators.set(elevatorList);
 
-        var floors = new ArrayList<Floor>();
+        var floorList = new ArrayList<Floor>();
         for (var floor : other.floors.get()) {
-            floors.add(new Floor(floor));
+            floorList.add(new Floor(floor));
         }
 
-        this.floors.set(floors);
+        this.floors.set(floorList);
     }
 
     public Elevator getElevator(int elevatorNumber) { return elevators.get().get(elevatorNumber); }

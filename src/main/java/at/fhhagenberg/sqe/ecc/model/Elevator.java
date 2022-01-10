@@ -125,6 +125,7 @@ public class Elevator {
     public Elevator(Elevator other) {
         maxPassengers = other.maxPassengers;
         floors = other.floors;
+
         direction.set(other.direction.get());
         speed.set(other.speed.get());
         acceleration.set(other.acceleration.get());
@@ -133,9 +134,10 @@ public class Elevator {
         position.set(other.position.get());
         currentPassengerWeight.set(other.currentPassengerWeight.get());
         targetFloor.set(other.targetFloor.get());
-        var buttonsPressed = new ArrayList<Boolean>(floors);
-        buttonsPressed.addAll(other.buttonsPressed.get());
-        this.buttonsPressed.set(buttonsPressed);
+
+        var buttonList = new ArrayList<Boolean>(floors);
+        buttonList.addAll(other.buttonsPressed.get());
+        this.buttonsPressed.set(buttonList);
     }
 
     // other getters/setters
