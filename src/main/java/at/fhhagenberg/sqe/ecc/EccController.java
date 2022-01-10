@@ -3,7 +3,6 @@ package at.fhhagenberg.sqe.ecc;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import at.fhhagenberg.sqe.ecc.model.EccModelFactory;
 import at.fhhagenberg.sqe.ecc.model.EccModelUpdater;
-import javafx.scene.Parent;
 import sqelevator.IElevator;
 
 import java.net.MalformedURLException;
@@ -15,17 +14,14 @@ import java.util.concurrent.TimeUnit;
 
 public class EccController {
 
-    private EccLayout view;
     private EccModel model;
-    private IElevatorController wrapper;
+    private ElevatorWrapper wrapper;
     private EccModelUpdater updater;
-    ScheduledThreadPoolExecutor scheduledExecutor;
 
     public boolean init()
     {
         try {
-            IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
-            wrapper = new ElevatorController(controller);
+            connect();
             createModel();
             updater = new EccModelUpdater(wrapper, model);
             scheduleModelUpdater();
@@ -41,20 +37,24 @@ public class EccController {
         return false;
     }
 
-    public void createModel()
+    public void reconnect() throws MalformedURLException, NotBoundException, RemoteException {
+        IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+        wrapper.setElevatorCenter(controller);
+    }
+
+    private void connect() throws MalformedURLException, NotBoundException, RemoteException {
+        IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+        wrapper = new ElevatorWrapper(controller);
+    }
+
+    private void createModel()
     {
         model = new EccModelFactory(wrapper).createModel();
     }
 
-    public Parent createView()
+    private void scheduleModelUpdater()
     {
-        view = new EccLayout(model);
-        return view;
-    }
-
-    public void scheduleModelUpdater()
-    {
-        scheduledExecutor = new ScheduledThreadPoolExecutor(1);
+        ScheduledThreadPoolExecutor scheduledExecutor = new ScheduledThreadPoolExecutor(1);
         scheduledExecutor.scheduleAtFixedRate(() -> updater.updateModel(), 500, 500, TimeUnit.MILLISECONDS);
     }
 }
