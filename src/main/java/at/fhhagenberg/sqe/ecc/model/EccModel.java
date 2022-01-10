@@ -1,5 +1,6 @@
 package at.fhhagenberg.sqe.ecc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EccModel {
@@ -10,6 +11,18 @@ public class EccModel {
     {
         this.elevators = elevators;
         this.floors = floors;
+    }
+
+    public EccModel(EccModel other) {
+        elevators = new ArrayList<>();
+        for (var elev : other.elevators) {
+            elevators.add(new Elevator(elev));
+        }
+
+        floors = new ArrayList<>();
+        for (var floor : floors) {
+            floors.add(new Floor(floor));
+        }
     }
 
     public Elevator getElevator(int elevatorNumber)
@@ -27,8 +40,7 @@ public class EccModel {
         return elevators.size();
     }
 
-    public int getNumberOfFloors()
-    {
+    public int getNumberOfFloors() {
         return floors.size();
     }
 }

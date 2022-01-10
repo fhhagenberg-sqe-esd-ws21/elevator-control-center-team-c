@@ -4,6 +4,13 @@ public class Floor {
     private boolean upButtonPressed;
     private boolean downButtonPressed;
 
+    Floor() {}
+
+    Floor(Floor other) {
+        upButtonPressed = other.upButtonPressed;
+        downButtonPressed = other.downButtonPressed;
+    }
+
     public boolean isUpButtonPressed() {
         return upButtonPressed;
     }

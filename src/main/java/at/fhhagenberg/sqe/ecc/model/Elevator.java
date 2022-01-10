@@ -40,6 +40,21 @@ public class Elevator {
         }
     }
 
+    public Elevator(Elevator other) {
+        maxPassengers = other.maxPassengers;
+        floors = other.floors;
+        direction = other.direction;
+        speed = other.speed;
+        acceleration = other.acceleration;
+        doorState = other.doorState;
+        currentFloor = other.currentFloor;
+        position = other.position;
+        currentPassengerWeight = other.currentPassengerWeight;
+        targetFloor = other.targetFloor;
+        buttonPressed = new ArrayList<>(floors);
+        buttonPressed.addAll(other.buttonPressed);
+    }
+
     public boolean isButtonPressed(int floor)
     {
         return buttonPressed.get(floor);
