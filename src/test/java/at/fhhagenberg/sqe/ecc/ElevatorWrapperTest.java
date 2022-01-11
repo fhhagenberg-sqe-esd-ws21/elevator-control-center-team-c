@@ -18,6 +18,8 @@ class ElevatorWrapperTest {
 
     @Mock
     private IElevator mockedIElevator;
+    @Mock
+    private IElevator replacementIElevator;
 
     private ElevatorWrapper elevatorWrapper;
 
@@ -26,6 +28,17 @@ class ElevatorWrapperTest {
     @BeforeEach
     void Setup(){
         elevatorWrapper = new ElevatorWrapper(mockedIElevator);
+    }
+
+    @Test
+    void testSetElevatorCenter() throws RemoteException
+    {
+        when(mockedIElevator.getClockTick()).thenReturn(4711L);
+        when(replacementIElevator.getClockTick()).thenReturn(4712L);
+
+        assertEquals(4711, elevatorWrapper.getClockTick());
+        elevatorWrapper.setElevatorCenter(replacementIElevator);
+        assertEquals(4712, elevatorWrapper.getClockTick());
     }
 
     @Test

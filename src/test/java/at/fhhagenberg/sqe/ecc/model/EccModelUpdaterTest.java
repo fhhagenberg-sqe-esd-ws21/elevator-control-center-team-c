@@ -3,12 +3,17 @@ package at.fhhagenberg.sqe.ecc.model;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,12 +22,11 @@ class EccModelUpdaterTest {
 
     @Mock
     private IElevatorWrapper controller;
-    @Mock
-    private EccModel model;
-    @Mock
+
     private Elevator elev;
-    @Mock
     private Floor floor;
+
+    private EccModel model;
 
     @BeforeEach
     void setup() {
@@ -38,32 +42,29 @@ class EccModelUpdaterTest {
         when(controller.getFloorButtonDown(0)).thenReturn(false, false);
         when(controller.getFloorButtonUp(0)).thenReturn(true, false);
 
-        when(model.getNumberOfElevators()).thenReturn(1);
-        when(model.getNumberOfFloors()).thenReturn(1);
-        when(model.getElevator(0)).thenReturn(elev);
-        when(model.getFloor(0)).thenReturn(floor);
+        elev = new Elevator(1, 3);
+        floor = new Floor();
+
+        model = new EccModel(Stream.of(elev).collect(Collectors.toList()), Stream.of(floor).collect(Collectors.toList()));
     }
 
     @Test
     void testSingleUpdate() {
-        var updater = new EccModelUpdater(controller, model);
+        var updater = new SynchronousEccModelUpdater(controller, model);
 
         updater.updateModel();
 
-        verify(model).getElevator(0);
-        verify(model).getFloor(0);
+        assertEquals(CommittedDirection.DOWN, elev.getDirection());
+        assertEquals(2.0, elev.getAcceleration());
+        assertFalse(elev.isButtonPressed(0));
+        assertEquals(DoorState.OPEN, elev.getDoorState());
+        assertEquals(0, elev.getCurrentFloor());
+        assertEquals(1.0, elev.getPosition());
+        assertEquals(3.0, elev.getSpeed());
+        assertEquals(140.3, elev.getCurrentPassengerWeight());
+        assertEquals(0, elev.getTargetFloor());
 
-        verify(elev).setDirection(CommittedDirection.DOWN);
-        verify(elev).setAcceleration(2.0);
-        verify(elev).setButtonPressed(0, false);
-        verify(elev).setDoorState(DoorState.OPEN);
-        verify(elev).setCurrentFloor(0);
-        verify(elev).setPosition(1.0);
-        verify(elev).setSpeed(3.0);
-        verify(elev).setCurrentPassengerWeight(140.3);
-        verify(elev).setTargetFloor(0);
-
-        verify(floor).setDownButtonPressed(false);
-        verify(floor).setUpButtonPressed(true);
+        assertFalse(floor.isDownButtonPressed());
+        assertTrue(floor.isUpButtonPressed());
     }
 }
