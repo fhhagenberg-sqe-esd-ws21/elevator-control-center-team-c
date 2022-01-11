@@ -10,12 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sqelevator.IElevator;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,11 +29,19 @@ public class EccControllerTest {
     @Mock
     IElevatorWrapper wrapper;
 
-    EccControllerInjectIElevator controller;
+    EccControllerTestable controller;
 
     @BeforeEach
     void setup() {
-        controller = new EccControllerInjectIElevator();
+        controller = new EccControllerTestable();
+    }
+
+    @Test
+    void testUpdatePeriod() {
+        assertEquals(500, controller.getUpdatePeriod());
+
+        controller.setUpdatePeriod(4711);
+        assertEquals(4711, controller.getUpdatePeriod());
     }
 
     @Test
@@ -55,7 +62,7 @@ public class EccControllerTest {
 
     @Test
     void testCreateMethod_withoutWrapper() {
-        assertThrows(RuntimeException.class, controller::createModel);
+        assertThrows(IllegalStateException.class, controller::createModel);
     }
 
     @Test
@@ -70,20 +77,21 @@ public class EccControllerTest {
 
         model = new EccModel(Stream.of(elev).collect(Collectors.toList()), Stream.of(floor).collect(Collectors.toList()));
         controller.setWrapper(wrapper);
+        controller.setUpdatePeriod(50);
 
         var future = controller.scheduleModelUpdater(model);
-        Thread.sleep(future.getDelay(TimeUnit.MILLISECONDS) + 50);
+        Thread.sleep(future.getDelay(TimeUnit.MILLISECONDS) + 10);
 
         assertEquals(DoorState.OPENING, model.getElevator(0).getDoorState());
     }
 
-//    @Test
-//    void testScheduleModelUpdater_withoutWrapper() {
-//        EccModel model;
-//        assertThrows(RuntimeException.class, () -> controller.scheduleModelUpdater(model));
-//    }
+    @Test
+    void testScheduleModelUpdater_withoutWrapper() {
+        EccModel model = new EccModel(new ArrayList<Elevator>(), new ArrayList<Floor>());
+        assertThrows(IllegalStateException.class, () -> controller.scheduleModelUpdater(model));
+    }
 
-    static class EccControllerInjectIElevator extends EccController {
+    static class EccControllerTestable extends EccController {
         public void setWrapper(IElevatorWrapper wrapper) {
             this.wrapper = wrapper;
         }

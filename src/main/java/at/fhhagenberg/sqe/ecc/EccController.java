@@ -19,7 +19,15 @@ public class EccController {
     protected EccModelUpdater updater;
     ScheduledThreadPoolExecutor scheduledExecutor;
 
-    private final long UpdatePeriod = 500;
+    private long updatePeriod = 500;
+
+    public long getUpdatePeriod() {
+        return updatePeriod;
+    }
+
+    public void setUpdatePeriod(long updatePeriod) {
+        this.updatePeriod = updatePeriod;
+    }
 
     public boolean connect() {
         try {
@@ -38,7 +46,7 @@ public class EccController {
 
     public EccModel createModel() {
         if (wrapper == null) {
-            throw new RuntimeException("Not connected");
+            throw new IllegalStateException("Not connected: wrapper is not set.");
         }
 
         return new EccModelFactory(wrapper).createModel();
@@ -50,15 +58,11 @@ public class EccController {
 
     public ScheduledFuture<?> scheduleModelUpdater(EccModel model) {
         if (wrapper == null) {
-            throw new RuntimeException("Not connected");
+            throw new IllegalStateException("Not connected: wrapper is not set.");
         }
 
         createUpdater(model);
         scheduledExecutor = new ScheduledThreadPoolExecutor(1);
-        return scheduledExecutor.scheduleAtFixedRate(() -> updater.updateModel(), UpdatePeriod, UpdatePeriod, TimeUnit.MILLISECONDS);
-    }
-
-    public void cancelUpdater() {
-        scheduledExecutor.shutdown();
+        return scheduledExecutor.scheduleAtFixedRate(() -> updater.updateModel(), updatePeriod, updatePeriod, TimeUnit.MILLISECONDS);
     }
 }
