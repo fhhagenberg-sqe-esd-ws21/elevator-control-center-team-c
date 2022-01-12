@@ -165,8 +165,8 @@ class ElevatorTest {
         var currFloorProp = new SimpleIntegerProperty();
         currFloorProp.bind(elev.currentFloorProperty());
 
-        elev.setCurrentFloor(3);
-        assertEquals(3, currFloorProp.get());
+        elev.setCurrentFloor(2);
+        assertEquals(2, currFloorProp.get());
     }
 
     @Test
