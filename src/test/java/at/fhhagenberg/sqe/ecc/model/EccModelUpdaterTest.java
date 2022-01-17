@@ -3,13 +3,13 @@ package at.fhhagenberg.sqe.ecc.model;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,10 +26,14 @@ class EccModelUpdaterTest {
     private Elevator elev;
     private Floor floor;
 
-    private EccModel model;
-
     @BeforeEach
     void setup() {
+        elev = new Elevator(1, 3);
+        floor = new Floor();
+    }
+
+    @Test
+    void testUpdate() {
         when(controller.getCommittedDirection(0)).thenReturn(CommittedDirection.DOWN, CommittedDirection.UP);
         when(controller.getElevatorAccel(0)).thenReturn(2.0, 3.0);
         when(controller.getElevatorButton(0,0)).thenReturn(false, true);
@@ -42,14 +46,7 @@ class EccModelUpdaterTest {
         when(controller.getFloorButtonDown(0)).thenReturn(false, false);
         when(controller.getFloorButtonUp(0)).thenReturn(true, false);
 
-        elev = new Elevator(1, 3);
-        floor = new Floor();
-
-        model = new EccModel(Stream.of(elev).collect(Collectors.toList()), Stream.of(floor).collect(Collectors.toList()));
-    }
-
-    @Test
-    void testSingleUpdate() {
+        var model = new EccModel(Stream.of(elev).collect(Collectors.toList()), Stream.of(floor).collect(Collectors.toList()));
         var updater = new SynchronousEccModelUpdater(controller, model);
 
         updater.updateModel();
@@ -63,6 +60,36 @@ class EccModelUpdaterTest {
         assertEquals(3.0, elev.getSpeed());
         assertEquals(140.3, elev.getCurrentPassengerWeight());
         assertEquals(0, elev.getTargetFloor());
+
+        assertFalse(floor.isDownButtonPressed());
+        assertTrue(floor.isUpButtonPressed());
+    }
+
+    // A model without elevators is possible but pointless
+
+    @Test
+    void testUpdate_withoutElevators() {
+        when(controller.getFloorButtonDown(0)).thenReturn(false, false);
+        when(controller.getFloorButtonUp(0)).thenReturn(true, false);
+
+        var model = new EccModel(new ArrayList<>(), Stream.of(floor).collect(Collectors.toList()));
+        var updater = new SynchronousEccModelUpdater(controller, model);
+
+        updater.updateModel();
+
+        assertFalse(floor.isDownButtonPressed());
+        assertTrue(floor.isUpButtonPressed());
+    }
+
+    @Test
+    void testUpdate_withoutFloors() {
+        when(controller.getFloorButtonDown(0)).thenReturn(false, false);
+        when(controller.getFloorButtonUp(0)).thenReturn(true, false);
+
+        var model = new EccModel(new ArrayList<>(), Stream.of(floor).collect(Collectors.toList()));
+        var updater = new SynchronousEccModelUpdater(controller, model);
+
+        updater.updateModel();
 
         assertFalse(floor.isDownButtonPressed());
         assertTrue(floor.isUpButtonPressed());
