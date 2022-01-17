@@ -1,31 +1,21 @@
 package at.fhhagenberg.sqe.ecc;
 
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
-import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import at.fhhagenberg.sqe.ecc.model.Elevator;
 import at.fhhagenberg.sqe.ecc.model.Floor;
-import at.fhhagenberg.sqe.ecc.model.SynchronousEccModelUpdater;
-import org.awaitility.Awaitility;
-import org.awaitility.core.ConditionTimeoutException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.awaitility.Awaitility.await;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,6 +29,15 @@ class EccControllerTest {
     @BeforeEach
     void setup() {
         controller = new TestableEccController();
+    }
+
+    @Test
+    void testGetSetModel() {
+        assertNull(controller.getModel());
+
+        var model = new EccModel(new ArrayList<>(), new ArrayList<>());
+        controller.setModel(model);
+        assertEquals(model, controller.getModel());
     }
 
     @Test
