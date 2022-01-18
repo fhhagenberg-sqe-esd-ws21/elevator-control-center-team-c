@@ -2,6 +2,8 @@ package at.fhhagenberg.sqe.ecc.gui;
 
 
 import java.util.ArrayList;
+
+import at.fhhagenberg.sqe.ecc.EccController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxAssert;
@@ -40,9 +42,10 @@ class EccGuiLayoutTest {
         	floors.add(new Floor());
         }
         model = new EccModel(elevators, floors);
+		var controller = new EccController();
         
 		// init gui with model
-		layout = new EccGuiLayout(model);
+		layout = new EccGuiLayout(model, controller);
 		stage.setWidth(700);
 	    stage.setHeight(500);
 		stage.setScene(layout.getScene());
