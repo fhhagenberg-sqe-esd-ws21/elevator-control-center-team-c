@@ -4,10 +4,15 @@ import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 public class EccAutomaticMode implements Runnable {
 
     private final EccModel model;
     private final BooleanProperty automaticModeRunning = new SimpleBooleanProperty();
+    private ScheduledThreadPoolExecutor scheduledExecutor;
 
     public BooleanProperty getAutomaticModeRunningProperty(){
         return automaticModeRunning;
@@ -24,11 +29,7 @@ public class EccAutomaticMode implements Runnable {
     public void StopAutomaticMode(){
         automaticModeRunning.setValue(false);
     }
-
-    public void StartAutomaticMode(){
-        automaticModeRunning.setValue(true);
-        run();
-    }
+    public void StartAutomaticMode(){ automaticModeRunning.setValue(true); }
 
     // get next stop request in current direction
     // if no stop in current direction, returns next stop in other direction
@@ -135,10 +136,9 @@ public class EccAutomaticMode implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
+    private void RunAutomatic(){
         int numElevators = model.getNumberOfElevators();
-        while(automaticModeRunning.getValue()){
+        if(automaticModeRunning.getValue()){
             for(int i = 0; i < numElevators; i++){
                 Elevator currElev = model.getElevator(i);
                 int currFloor = currElev.getCurrentFloor();
@@ -233,5 +233,19 @@ public class EccAutomaticMode implements Runnable {
                 }
             }
         }
+    }
+
+    public ScheduledFuture<?> Run(){
+        ScheduledThreadPoolExecutor scheduledExecutor;
+        long updatePeriod = 100;
+
+        scheduledExecutor = new ScheduledThreadPoolExecutor(1);
+        return scheduledExecutor.scheduleAtFixedRate(this::RunAutomatic, updatePeriod, updatePeriod, TimeUnit.MILLISECONDS);
+
+    }
+
+    @Override
+    public void run() {
+        Run();
     }
 }
