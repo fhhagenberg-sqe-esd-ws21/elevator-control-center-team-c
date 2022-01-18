@@ -22,7 +22,7 @@ public class Elevator {
     private final DoubleProperty position = new SimpleDoubleProperty();
     private final DoubleProperty currentPassengerWeight = new SimpleDoubleProperty();
     private final IntegerProperty targetFloor = new SimpleIntegerProperty();
-    private final ObjectProperty<List<Boolean>> buttonsPressed = new SimpleObjectProperty<>();
+    private final ObjectProperty<List<BooleanProperty>> buttonsPressed = new SimpleObjectProperty<>();
 
 
     // Setters and Getters (property based)
@@ -97,9 +97,10 @@ public class Elevator {
     }
     public IntegerProperty targetFloorProperty() { return targetFloor; }
 
-    public boolean isButtonPressed(int floor) { return buttonsPressed.get().get(floor); }
-    public void setButtonPressed(int floor, boolean value) { buttonsPressed.get().set(floor, value); }
-    public ObjectProperty<List<Boolean>> buttonsPressedProperty() { return buttonsPressed; }
+    public boolean isButtonPressed(int floor) { return buttonsPressed.get().get(floor).get(); }
+    public void setButtonPressed(int floor, boolean value) { buttonsPressed.get().get(floor).set(value); }
+    public BooleanProperty buttonPressedProperty(int floor) { return buttonsPressed.get().get(floor); }
+    public ObjectProperty<List<BooleanProperty>> buttonsPressedProperty() { return buttonsPressed; }
 
 
     // constructor
@@ -118,7 +119,7 @@ public class Elevator {
 
         buttonsPressed.set(new ArrayList<>(floors));
         for (int i = 0; i < floors; i++) {
-            buttonsPressed.get().add(false);
+            buttonsPressed.get().add(new SimpleBooleanProperty());
         }
     }
 

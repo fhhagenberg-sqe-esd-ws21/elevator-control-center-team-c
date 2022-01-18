@@ -47,7 +47,7 @@ public class App extends Application{
 		var layout = new EccGuiLayout(model);
 		stage.setScene(layout.getScene());
 	    stage.show();
-	    stage.close();
+	    //stage.close();
         
         
 	}

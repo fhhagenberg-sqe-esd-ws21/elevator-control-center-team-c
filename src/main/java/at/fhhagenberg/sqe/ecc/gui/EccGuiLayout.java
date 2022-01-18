@@ -140,8 +140,12 @@ public class EccGuiLayout {
 	 		// indirect binding via custom changed listeners
 	 		model.getElevator(i).currentFloorProperty().addListener((observable, oldValue, newValue) -> positionHandler());
 	 		model.getElevator(i).targetFloorProperty().addListener((observable, oldValue, newValue) -> positionHandler());
-	 		model.getElevator(i).buttonsPressedProperty().addListener((observable, oldValue, newValue) -> stopHandler());
 	 		model.getElevator(i).doorStateProperty().addListener((observable, oldValue, newValue) -> doorHandler());
+
+			 for (int f = 0; f < floorCnt; f++)
+			 {
+				 model.getElevator(i).buttonPressedProperty(f).addListener((observable, oldValue, newValue) -> stopHandler());
+			 }
  		}
  		for(int i = 0; i < floorCnt; i++)
  		{
