@@ -4,19 +4,23 @@ import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class EccAutomaticModelTest {
-    @Mock
-    private EccModel model;
 
+    private EccModel model;
     private EccAutomaticMode automaticMode;
 
     @BeforeEach
     void Setup(){
+        Elevator elev = new Elevator(3, 5);
+        Floor floor = new Floor();
+        model = new EccModel(Stream.of(elev).collect(Collectors.toList()), Stream.of(floor).collect(Collectors.toList()));
         automaticMode = new EccAutomaticMode(model);
     }
 
