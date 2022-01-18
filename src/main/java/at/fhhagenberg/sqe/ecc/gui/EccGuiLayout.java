@@ -351,7 +351,6 @@ public class EccGuiLayout {
 				positions.get(j).get(i).setStyle(styleArr[rowIdx%2]);
 				grid.add(positions.get(j).get(i), colIdx++, rowIdx);
 				positions.get(j).get(i).setPrefWidth(100);
-				//positions.get(j).get(i).setOnAction(newTargetEvent(i, j));
 				
 				stops.get(j).get(i).setStyle(styleArr[rowIdx%2]);
 				grid.add(stops.get(j).get(i), colIdx++, rowIdx);
