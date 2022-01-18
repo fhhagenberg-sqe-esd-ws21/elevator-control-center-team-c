@@ -2,12 +2,8 @@ package at.fhhagenberg.sqe.ecc.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -15,11 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 
 
-public class EccGuiLayout {
-	
+public class EccGuiLayout {	
 
 	 private EccModel model;
      
@@ -27,14 +21,14 @@ public class EccGuiLayout {
      private int floorCnt;
      
      // gui elements
-     private List<TextField> calls = new ArrayList<TextField>();
-     private List<List<Button>> positions = new ArrayList<List<Button>>();
-     private List<List<TextField>> stops = new ArrayList<List<TextField>>();
+     private List<TextField> calls = new ArrayList<>();
+     private List<List<Button>> positions = new ArrayList<>();
+     private List<List<TextField>> stops = new ArrayList<>();
 
-     private List<TextField> loads = new ArrayList<TextField>();
-     private List<TextField> speeds = new ArrayList<TextField>();
-     private List<TextField> doors = new ArrayList<TextField>();
-     private List<Button> modes = new ArrayList<Button>();
+     private List<TextField> loads = new ArrayList<>();
+     private List<TextField> speeds = new ArrayList<>();
+     private List<TextField> doors = new ArrayList<>();
+     private List<Button> modes = new ArrayList<>();
      
      // style sheet
      private String defaultStyle = "-fx-background-color: #FFFFFF; -fx-border-radius: 0; -fx-font: 14pt \"Calibri\"; -fx-alignment: CENTER; -fx-border-style: solid;";
@@ -52,7 +46,8 @@ public class EccGuiLayout {
      private String smallArrowDownGrayStyle = "-fx-background-image: url(\"small_arrow_down_gray.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
      private String smallArrowUpDownGrayStyle = "-fx-background-image: url(\"small_arrow_up_down_gray.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
      
-     
+     private String manualStr = "Manual";
+	 private String autoStr = "Automatic";
 	
      
 	public EccGuiLayout(EccModel eccModel)
@@ -74,34 +69,33 @@ public class EccGuiLayout {
  			doors.add(new TextField());
  			
  			// button for mode with event handler
- 			var btn = new Button("Manual");
+ 			var btn = new Button(manualStr);
  			final Integer elev = Integer.valueOf(i);
-			btn.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
-	 		    @Override public void handle(ActionEvent e) {
-	 				if(btn.getText() == "Manual")
-	 				{
-	 					btn.setText("Automatic");
-	 		 			btn.setStyle(darkGrayStyle);
-	 		 			// disable manual target selection
-	 		 			for(var pos : positions.get(elev))
-	 		 			{
-	 		 				pos.setDisable(true);
-	 		 				pos.setOpacity(1);	 		 				
-	 		 			}
-	 		 			// TODO: start automatic mode	 		 				 		 			
-	 				}
-	 				else
-	 				{
-	 					btn.setText("Manual");
-	 		 			btn.setStyle(defaultStyle);
-	 		 			// enable manual target selection
-	 		 			for(var pos : positions.get(elev))
-	 		 			{
-	 		 				pos.setDisable(false);		 				
-	 		 			}
-	 		 			//TODO: stop automatic mode	 					
-	 				}
-	 		    }
+			btn.setOnAction(event -> 
+			{
+ 				if(btn.getText().equals(manualStr))
+ 				{
+ 					btn.setText(autoStr);
+ 		 			btn.setStyle(darkGrayStyle);
+ 		 			// disable manual target selection
+ 		 			for(var pos : positions.get(elev))
+ 		 			{
+ 		 				pos.setDisable(true);
+ 		 				pos.setOpacity(1);	 		 				
+ 		 			}
+ 		 			// TODO: start automatic mode	 		 				 		 			
+ 				}
+ 				else
+ 				{
+ 					btn.setText(manualStr);
+ 		 			btn.setStyle(defaultStyle);
+ 		 			// enable manual target selection
+ 		 			for(var pos : positions.get(elev))
+ 		 			{
+ 		 				pos.setDisable(false);		 				
+ 		 			}
+ 		 			//TODO: stop automatic mode	 					
+ 				}
 	 		});
  			modes.add(btn);
  			
@@ -109,8 +103,8 @@ public class EccGuiLayout {
  		// per elevator and floor
  		for(int i = 0; i < elevCnt; i++)
  		{
- 			positions.add(new ArrayList<Button>());
- 			stops.add(new ArrayList<TextField>());
+ 			positions.add(new ArrayList<>());
+ 			stops.add(new ArrayList<>());
  			for(int j = 0; j < floorCnt; j++)
  	 		{
  				stops.get(i).add(new TextField());
@@ -119,10 +113,9 @@ public class EccGuiLayout {
  				// event handler for each button
 				final Integer elev = Integer.valueOf(i);
  		    	final Integer floor = Integer.valueOf(j);
- 				btn.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
- 		 		    @Override public void handle(ActionEvent e) {
- 		 				model.getElevator(elev).setTargetFloor(floor);
- 		 		    }
+ 				btn.setOnAction(event ->
+ 				{
+ 		 			model.getElevator(elev).setTargetFloor(floor);
  		 		});
  				positions.get(i).add(btn);
  	 		} 			
@@ -234,8 +227,7 @@ public class EccGuiLayout {
 				 default:
 					break;    			 
     		 }
-    	 }
-    	 
+    	 }    	 
 	 }
      private void callHandler()
 	 {
@@ -338,25 +330,31 @@ public class EccGuiLayout {
 		}
 		
 		// add row for each floor
-		String styleArr[] = {defaultStyle, lightGrayStyle};
+		String[] styleArr = {defaultStyle, lightGrayStyle};
 		for(int i = floorCnt-1; i >=0; i--)
 		{
 			int colIdx = 0;
 			int rowIdx = floorCnt - i + 2;
 			var floorNr = new TextField("" + i);
 			floorNr.setStyle(styleArr[rowIdx%2]);
+			floorNr.setEditable(false);
 			
 			grid.add(floorNr, colIdx++, rowIdx);
 			calls.get(i).setStyle(styleArr[rowIdx%2]);
+			calls.get(i).setEditable(false);
+			calls.get(i).setId("calls" + i);
 			grid.add(calls.get(i), colIdx++, rowIdx);
 			
 			for(int j = 0; j < elevCnt; j++)
 			{
 				positions.get(j).get(i).setStyle(styleArr[rowIdx%2]);
-				grid.add(positions.get(j).get(i), colIdx++, rowIdx);
 				positions.get(j).get(i).setPrefWidth(100);
+				positions.get(j).get(i).setId("position_e" + j + "_f" + i);
+				grid.add(positions.get(j).get(i), colIdx++, rowIdx);				
 				
 				stops.get(j).get(i).setStyle(styleArr[rowIdx%2]);
+				stops.get(j).get(i).setEditable(false);
+				stops.get(j).get(i).setId("stop_e" + j + "_f" + i);
 				grid.add(stops.get(j).get(i), colIdx++, rowIdx);
 			}
 		}
@@ -373,19 +371,23 @@ public class EccGuiLayout {
 		
 		int rowIdx = floorCnt+3;
 		
-		loadHeading.setStyle(styleArr[rowIdx%2]);		
+		loadHeading.setStyle(styleArr[rowIdx%2]);	
+		loadHeading.setEditable(false);
 		grid.add(loadHeading, 0, rowIdx++);
 		GridPane.setColumnSpan(loadHeading, 2);
 		
 		speedHeading.setStyle(styleArr[rowIdx%2]);
+		speedHeading.setEditable(false);
 		grid.add(speedHeading, 0, rowIdx++);
 		GridPane.setColumnSpan(speedHeading, 2);
 		
 		doorsHeading.setStyle(styleArr[rowIdx%2]);
+		doorsHeading.setEditable(false);
 		grid.add(doorsHeading, 0, rowIdx++);
 		GridPane.setColumnSpan(doorsHeading, 2);
 		
 		modeHeading.setStyle(styleArr[rowIdx%2]);
+		modeHeading.setEditable(false);
 		grid.add(modeHeading, 0, rowIdx);
 		GridPane.setColumnSpan(modeHeading, 2);
 		
@@ -410,40 +412,19 @@ public class EccGuiLayout {
 			GridPane.setColumnSpan(doors.get(i), 2);
 
 			modes.get(i).setStyle(styleArr[rowIdx%2]);
+			modes.get(i).setPrefWidth(165);
+			modes.get(i).setId("mode" + i);
 			grid.add(modes.get(i), colIdx, rowIdx);
 			GridPane.setColumnSpan(modes.get(i), 2);
-			modes.get(i).setPrefWidth(165);
 		}
-		
-		// change model for test coverage
-		model.getElevator(0).setCurrentFloor(0);
-    	model.getElevator(0).setTargetFloor(0);
- 		model.getElevator(0).setButtonPressed(0, true);
- 		model.getElevator(0).setDoorState(DoorState.CLOSED);
- 		model.getElevator(0).setDoorState(DoorState.OPENING);
- 		model.getElevator(0).setDoorState(DoorState.OPEN);
- 		model.getElevator(0).setDoorState(DoorState.CLOSING);
- 		model.getFloor(0).setDownButtonPressed(true);
- 		model.getFloor(0).setUpButtonPressed(true);
- 		model.getFloor(0).setDownButtonPressed(false);
- 		model.getFloor(0).setUpButtonPressed(false);
- 		model.getFloor(1).setDownButtonPressed(true);
- 		model.getFloor(1).setUpButtonPressed(true);
- 		model.getFloor(1).setDownButtonPressed(false);
- 		model.getFloor(1).setUpButtonPressed(false);
- 		model.getElevator(0).setButtonPressed(0, false);
- 		model.getElevator(0).setButtonPressed(1, true);
- 		model.getElevator(0).setSpeed(4711);
- 		positions.get(0).get(0).fire();
- 		positions.get(0).get(1).fire();
- 		modes.get(0).fire();
- 		modes.get(0).fire();
+		// refresh to show initial state
+		positionHandler();
+		stopHandler();
+		callHandler();
+		doorHandler();
 
-		
-		final VBox vbox = new VBox();
-		vbox.setPadding(new Insets(10, 0, 0, 10));
-		vbox.getChildren().addAll(grid);		
-		((Group) scene.getRoot()).getChildren().addAll(vbox);
+		grid.setPadding(new Insets(10, 0, 0, 10));	
+		((Group) scene.getRoot()).getChildren().add(grid);
 		
 		return scene;
 	 }
