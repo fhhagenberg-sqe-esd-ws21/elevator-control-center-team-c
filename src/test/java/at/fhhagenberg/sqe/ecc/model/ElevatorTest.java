@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqe.ecc.model;
 
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -198,10 +199,10 @@ class ElevatorTest {
 
     @Test
     void testButtonsPressed(){
-        var buttonsProp = new SimpleObjectProperty<List<Boolean>>();
+        var buttonsProp = new SimpleObjectProperty<List<BooleanProperty>>();
         buttonsProp.bind(elev.buttonsPressedProperty());
 
         elev.setButtonPressed(1, true);
-        assertTrue(buttonsProp.get().get(1));
+        assertTrue(buttonsProp.get().get(1).get());
     }
 }

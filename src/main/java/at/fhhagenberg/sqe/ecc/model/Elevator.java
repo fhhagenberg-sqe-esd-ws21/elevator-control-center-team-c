@@ -14,10 +14,10 @@ public class Elevator {
     private final int floors;
 
     // dynamic parameters
-    private final ObjectProperty<CommittedDirection> direction = new SimpleObjectProperty<>();
+    private final ObjectProperty<CommittedDirection> direction = new SimpleObjectProperty<>(CommittedDirection.UNCOMMITTED);
     private final DoubleProperty speed = new SimpleDoubleProperty();
     private final DoubleProperty acceleration = new SimpleDoubleProperty();
-    private final ObjectProperty<DoorState> doorState = new SimpleObjectProperty<>();
+    private final ObjectProperty<DoorState> doorState = new SimpleObjectProperty<>(DoorState.CLOSED);
     private final IntegerProperty currentFloor = new SimpleIntegerProperty();
     private final DoubleProperty position = new SimpleDoubleProperty();
     private final DoubleProperty currentPassengerWeight = new SimpleDoubleProperty();
@@ -136,7 +136,7 @@ public class Elevator {
         currentPassengerWeight.set(other.currentPassengerWeight.get());
         targetFloor.set(other.targetFloor.get());
 
-        var buttonList = new ArrayList<Boolean>(floors);
+        var buttonList = new ArrayList<BooleanProperty>(floors);
         buttonList.addAll(other.buttonsPressed.get());
         this.buttonsPressed.set(buttonList);
     }
