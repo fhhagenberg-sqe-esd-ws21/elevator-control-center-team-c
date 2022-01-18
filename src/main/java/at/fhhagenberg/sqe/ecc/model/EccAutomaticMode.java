@@ -12,7 +12,6 @@ public class EccAutomaticMode {
 
     private final EccModel model;
     private final BooleanProperty automaticModeRunning = new SimpleBooleanProperty();
-    private ScheduledThreadPoolExecutor scheduledExecutor;
 
     public BooleanProperty getAutomaticModeRunningProperty(){
         return automaticModeRunning;
