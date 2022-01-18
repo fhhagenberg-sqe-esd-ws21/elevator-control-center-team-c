@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.fhhagenberg.sqe.ecc.EccController;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import javafx.geometry.Insets;
@@ -118,7 +120,14 @@ public class EccGuiLayout {
  		    	final Integer floor = Integer.valueOf(j);
  				btn.setOnAction(event ->
  				{
-					 controller.setTargetFloor(elev, floor);
+					controller.setTargetFloor(elev, floor);
+					var elevator = model.getElevator(elev);
+					if (elevator.getTargetFloor() > elevator.getCurrentFloor()) {
+						controller.setCommittedDirection(elev, CommittedDirection.UP);
+					}
+					else if (elevator.getTargetFloor() < elevator.getCurrentFloor()) {
+						controller.setCommittedDirection(elev, CommittedDirection.DOWN);
+					}
  		 		});
  				positions.get(i).add(btn);
  	 		}
@@ -171,12 +180,13 @@ public class EccGuiLayout {
 	    			 positions.get(i).get(j).setStyle(lightGrayStyle);
 	    		 }
 	         }
+
 	    	 positions.get(i).get(nextFloor).setStyle(lightGreenStyle);
-	    	 if(nextFloor > currentFloor) // arrow up
+	    	 if(model.getElevator(i).getDirection() == CommittedDirection.UP) // arrow up
 	    	 {
 	    		 positions.get(i).get(currentFloor).setStyle(arrowUpStyle);
 	    	 }
-	    	 else if(nextFloor < currentFloor) // arrow down
+	    	 else if(model.getElevator(i).getDirection() == CommittedDirection.DOWN) // arrow down
 	    	 {
 	    		 positions.get(i).get(currentFloor).setStyle(arrowDownStyle);
 	    	 }
