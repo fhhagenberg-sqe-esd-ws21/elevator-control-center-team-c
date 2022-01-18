@@ -23,7 +23,7 @@ public class App extends Application{
 		
 	    // init model
 	    var elevCnt = 8;
-     	var floorCnt = 12;
+     	var floorCnt = 11;
      	var elevators = new ArrayList<Elevator>();
     	for(int i = 0; i < elevCnt; i++)
         {

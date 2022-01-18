@@ -88,7 +88,7 @@ public class EccGuiLayout {
  				else
  				{
  					btn.setText(manualStr);
- 		 			btn.setStyle(defaultStyle);
+ 		 			btn.setStyle(lightGrayStyle);
  		 			// enable manual target selection
  		 			for(var pos : positions.get(elev))
  		 			{
@@ -159,7 +159,7 @@ public class EccGuiLayout {
 	    	 for(int j = 0; j < floorCnt; j++)
 	         {
 	    		 // reset
-	    		 if(j%2==0) // white background for even rows
+	    		 if((floorCnt-j)%2==0) // white background for even rows
 		    	 {
 	    			 positions.get(i).get(j).setStyle(defaultStyle);
 		    	 }
@@ -194,7 +194,7 @@ public class EccGuiLayout {
 		    	 {
 		    		 stops.get(i).get(j).setStyle(redStyle);
 		    	 }
-		    	 else if(j%2==0) // white background for even rows
+		    	 else if((floorCnt-j)%2==0) // white background for even rows
 		    	 {
 		    		 stops.get(i).get(j).setStyle(defaultStyle);
 		    	 }
@@ -235,7 +235,7 @@ public class EccGuiLayout {
     	 {
     		 var up = model.getFloor(i).isUpButtonPressed();
     		 var down = model.getFloor(i).isDownButtonPressed();
-    		 if(i%2==0) // white background for even rows
+    		 if((floorCnt-i)%2==0) // white background for even rows
     		 {
 	    		 if(up && down)
 	    		 {
@@ -411,7 +411,7 @@ public class EccGuiLayout {
 			grid.add(doors.get(i), colIdx, rowIdx++);
 			GridPane.setColumnSpan(doors.get(i), 2);
 
-			modes.get(i).setStyle(styleArr[rowIdx%2]);
+			modes.get(i).setStyle(lightGrayStyle);
 			modes.get(i).setPrefWidth(165);
 			modes.get(i).setId("mode" + i);
 			grid.add(modes.get(i), colIdx, rowIdx);

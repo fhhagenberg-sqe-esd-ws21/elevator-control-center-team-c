@@ -22,7 +22,7 @@ class EccGuiLayoutTest {
 	EccGuiLayout layout;
 	EccModel model;
 	int elevCnt = 3;
- 	int floorCnt = 4;
+ 	int floorCnt = 3;
 
     @Start
     public void start(Stage stage) throws Exception {	    
