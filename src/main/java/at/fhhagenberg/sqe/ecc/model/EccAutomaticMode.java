@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class EccAutomaticMode implements Runnable {
+public class EccAutomaticMode {
 
     private final EccModel model;
     private final BooleanProperty automaticModeRunning = new SimpleBooleanProperty();
@@ -242,10 +242,5 @@ public class EccAutomaticMode implements Runnable {
         scheduledExecutor = new ScheduledThreadPoolExecutor(1);
         return scheduledExecutor.scheduleAtFixedRate(this::RunAutomatic, updatePeriod, updatePeriod, TimeUnit.MILLISECONDS);
 
-    }
-
-    @Override
-    public void run() {
-        Run();
     }
 }
