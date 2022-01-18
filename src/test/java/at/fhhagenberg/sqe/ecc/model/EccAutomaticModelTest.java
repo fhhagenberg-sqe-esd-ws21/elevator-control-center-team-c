@@ -47,10 +47,9 @@ class EccAutomaticModelTest {
 
     @Test
     void testGetNextStopRequest(){
-        when(model.getElevator(0).getNumOfFloors()).thenReturn(model.getNumberOfFloors());
-        when(model.getElevator(0).getCurrentFloor()).thenReturn(0);
-        when(model.getElevator(0).getDirection()).thenReturn(CommittedDirection.UP);
-        when(model.getElevator(0).isButtonPressed(2)).thenReturn(true);
+        model.getElevator(0).setCurrentFloor(0);
+        model.getElevator(0).setDirection(CommittedDirection.UP);
+        model.getElevator(0).setButtonPressed(2, true);
 
         assertEquals(2, automaticMode.GetNextStopRequest(0));
     }
