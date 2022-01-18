@@ -14,18 +14,14 @@ The following requirements shall be met:
   - [x] set next target floor (only 1 can be selected) 
   - [x] committed direction gets set automatically from new target floor
 - [ ] implement automatic mode (optional)
-  - [ ] react to floor calls (outside) and stop requests (inside)
-  - [ ] consider calls, requests and maximum payload
+  - [x] react to floor calls (outside) and stop requests (inside)
+  - [ ] consider maximum payload
 
 ## GUI Mockup
 Considering the requirements, the GUI will look similar to following mockup:
 
 ![](docs/mockup_03.png)
 
-## Downloading and running the ECC
-How to download the ECC:
-
-How to use the ECC:
 
 ## Test concept and quality
 
@@ -33,9 +29,7 @@ The software quality is insured by using mock tests for each class that gets imp
 The unit tests are automatically executed on each push through gitlab actions. After executing 
 the build and tests, SonarCloud analyzes the project for bugs, vulnerabilities, security hotspots 
 and code smells. Only if the build and test was successful and the SonarCloud QualityGate was passed, a branch
-can get merged to the master. 
-
-The GUI test concept:
+can get merged to the master.
 
 We always try to keep the code smells as low as possible before 
 merging in order to keep the code on the master branch clean, which makes it 
@@ -43,7 +37,7 @@ easier to extend the code when deriving new branches from the master.
 
 ## Architectural overview
 
-Below is an overview of the code structure (without test classes).
+Below is an overview of the code structure (without test classes and automatic mode).
 
 ![architecture](https://user-images.githubusercontent.com/91589996/149903895-05e6a641-73c8-4be8-be11-4d33f4bf1d0b.png)
 
@@ -66,3 +60,18 @@ branch gets pulled into the master branch.
 
 ## Insights and lessons learned
 
+GUI:
+- multiple mockups needed until all requirements satisfied
+- testing GUI is more difficult than normal tests
+
+General:
+- perfect automatic mode needs lots of thinking
+- scheduled methods are easier to test than methods running the whole time
+- testing the code before integrating to other modules is really important
+- SonarCloud and GitHub Actions (Continuous Integration) are NICE!
+
+
+## Downloading and running the ECC
+How to download the ECC:
+
+How to use the ECC:
