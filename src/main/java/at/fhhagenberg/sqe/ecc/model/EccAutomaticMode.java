@@ -7,7 +7,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 public class EccAutomaticMode {
 
-    private final IElevatorWrapper controller;
     private final EccModel model;
     private final BooleanProperty automaticModeRunning = new SimpleBooleanProperty();
 
@@ -15,9 +14,8 @@ public class EccAutomaticMode {
         return automaticModeRunning;
     }
 
-    EccAutomaticMode(IElevatorWrapper controller, EccModel model){
+    EccAutomaticMode(EccModel model){
         this.model = model;
-        this.controller = controller;
     }
 
     public void StopAutomaticMode(){
