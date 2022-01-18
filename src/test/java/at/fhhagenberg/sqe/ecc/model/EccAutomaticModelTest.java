@@ -5,11 +5,12 @@ import javafx.beans.property.SimpleBooleanProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 class EccAutomaticModelTest {
 
@@ -19,8 +20,12 @@ class EccAutomaticModelTest {
     @BeforeEach
     void Setup(){
         Elevator elev = new Elevator(3, 5);
-        Floor floor = new Floor();
-        model = new EccModel(Stream.of(elev).collect(Collectors.toList()), Stream.of(floor).collect(Collectors.toList()));
+        List<Floor> floors = new ArrayList<>();
+        floors.add(new Floor());
+        floors.add(new Floor());
+        floors.add(new Floor());
+
+        model = new EccModel(Stream.of(elev).collect(Collectors.toList()), floors);
         automaticMode = new EccAutomaticMode(model);
     }
 
@@ -33,17 +38,19 @@ class EccAutomaticModelTest {
         assertTrue(runningProp.getValue());
     }
 
-    @Test
-    void testStopAutomaticMode(){
-        automaticMode.StopAutomaticMode();
-        assertFalse(automaticMode.getAutomaticModeRunning());
-    }
-
+    /*
     @Test
     void testStartAutomaticMode(){
+        model.getElevator(0).setDirection(CommittedDirection.UNCOMMITTED);
         automaticMode.StartAutomaticMode();
         assertTrue(automaticMode.getAutomaticModeRunning());
+
+        automaticMode.StopAutomaticMode();
+        assertFalse(automaticMode.getAutomaticModeRunning());
+
+        assertEquals(2, model.getElevator(0).getTargetFloor());
     }
+    */
 
     @Test
     void testGetNextStopRequest(){
@@ -56,10 +63,10 @@ class EccAutomaticModelTest {
 
     @Test
     void testGetNextCallRequest(){
+        model.getElevator(0).setCurrentFloor(0);
+        model.getElevator(0).setDirection(CommittedDirection.UP);
+        model.getFloor(1).setUpButtonPressed(true);
 
-    }
-
-    @Test
-    void testRun(){
+        assertEquals(1, automaticMode.GetNextCallRequest(0));
     }
 }
