@@ -1,39 +1,43 @@
 package at.fhhagenberg.sqe.ecc;
 
-import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import at.fhhagenberg.sqe.ecc.model.Elevator;
 import at.fhhagenberg.sqe.ecc.model.Floor;
-import at.fhhagenberg.sqe.ecc.model.SynchronousEccModelUpdater;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class EccControllerTest {
+class EccControllerTest {
 
     @Mock
     IElevatorWrapper wrapper;
 
-    EccControllerTestable controller;
+    TestableEccController controller;
 
     @BeforeEach
     void setup() {
-        controller = new EccControllerTestable();
+        controller = new TestableEccController();
+    }
+
+    @Test
+    void testGetSetModel() {
+        assertNull(controller.getModel());
+
+        var model = new EccModel(new ArrayList<>(), new ArrayList<>());
+        controller.setModel(model);
+        assertEquals(model, controller.getModel());
     }
 
     @Test
@@ -45,7 +49,7 @@ public class EccControllerTest {
     }
 
     @Test
-    void testCreateModel() throws RemoteException {
+    void testCreateModel() {
         when(wrapper.getElevatorNum()).thenReturn(2);
         when(wrapper.getFloorNum()).thenReturn(3);
         when(wrapper.getElevatorCapacity(0)).thenReturn(47);
@@ -62,43 +66,57 @@ public class EccControllerTest {
 
     @Test
     void testCreateMethod_withoutWrapper() {
-        assertThrows(IllegalStateException.class, controller::createModel);
+        controller.setModel(new EccModel(new ArrayList<>(), new ArrayList<>()));
+        assertThrows(IllegalStateException.class, () -> controller.createModel());
     }
-
+    
     @Test
-    void testScheduleModelUpdate() throws ExecutionException, InterruptedException, RemoteException {
-        when(wrapper.getElevatorDoorStatus(0)).thenReturn(DoorState.OPENING);
-
-        Elevator elev;
-        Floor floor;
-        EccModel model;
-        elev = new Elevator(1, 3);
-        floor = new Floor();
-
-        model = new EccModel(Stream.of(elev).collect(Collectors.toList()), Stream.of(floor).collect(Collectors.toList()));
+    void testSetTargetFloor() {
+        var elev = new Elevator(2, 3);
+        controller.setModel(new EccModel(Stream.of(elev).collect(Collectors.toList()),
+                Stream.of(new Floor(), new Floor()).collect(Collectors.toList())));
         controller.setWrapper(wrapper);
-        controller.setUpdatePeriod(50);
 
-        var future = controller.scheduleModelUpdater(model);
-        Thread.sleep(future.getDelay(TimeUnit.MILLISECONDS) + 10);
+        controller.setTargetFloor(0, 1);
 
-        assertEquals(DoorState.OPENING, model.getElevator(0).getDoorState());
+        assertEquals(1, elev.getTargetFloor());
+        verify(wrapper).setTarget(0, 1);
     }
 
     @Test
-    void testScheduleModelUpdater_withoutWrapper() {
-        EccModel model = new EccModel(new ArrayList<Elevator>(), new ArrayList<Floor>());
-        assertThrows(IllegalStateException.class, () -> controller.scheduleModelUpdater(model));
+    void testSetTargetFloor_withoutWrapper() {
+        controller.setModel(new EccModel(new ArrayList<>(), new ArrayList<>()));
+        assertThrows(IllegalStateException.class, () -> controller.setTargetFloor(0, 1));
     }
 
-    static class EccControllerTestable extends EccController {
-        public void setWrapper(IElevatorWrapper wrapper) {
-            this.wrapper = wrapper;
-        }
+    @Test
+    void testSetTargetFloor_withoutModel() {
+        controller.setWrapper(wrapper);
+        assertThrows(IllegalStateException.class, () -> controller.setTargetFloor(0, 1));
+    }
 
-        @Override
-        protected void createUpdater(EccModel model) {
-            updater = new SynchronousEccModelUpdater(wrapper, model);
-        }
+    @Test
+    void testSetCommittedDirection() {
+        var elev = new Elevator(2, 3);
+        controller.setModel(new EccModel(Stream.of(elev).collect(Collectors.toList()),
+                Stream.of(new Floor(), new Floor()).collect(Collectors.toList())));
+        controller.setWrapper(wrapper);
+
+        controller.setCommittedDirection(0, CommittedDirection.UP);
+
+        assertEquals(CommittedDirection.UP, elev.getDirection());
+        verify(wrapper).setCommittedDirection(0, CommittedDirection.UP);
+    }
+
+    @Test
+    void testSetCommittedDirection_withoutWrapper() {
+        controller.setModel(new EccModel(new ArrayList<>(), new ArrayList<>()));
+        assertThrows(IllegalStateException.class, () -> controller.setCommittedDirection(0, CommittedDirection.UNCOMMITTED));
+    }
+
+    @Test
+    void testSetCommittedDirection_withoutModel() {
+        controller.setWrapper(wrapper);
+        assertThrows(IllegalStateException.class, () -> controller.setCommittedDirection(0, CommittedDirection.UNCOMMITTED));
     }
 }
