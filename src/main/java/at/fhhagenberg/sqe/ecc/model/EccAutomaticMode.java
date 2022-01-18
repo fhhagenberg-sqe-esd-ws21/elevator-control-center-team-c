@@ -1,6 +1,5 @@
 package at.fhhagenberg.sqe.ecc.model;
 
-import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -13,6 +12,10 @@ public class EccAutomaticMode {
     public BooleanProperty getAutomaticModeRunningProperty(){
         return automaticModeRunning;
     }
+
+    public void setAutomaticModeRunning(boolean run){ automaticModeRunning.set(run);}
+
+    public Boolean getAutomaticModeRunning(){ return automaticModeRunning.getValue(); }
 
     EccAutomaticMode(EccModel model){
         this.model = model;
@@ -133,101 +136,99 @@ public class EccAutomaticMode {
 
     // sets new target according to call and stop requests for each elevator
     public void RunAutomatic(){
-        while(true){
-            if(automaticModeRunning.getValue()){
-                int numElevators = model.getNumberOfElevators();
+        while(automaticModeRunning.getValue()){
+            int numElevators = model.getNumberOfElevators();
 
-                for(int i = 0; i < numElevators; i++){
-                    Elevator currElev = model.getElevator(i);
-                    int currFloor = currElev.getCurrentFloor();
-                    CommittedDirection currDir = currElev.getDirection();
+            for(int i = 0; i < numElevators; i++){
+                Elevator currElev = model.getElevator(i);
+                int currFloor = currElev.getCurrentFloor();
+                CommittedDirection currDir = currElev.getDirection();
 
-                    // first find out next stop request (from elevator)/call request (floors)
-                    int nextStop = GetNextStopRequest(i);
-                    int nextCall = GetNextCallRequest(i);
+                // first find out next stop request (from elevator)/call request (floors)
+                int nextStop = GetNextStopRequest(i);
+                int nextCall = GetNextCallRequest(i);
 
-                    // neither stop nor call was pressed: stay
-                    if(nextStop == currFloor && nextCall == currFloor){
+                // neither stop nor call was pressed: stay
+                if(nextStop == currFloor && nextCall == currFloor){
+                    currElev.setTargetFloor(currFloor);
+                    currElev.setDirection(CommittedDirection.UNCOMMITTED);
+                }
+                // no stop request: directly set next call as target
+                else if(nextStop == currFloor){
+                    currElev.setTargetFloor(nextCall);
+                    if(nextCall < currFloor){currElev.setDirection(CommittedDirection.DOWN);}
+                    else{currElev.setDirection(CommittedDirection.UP);}
+                }
+                // no call request: directly set next stop as target
+                else if(nextCall == currFloor){
+                    currElev.setTargetFloor(nextStop);
+                    if(nextStop < currFloor){currElev.setDirection(CommittedDirection.DOWN);}
+                    else{currElev.setDirection(CommittedDirection.UP);}
+                }
+                // stop and call were pressed: go to the nearest stop/call
+                else{
+                    // if the stop request is nearer than call, set this as next target.
+                    // if the stop request is further than call, set call as next target
+                    // always check direction (if up and on upmost floor: set dir down etc.)
+                    switch (currDir){
+                    case UP:
+                        // check if stop is above currentFloor - prioritize that
+                        if(nextStop > currFloor){
+                            currElev.setTargetFloor(nextStop);
+                        }
+                        // next stop is below - first check if a call would be above
+                        else{
+                            if(nextCall > currFloor){
+                                currElev.setTargetFloor(nextCall);
+                            }
+                            else{
+                                // elevator definitely needs to go down in this case
+                                currElev.setDirection(CommittedDirection.DOWN);
+
+                                // check through differences if stop or call is nearer
+                                int diffStop = currFloor - nextStop;
+                                int diffCall = currFloor - nextCall;
+
+                                if (diffStop < diffCall){
+                                    currElev.setTargetFloor(nextStop);
+                                }
+                                else{
+                                    currElev.setTargetFloor(nextCall);
+                                }
+                            }
+                        }
+                        break;
+                    case DOWN:
+                        // check if stop is below currentFloor - prioritize that
+                        if(nextStop < currFloor){
+                            currElev.setTargetFloor(nextStop);
+                        }
+                        // next stop is above - first check if a call would be below
+                        else{
+                            if(nextCall < currFloor){
+                                currElev.setTargetFloor(nextCall);
+                            }
+                            else{
+                                // elevator definitely needs to go up in this case
+                                currElev.setDirection(CommittedDirection.UP);
+
+                                // check through differences if stop or call is nearer
+                                int diffStop = nextStop - currFloor;
+                                int diffCall = nextCall - currFloor;
+
+                                if (diffStop < diffCall){
+                                    currElev.setTargetFloor(nextStop);
+                                }
+                                else{
+                                    currElev.setTargetFloor(nextCall);
+                                }
+                            }
+                        }
+                        break;
+                    default:
                         currElev.setTargetFloor(currFloor);
                         currElev.setDirection(CommittedDirection.UNCOMMITTED);
-                    }
-                    // no stop request: directly set next call as target
-                    else if(nextStop == currFloor){
-                        currElev.setTargetFloor(nextCall);
-                        if(nextCall < currFloor){currElev.setDirection(CommittedDirection.DOWN);}
-                        else{currElev.setDirection(CommittedDirection.UP);}
-                    }
-                    // no call request: directly set next stop as target
-                    else if(nextCall == currFloor){
-                        currElev.setTargetFloor(nextStop);
-                        if(nextStop < currFloor){currElev.setDirection(CommittedDirection.DOWN);}
-                        else{currElev.setDirection(CommittedDirection.UP);}
-                    }
-                    // stop and call were pressed: go to the nearest stop/call
-                    else{
-                        // if the stop request is nearer than call, set this as next target.
-                        // if the stop request is further than call, set call as next target
-                        // always check direction (if up and on upmost floor: set dir down etc.)
-                        switch (currDir){
-                            case UP:
-                                // check if stop is above currentFloor - prioritize that
-                                if(nextStop > currFloor){
-                                    currElev.setTargetFloor(nextStop);
-                                }
-                                // next stop is below - first check if a call would be above
-                                else{
-                                    if(nextCall > currFloor){
-                                        currElev.setTargetFloor(nextCall);
-                                    }
-                                    else{
-                                        // elevator definitely needs to go down in this case
-                                        currElev.setDirection(CommittedDirection.DOWN);
-
-                                        // check through differences if stop or call is nearer
-                                        int diffStop = currFloor - nextStop;
-                                        int diffCall = currFloor - nextCall;
-
-                                        if (diffStop < diffCall){
-                                            currElev.setTargetFloor(nextStop);
-                                        }
-                                        else{
-                                            currElev.setTargetFloor(nextCall);
-                                        }
-                                    }
-                                }
-                                break;
-                            case DOWN:
-                                // check if stop is below currentFloor - prioritize that
-                                if(nextStop < currFloor){
-                                    currElev.setTargetFloor(nextStop);
-                                }
-                                // next stop is above - first check if a call would be below
-                                else{
-                                    if(nextCall < currFloor){
-                                        currElev.setTargetFloor(nextCall);
-                                    }
-                                    else{
-                                        // elevator definitely needs to go up in this case
-                                        currElev.setDirection(CommittedDirection.UP);
-
-                                        // check through differences if stop or call is nearer
-                                        int diffStop = nextStop - currFloor;
-                                        int diffCall = nextCall - currFloor;
-
-                                        if (diffStop < diffCall){
-                                            currElev.setTargetFloor(nextStop);
-                                        }
-                                        else{
-                                            currElev.setTargetFloor(nextCall);
-                                        }
-                                    }
-                                }
-                                break;
-                            default:
-                                currElev.setTargetFloor(currFloor);
-                                currElev.setDirection(CommittedDirection.UNCOMMITTED);
-                                break;
-                        }
+                        break;
                     }
                 }
             }
