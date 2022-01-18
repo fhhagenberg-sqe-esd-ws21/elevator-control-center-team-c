@@ -1,23 +1,22 @@
 package at.fhhagenberg.sqe.ecc.model;
 
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 class EccAutomaticModelTest {
+    @Mock
+    private EccModel model;
 
     private EccAutomaticMode automaticMode;
 
     @BeforeEach
     void Setup(){
-        Elevator elev = new Elevator(3, 1);
-        Floor floor = new Floor();
-        EccModel model = new EccModel(Stream.of(elev).collect(Collectors.toList()), Stream.of(floor).collect(Collectors.toList()));
         automaticMode = new EccAutomaticMode(model);
     }
 
@@ -43,9 +42,21 @@ class EccAutomaticModelTest {
     }
 
     @Test
-    void testRunAutomatic(){
-        automaticMode.setAutomaticModeRunning(true);
-        automaticMode.RunAutomatic();
-        automaticMode.setAutomaticModeRunning(false);
+    void testGetNextStopRequest(){
+        when(model.getElevator(0).getNumOfFloors()).thenReturn(model.getNumberOfFloors());
+        when(model.getElevator(0).getCurrentFloor()).thenReturn(0);
+        when(model.getElevator(0).getDirection()).thenReturn(CommittedDirection.UP);
+        when(model.getElevator(0).isButtonPressed(2)).thenReturn(true);
+
+        assertEquals(2, automaticMode.GetNextStopRequest(0));
+    }
+
+    @Test
+    void testGetNextCallRequest(){
+
+    }
+
+    @Test
+    void testRun(){
     }
 }
