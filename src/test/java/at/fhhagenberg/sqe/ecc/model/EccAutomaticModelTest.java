@@ -1,16 +1,21 @@
 package at.fhhagenberg.sqe.ecc.model;
 
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 class EccAutomaticModelTest {
 
@@ -36,21 +41,25 @@ class EccAutomaticModelTest {
 
         automaticMode.setAutomaticModeRunning(true);
         assertTrue(runningProp.getValue());
+        assertTrue(automaticMode.getAutomaticModeRunning());
     }
 
-    /*
     @Test
-    void testStartAutomaticMode(){
-        model.getElevator(0).setDirection(CommittedDirection.UNCOMMITTED);
+    void testStartRunStop() throws ExecutionException, InterruptedException, RemoteException {
+        model.getElevator(0).setCurrentFloor(0);
+        model.getElevator(0).setDirection(CommittedDirection.UP);
+        model.getElevator(0).setButtonPressed(2, true);
+
         automaticMode.StartAutomaticMode();
         assertTrue(automaticMode.getAutomaticModeRunning());
 
+        var future = automaticMode.Run();
+        Thread.sleep(future.getDelay(TimeUnit.MILLISECONDS) + 10);
+
         automaticMode.StopAutomaticMode();
         assertFalse(automaticMode.getAutomaticModeRunning());
-
         assertEquals(2, model.getElevator(0).getTargetFloor());
     }
-    */
 
     @Test
     void testGetNextStopRequest(){
