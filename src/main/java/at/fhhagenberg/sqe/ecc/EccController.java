@@ -1,8 +1,11 @@
 package at.fhhagenberg.sqe.ecc;
 
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import at.fhhagenberg.sqe.ecc.model.EccModelFactory;
 import at.fhhagenberg.sqe.ecc.model.EccModelUpdater;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import sqelevator.IElevator;
 
 import java.net.MalformedURLException;
@@ -20,10 +23,15 @@ public class EccController {
     protected EccModelUpdater updater;
     protected EccModel model;
     ScheduledExecutorService scheduledExecutor;
+    ScheduledFuture<?> updateTaskFuture;
+    ScheduledFuture<?> reconnectTaskFuture;
     private long updatePeriod = 500;
+    private long reconnectPeriod= 1000;
 
     public EccController() {
-        scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+        var executor = new ScheduledThreadPoolExecutor(1);
+        executor.setRemoveOnCancelPolicy(true);
+        scheduledExecutor = executor;
     }
 
     public long getUpdatePeriod() {
@@ -40,6 +48,18 @@ public class EccController {
 
     public void setModel(EccModel model) {
         this.model = model;
+
+        for (int e = 0; e < model.getNumberOfElevators(); e++) {
+            final var elevNum = e;
+            model.getElevator(e).currentFloorProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.intValue() == 0) {
+                    setCommittedDirection(elevNum, CommittedDirection.UP);
+                }
+                else if (newValue.intValue() == model.getNumberOfFloors()-1) {
+                    setCommittedDirection(elevNum, CommittedDirection.DOWN);
+                }
+            });
+        }
     }
 
     public boolean connect() {
@@ -48,12 +68,13 @@ public class EccController {
             wrapper = new ElevatorWrapper(controller);
             return true;
         } catch (NotBoundException e) {
-            System.err.println("Remote server not started. " + e.getMessage());
+            new Alert(Alert.AlertType.ERROR, "Remote server not started. " + e.getMessage()).showAndWait();
         } catch (MalformedURLException e) {
-            System.err.println("Invalid URL: " + e.getMessage());
+            new Alert(Alert.AlertType.ERROR, "Invalid URL: " + e.getMessage()).showAndWait();
         } catch (RemoteException e) {
-            System.err.println("Some remote exception on connecting: " + e.getMessage());
+            new Alert(Alert.AlertType.ERROR, "Some remote exception on connecting: " + e.getMessage()).showAndWait();
         }
+
         return false;
     }
 
@@ -71,15 +92,41 @@ public class EccController {
     }
 
     public void scheduleModelUpdater() {
-        if (wrapper == null) {
-            throw new IllegalStateException(TEXT_NOT_CONNECTED);
-        }
-        if (model == null) {
-            throw new IllegalStateException(TEXT_MODEL_NOT_SET);
+        if (updater == null) {
+            if (wrapper == null) {
+                throw new IllegalStateException(TEXT_NOT_CONNECTED);
+            }
+            if (model == null) {
+                throw new IllegalStateException(TEXT_MODEL_NOT_SET);
+            }
+
+            createUpdater();
         }
 
-        createUpdater();
-        scheduledExecutor.scheduleAtFixedRate(() -> updater.updateModel(), updatePeriod, updatePeriod, TimeUnit.MILLISECONDS);
+        updateTaskFuture = scheduledExecutor.scheduleAtFixedRate(this::updateModel, 0, updatePeriod, TimeUnit.MILLISECONDS);
+    }
+
+    private void updateModel()
+    {
+        try {
+            updater.updateModel();
+        }
+        catch (RuntimeException ex) {
+            updateTaskFuture.cancel(false);
+            reconnectTaskFuture = scheduledExecutor.scheduleAtFixedRate(this::reconnect, 0, reconnectPeriod, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private void reconnect()
+    {
+        try {
+            IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+            wrapper.setElevatorCenter(controller);
+
+            reconnectTaskFuture.cancel(false);
+            updateTaskFuture = scheduledExecutor.scheduleAtFixedRate(this::updateModel, 0, updatePeriod, TimeUnit.MILLISECONDS);
+        } catch (NotBoundException | MalformedURLException | RemoteException ignored) {
+        }
     }
 
     public void shutdownScheduler() {
@@ -98,7 +145,7 @@ public class EccController {
         wrapper.setTarget(elevNum, targetFloor);
     }
 
-    public void setCommittedDirection(int elevNum, IElevatorWrapper.CommittedDirection direction) {
+    public void setCommittedDirection(int elevNum, CommittedDirection direction) {
         if (wrapper == null) {
             throw new IllegalStateException(TEXT_NOT_CONNECTED);
         }
