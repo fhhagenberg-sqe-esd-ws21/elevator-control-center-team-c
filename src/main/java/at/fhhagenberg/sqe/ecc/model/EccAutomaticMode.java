@@ -13,7 +13,7 @@ public class EccAutomaticMode implements Runnable {
         return automaticModeRunning;
     }
 
-    public void setAutomaticModeRunning(boolean run){ automaticModeRunning.set(run);}
+    public void setAutomaticModeRunning(boolean run){ automaticModeRunning.setValue(run);}
 
     public Boolean getAutomaticModeRunning(){ return automaticModeRunning.getValue(); }
 
@@ -22,11 +22,11 @@ public class EccAutomaticMode implements Runnable {
     }
 
     public void StopAutomaticMode(){
-        automaticModeRunning.set(false);
+        automaticModeRunning.setValue(false);
     }
 
     public void StartAutomaticMode(){
-        automaticModeRunning.set(true);
+        automaticModeRunning.setValue(true);
         run();
     }
 
@@ -89,7 +89,7 @@ public class EccAutomaticMode implements Runnable {
     public int GetNextCallRequest(int elevNum){
         Elevator currElev = model.getElevator(elevNum);
         CommittedDirection dir = currElev.getDirection();
-        int maxFloors = currElev.getNumOfFloors();
+        int maxFloors = model.getNumberOfFloors();
         int startFloor = currElev.getCurrentFloor();
         int nextCallAbove = -1;
         int nextCallBelow = -1;
