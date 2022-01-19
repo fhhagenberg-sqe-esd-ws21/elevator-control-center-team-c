@@ -4,7 +4,6 @@ import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import at.fhhagenberg.sqe.ecc.model.EccModelFactory;
 import at.fhhagenberg.sqe.ecc.model.EccModelUpdater;
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Alert;
@@ -28,7 +27,7 @@ public class EccController {
     ScheduledFuture<?> updateTaskFuture;
     ScheduledFuture<?> reconnectTaskFuture;
     private long updatePeriod = 500;
-    private final long reconnectPeriod = 1000;
+    private static final long RECONNECT_PERIOD = 1000;
 
     private final BooleanProperty connected = new SimpleBooleanProperty();
 
@@ -133,7 +132,7 @@ public class EccController {
         catch (RuntimeException ex) {
             setConnected(false);
             updateTaskFuture.cancel(false);
-            reconnectTaskFuture = scheduledExecutor.scheduleAtFixedRate(this::reconnect, 0, reconnectPeriod, TimeUnit.MILLISECONDS);
+            reconnectTaskFuture = scheduledExecutor.scheduleAtFixedRate(this::reconnect, 0, RECONNECT_PERIOD, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -147,6 +146,7 @@ public class EccController {
             updateTaskFuture = scheduledExecutor.scheduleAtFixedRate(this::updateModel, 0, updatePeriod, TimeUnit.MILLISECONDS);
             setConnected(true);
         } catch (NotBoundException | MalformedURLException | RemoteException ignored) {
+            // do nothing, try again next time
         }
     }
 

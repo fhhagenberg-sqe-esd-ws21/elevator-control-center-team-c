@@ -1,16 +1,11 @@
 package at.fhhagenberg.sqe.ecc.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import at.fhhagenberg.sqe.ecc.EccController;
-import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,7 +16,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class EccGuiLayout {
