@@ -6,12 +6,16 @@ import java.rmi.RemoteException;
 
 public class ElevatorWrapper implements IElevatorWrapper {
 
-    private final IElevator elevatorCenter;
+    private IElevator elevatorCenter;
     private static final double FACTOR_FEET_TO_METER = 0.3048;
     private static final double FACTOR_POUND_TO_KG = 0.45359237;
 
     public ElevatorWrapper(IElevator e) {
         elevatorCenter = e;
+    }
+
+    public void setElevatorCenter(IElevator elevatorCenter) {
+        this.elevatorCenter = elevatorCenter;
     }
 
     public CommittedDirection getCommittedDirection(int elevatorNumber) {
@@ -223,7 +227,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
     }
 
     public void setTarget(int elevatorNumber, int target) {
-        try{
+        try {
             elevatorCenter.setTarget(elevatorNumber, target);
         }
         catch(RemoteException ex){

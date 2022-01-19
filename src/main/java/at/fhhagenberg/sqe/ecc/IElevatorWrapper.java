@@ -1,5 +1,7 @@
 package at.fhhagenberg.sqe.ecc;
 
+import sqelevator.IElevator;
+
 public interface IElevatorWrapper {
     enum DoorState {
         OPEN,
@@ -13,6 +15,8 @@ public interface IElevatorWrapper {
         DOWN,
         UNCOMMITTED
     }
+
+    void setElevatorCenter(IElevator elevatorCenter);
 
     /**
      * Retrieves the committed direction of the specified elevator (up / down / uncommitted).

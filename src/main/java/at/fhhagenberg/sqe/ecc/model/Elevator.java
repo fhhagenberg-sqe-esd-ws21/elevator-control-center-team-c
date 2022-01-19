@@ -14,10 +14,10 @@ public class Elevator {
     private final int floors;
 
     // dynamic parameters
-    private final ObjectProperty<CommittedDirection> direction = new SimpleObjectProperty<>();
+    private final ObjectProperty<CommittedDirection> direction = new SimpleObjectProperty<>(CommittedDirection.UNCOMMITTED);
     private final DoubleProperty speed = new SimpleDoubleProperty();
     private final DoubleProperty acceleration = new SimpleDoubleProperty();
-    private final ObjectProperty<DoorState> doorState = new SimpleObjectProperty<>();
+    private final ObjectProperty<DoorState> doorState = new SimpleObjectProperty<>(DoorState.CLOSED);
     private final IntegerProperty currentFloor = new SimpleIntegerProperty();
     private final DoubleProperty position = new SimpleDoubleProperty();
     private final DoubleProperty currentPassengerWeight = new SimpleDoubleProperty();
@@ -108,10 +108,10 @@ public class Elevator {
     public Elevator(int floors, int maxPassengers)
     {
         if (floors <= 0) {
-            throw new IllegalArgumentException("newCurrentFloor must be a positive number");
+            throw new IllegalArgumentException("currentFloor must be a positive number");
         }
         if (maxPassengers <= 0) {
-            throw new IllegalArgumentException("newMaxPassengers must be greater than or equal to 0");
+            throw new IllegalArgumentException("maxPassengers must be greater than or equal to 0");
         }
 
         this.floors = floors;
@@ -121,6 +121,24 @@ public class Elevator {
         for (int i = 0; i < floors; i++) {
             buttonsPressed.get().add(new SimpleBooleanProperty());
         }
+    }
+
+    public Elevator(Elevator other) {
+        maxPassengers = other.maxPassengers;
+        floors = other.floors;
+
+        direction.set(other.direction.get());
+        speed.set(other.speed.get());
+        acceleration.set(other.acceleration.get());
+        doorState.set(other.doorState.get());
+        currentFloor.set(other.currentFloor.get());
+        position.set(other.position.get());
+        currentPassengerWeight.set(other.currentPassengerWeight.get());
+        targetFloor.set(other.targetFloor.get());
+
+        var buttonList = new ArrayList<BooleanProperty>(floors);
+        buttonList.addAll(other.buttonsPressed.get());
+        this.buttonsPressed.set(buttonList);
     }
 
     // other getters/setters

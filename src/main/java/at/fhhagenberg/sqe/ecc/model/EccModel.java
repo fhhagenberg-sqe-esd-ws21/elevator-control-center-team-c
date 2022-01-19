@@ -3,6 +3,7 @@ package at.fhhagenberg.sqe.ecc.model;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EccModel {
@@ -16,6 +17,22 @@ public class EccModel {
     {
         this.elevators.set(elevators);
         this.floors.set(floors);
+    }
+
+    public EccModel(EccModel other) {
+        var elevatorList = new ArrayList<Elevator>();
+        for (var elev : other.elevators.get()) {
+            elevatorList.add(new Elevator(elev));
+        }
+
+        this.elevators.set(elevatorList);
+
+        var floorList = new ArrayList<Floor>();
+        for (var floor : other.floors.get()) {
+            floorList.add(new Floor(floor));
+        }
+
+        this.floors.set(floorList);
     }
 
     public Elevator getElevator(int elevatorNumber) { return elevators.get().get(elevatorNumber); }

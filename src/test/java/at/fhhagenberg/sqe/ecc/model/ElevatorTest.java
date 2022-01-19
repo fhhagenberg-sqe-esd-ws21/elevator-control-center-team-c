@@ -1,7 +1,13 @@
 package at.fhhagenberg.sqe.ecc.model;
 
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import static org.junit.jupiter.api.Assertions.*;
@@ -120,29 +126,83 @@ class ElevatorTest {
     // for code coverage
 
     @Test
-    void testDirectionProperty(){ assertNotNull(elev.directionProperty());}
+    void testDirectionProperty() {
+        var directionProp = new SimpleObjectProperty<CommittedDirection>();
+        directionProp.bind(elev.directionProperty());
+
+        elev.setDirection(CommittedDirection.UP);
+        assertEquals(CommittedDirection.UP, directionProp.get());
+    }
 
     @Test
-    void testSpeedProperty(){ assertNotNull(elev.speedProperty());}
+    void testSpeedProperty(){
+        var speedProp = new SimpleDoubleProperty();
+        speedProp.bind(elev.speedProperty());
+
+        elev.setSpeed(0.1);
+        assertEquals(0.1, speedProp.get());
+    }
 
     @Test
-    void testAccelProperty(){ assertNotNull(elev.accelerationProperty());}
+    void testAccelProperty(){
+        var accelProp = new SimpleDoubleProperty();
+        accelProp.bind(elev.accelerationProperty());
+
+        elev.setAcceleration(0.1);
+        assertEquals(0.1, accelProp.get());
+    }
 
     @Test
-    void testDoorStateProperty(){ assertNotNull(elev.doorStateProperty());}
+    void testDoorStateProperty(){
+        var doorProp = new SimpleObjectProperty<DoorState>();
+        doorProp.bind(elev.doorStateProperty());
+
+        elev.setDoorState(DoorState.OPENING);
+        assertEquals(DoorState.OPENING, doorProp.get());
+    }
 
     @Test
-    void testCurrentFloorProperty(){ assertNotNull(elev.currentFloorProperty());}
+    void testCurrentFloorProperty(){
+        var currFloorProp = new SimpleIntegerProperty();
+        currFloorProp.bind(elev.currentFloorProperty());
+
+        elev.setCurrentFloor(2);
+        assertEquals(2, currFloorProp.get());
+    }
 
     @Test
-    void testPositionProperty(){ assertNotNull(elev.positionProperty());}
+    void testPositionProperty(){
+        var positionProp = new SimpleDoubleProperty();
+        positionProp.bind(elev.positionProperty());
+
+        elev.setPosition(3.7);
+        assertEquals(3.7, positionProp.get());
+    }
 
     @Test
-    void testCurrentPassengerWeightProperty(){ assertNotNull(elev.currentPassengerWeightProperty());}
+    void testCurrentPassengerWeightProperty(){
+        var currPassengerProp = new SimpleDoubleProperty();
+        currPassengerProp.bind(elev.currentPassengerWeightProperty());
+
+        elev.setCurrentPassengerWeight(30.1);
+        assertEquals(30.1, currPassengerProp.get());
+    }
 
     @Test
-    void testTargetFloorProperty(){ assertNotNull(elev.targetFloorProperty());}
+    void testTargetFloorProperty(){
+        var targetFloorProp = new SimpleIntegerProperty();
+        targetFloorProp.bind(elev.targetFloorProperty());
+
+        elev.setTargetFloor(0);
+        assertEquals(0, targetFloorProp.get());
+    }
 
     @Test
-    void testButtonsPressed(){ assertNotNull(elev.buttonsPressedProperty());}
+    void testButtonsPressed(){
+        var buttonsProp = new SimpleObjectProperty<List<BooleanProperty>>();
+        buttonsProp.bind(elev.buttonsPressedProperty());
+
+        elev.setButtonPressed(1, true);
+        assertTrue(buttonsProp.get().get(1).get());
+    }
 }

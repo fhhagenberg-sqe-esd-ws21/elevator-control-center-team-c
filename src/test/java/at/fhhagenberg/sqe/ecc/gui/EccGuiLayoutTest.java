@@ -2,9 +2,19 @@ package at.fhhagenberg.sqe.ecc.gui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.sql.Wrapper;
 import java.util.ArrayList;
+
+import at.fhhagenberg.sqe.ecc.EccController;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
+import at.fhhagenberg.sqe.ecc.TestableEccController;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -18,8 +28,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+@ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
 class EccGuiLayoutTest {
+
+	@Mock
+	IElevatorWrapper wrapper;
 
 	EccGuiLayout layout;
 	EccModel model;
@@ -42,7 +56,11 @@ class EccGuiLayoutTest {
 		model = new EccModel(elevators, floors);
 
 		// init gui with model
-		layout = new EccGuiLayout(model);
+		var controller = new TestableEccController();
+		controller.setWrapper(wrapper);
+		controller.setModel(model);
+		controller.setConnected(true);
+		layout = new EccGuiLayout(model, controller);
 		var scene = layout.getScene();
 		stage.setScene(scene);
 		stage.show();
@@ -83,6 +101,9 @@ class EccGuiLayoutTest {
 		model.getElevator(0).setCurrentFloor(1);
 		model.getElevator(1).setCurrentFloor(1);
 		model.getElevator(0).setTargetFloor(0);
+
+		model.getElevator(0).setDirection(CommittedDirection.DOWN);
+		model.getElevator(1).setDirection(CommittedDirection.UP);
 
 		Button position0_1 = robot.lookup("#position_e0_f1").<Button>query();
 		Button position1_1 = robot.lookup("#position_e1_f1").<Button>query();

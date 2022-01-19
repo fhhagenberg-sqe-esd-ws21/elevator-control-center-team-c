@@ -1,19 +1,27 @@
 package at.fhhagenberg.sqe.ecc.gui;
 
-import java.util.ArrayList;
-import java.util.List;
+import at.fhhagenberg.sqe.ecc.EccController;
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EccGuiLayout {
-
+	private final EccController controller;
 	private EccModel model;
 
 	private int elevCnt;
@@ -32,8 +40,10 @@ public class EccGuiLayout {
 	private String manualStr = "Manual";
 	private String autoStr = "Automatic";
 
-	public EccGuiLayout(EccModel eccModel) {
+	public EccGuiLayout(EccModel eccModel, EccController controller)
+	{
 		model = eccModel;
+		this.controller = controller;
 		elevCnt = model.getNumberOfElevators();
 		floorCnt = model.getNumberOfFloors();
 
@@ -87,7 +97,14 @@ public class EccGuiLayout {
 				final Integer elev = Integer.valueOf(i);
 				final Integer floor = Integer.valueOf(j);
 				btn.setOnAction(event -> {
-					model.getElevator(elev).setTargetFloor(floor);
+					controller.setTargetFloor(elev, floor);
+					var elevator = model.getElevator(elev);
+					if (elevator.getTargetFloor() > elevator.getCurrentFloor()) {
+						controller.setCommittedDirection(elev, CommittedDirection.UP);
+					}
+					else if (elevator.getTargetFloor() < elevator.getCurrentFloor()) {
+						controller.setCommittedDirection(elev, CommittedDirection.DOWN);
+					}
 				});
 				positions.get(i).add(btn);
 			}
@@ -141,15 +158,18 @@ public class EccGuiLayout {
 			positions.get(i).get(nextFloor).getStyleClass().clear();
 			positions.get(i).get(currentFloor).getStyleClass().clear();
 			positions.get(i).get(nextFloor).getStyleClass().add("lightGreenStyle");
-			if (nextFloor > currentFloor) // arrow up
-			{
-				positions.get(i).get(currentFloor).getStyleClass().add("arrowUpStyle");
-			} else if (nextFloor < currentFloor) // arrow down
-			{
-				positions.get(i).get(currentFloor).getStyleClass().add("arrowDownStyle");
-			} else {
-				positions.get(i).get(currentFloor).getStyleClass().add("greenStyle");
-			}
+	    	 if(model.getElevator(i).getDirection() == CommittedDirection.UP) // arrow up
+	    	 {
+	    		 positions.get(i).get(currentFloor).getStyleClass().add("arrowUpStyle");
+	    	 }
+	    	 else if(model.getElevator(i).getDirection() == CommittedDirection.DOWN) // arrow down
+	    	 {
+	    		 positions.get(i).get(currentFloor).getStyleClass().add("arrowDownStyle");
+	    	 }
+	    	 else
+	    	 {
+	    		 positions.get(i).get(currentFloor).getStyleClass().add("greenStyle");
+	    	 }
 		}
 	}
 
@@ -227,9 +247,6 @@ public class EccGuiLayout {
 	}
 
 	public Scene getScene() {
-		Scene scene = new Scene(new Group());
-		scene.getStylesheets().add("/stylesheet.css");
-
 		GridPane grid = new GridPane();
 
 		// generate upper part
@@ -252,6 +269,7 @@ public class EccGuiLayout {
 		GridPane.setColumnSpan(floorsHeading, 2);
 		grid.add(nrHeading, 0, 1);
 		grid.add(callHeading, 1, 1);
+		
 
 		// add column constraints to set width
 		var narrowConstraint = new ColumnConstraints(55);
@@ -381,8 +399,18 @@ public class EccGuiLayout {
 		callHandler();
 		doorHandler();
 
-		grid.setPadding(new Insets(10, 0, 0, 10));
-		((Group) scene.getRoot()).getChildren().add(grid);
+		grid.setPadding(new Insets(10, 10, 10, 10));
+		var disconnectedText = new Label("disconnected");
+		disconnectedText.setFont(Font.font(disconnectedText.getFont().getFamily(), FontWeight.BOLD, 50.0));
+		disconnectedText.setTextFill(Color.RED);
+		StackPane.setAlignment(disconnectedText, Pos.CENTER);
+
+		var group = new StackPane(grid, disconnectedText);
+		var scene = new Scene(group);
+		scene.getStylesheets().add("/stylesheet.css");
+
+		grid.disableProperty().bind(controller.connectedProperty().not());
+		disconnectedText.visibleProperty().bind(controller.connectedProperty().not());
 
 		return scene;
 	}
