@@ -157,7 +157,11 @@ public class EccGuiLayout {
 			}
 			positions.get(i).get(nextFloor).getStyleClass().clear();
 			positions.get(i).get(currentFloor).getStyleClass().clear();
-			positions.get(i).get(nextFloor).getStyleClass().add("lightGreenStyle");
+
+			if (currentFloor != nextFloor) {
+				positions.get(i).get(nextFloor).getStyleClass().add("lightGreenStyle");
+			}
+
 	    	 if(model.getElevator(i).getDirection() == CommittedDirection.UP) // arrow up
 	    	 {
 	    		 positions.get(i).get(currentFloor).getStyleClass().add("arrowUpStyle");
@@ -393,11 +397,6 @@ public class EccGuiLayout {
 			grid.add(modes.get(i), colIdx, rowIdx);
 			GridPane.setColumnSpan(modes.get(i), 2);
 		}
-		// refresh to show initial state
-		positionHandler();
-		stopHandler();
-		callHandler();
-		doorHandler();
 
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		var disconnectedText = new Label("disconnected");
@@ -411,6 +410,12 @@ public class EccGuiLayout {
 
 		grid.disableProperty().bind(controller.connectedProperty().not());
 		disconnectedText.visibleProperty().bind(controller.connectedProperty().not());
+
+		// refresh to show initial state
+		positionHandler();
+		stopHandler();
+		callHandler();
+		doorHandler();
 
 		return scene;
 	}
