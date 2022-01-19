@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 public class App extends Application{
 
-	EccController controller;
+	protected EccController controller;
 
 	public App()
 	{
