@@ -1,4 +1,18 @@
-# Graphical User Interface with JavaFx
+# Elevator Control Center (Team C)
+
+## Running this project
+
+To run this project, the JAR file can be downloaded from the
+[Release](https://github.com/fhhagenberg-sqe-esd-ws21/elevator-control-center-team-c/releases) section of the
+repository.
+The downloaded file can be executed on any platform by issuing the following command.
+The command assumes, that Java version >=11 is installed on your system and Java itself is in your systems path:
+
+```
+java -jar ecc-team-c-0.0.1-SNAPSHOT.jar
+```
+
+## The Project
 
 The goal of this project is to create a GUI with JavaFX for an Elevator Controller Center (ECC).
 Most important part of this project is nevertheless to ensure the software quality by using 
@@ -69,9 +83,3 @@ General:
 - scheduled methods are easier to test than methods running the whole time
 - testing the code before integrating to other modules is really important
 - SonarCloud and GitHub Actions (Continuous Integration) are NICE!
-
-
-## Downloading and running the ECC
-How to download the ECC:
-
-How to use the ECC:
