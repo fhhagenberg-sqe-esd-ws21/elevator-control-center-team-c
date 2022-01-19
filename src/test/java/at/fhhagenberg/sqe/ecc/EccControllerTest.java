@@ -4,22 +4,25 @@ import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import at.fhhagenberg.sqe.ecc.model.Elevator;
 import at.fhhagenberg.sqe.ecc.model.Floor;
+import javafx.beans.property.SimpleBooleanProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sqelevator.IElevator;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EccControllerTest {
+
+
 
     @Mock
     IElevatorWrapper wrapper;
@@ -29,6 +32,22 @@ class EccControllerTest {
     @BeforeEach
     void setup() {
         controller = new TestableEccController();
+    }
+
+    @Test
+    void testConnected() {
+        controller.setConnected(true);
+        assertTrue(controller.isConnected());
+    }
+
+    @Test
+    void testConnectedProperty() {
+        var connected = new SimpleBooleanProperty(true);
+
+        connected.bind(controller.connectedProperty());
+        controller.setConnected(false);
+
+        assertFalse(connected.get());
     }
 
     @Test

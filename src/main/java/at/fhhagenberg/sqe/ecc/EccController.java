@@ -40,7 +40,7 @@ public class EccController {
         return connected;
     }
 
-    protected void setConnected(boolean connected) {
+    public void setConnected(boolean connected) {
         this.connected.set(connected);
     }
 
@@ -79,9 +79,13 @@ public class EccController {
         }
     }
 
+    protected IElevator establishConnection() throws MalformedURLException, NotBoundException, RemoteException {
+        return (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+    }
+
     public void connect() {
         try {
-            IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+            var controller = establishConnection();
             wrapper = new ElevatorWrapper(controller);
             setConnected(true);
         } catch (NotBoundException e) {
@@ -136,7 +140,7 @@ public class EccController {
     private void reconnect()
     {
         try {
-            IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+            var controller = establishConnection();
             wrapper.setElevatorCenter(controller);
 
             reconnectTaskFuture.cancel(false);

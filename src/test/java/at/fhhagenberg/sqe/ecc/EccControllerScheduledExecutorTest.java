@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sqelevator.IElevator;
 
+import java.rmi.RemoteException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,6 +24,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class EccControllerScheduledExecutorTest {
 
+    @Mock
+    IElevator ielev;
     @Mock
     IElevatorWrapper wrapper;
 
@@ -40,6 +44,20 @@ class EccControllerScheduledExecutorTest {
     }
 
     @Test
+    void reconnectTest() throws RemoteException {
+        controller.setIElevator(ielev);
+        controller.setModel(model);
+        controller.setUpdatePeriod(100);
+        when(ielev.getCommittedDirection(0)).thenThrow(RemoteException.class);
+
+        controller.connect();
+        controller.scheduleModelUpdater();
+
+        await().until(() -> !controller.isConnected());
+        await().until(() -> controller.isConnected());
+    }
+
+    @Test
     void testScheduleModelUpdate_waitForOneUpdate() {
         when(wrapper.getElevatorDoorStatus(0)).thenReturn(IElevatorWrapper.DoorState.OPENING);
 
@@ -53,24 +71,6 @@ class EccControllerScheduledExecutorTest {
                 .until(() -> model.getElevator(0).getDoorState(), equalTo(IElevatorWrapper.DoorState.OPENING));
 
         assertEquals(IElevatorWrapper.DoorState.OPENING, model.getElevator(0).getDoorState());
-    }
-
-    @Test
-    void testScheduleModelUpdate_waitForTwoUpdates() {
-        when(wrapper.getElevatorDoorStatus(0)).thenReturn(IElevatorWrapper.DoorState.OPENING, IElevatorWrapper.DoorState.CLOSING);
-
-        controller.setModel(model);
-        controller.setWrapper(wrapper);
-        controller.setUpdatePeriod(100);
-
-        controller.scheduleModelUpdater();
-
-        await().pollDelay(50, TimeUnit.MILLISECONDS)
-                .atMost(200, TimeUnit.MILLISECONDS)
-                .until(() -> model.getElevator(0).getDoorState(), equalTo(IElevatorWrapper.DoorState.OPENING));
-        await().pollDelay(50, TimeUnit.MILLISECONDS)
-                .atMost(200, TimeUnit.MILLISECONDS)
-                .until(() -> model.getElevator(0).getDoorState(), equalTo(IElevatorWrapper.DoorState.CLOSING));
     }
 
     @Test
