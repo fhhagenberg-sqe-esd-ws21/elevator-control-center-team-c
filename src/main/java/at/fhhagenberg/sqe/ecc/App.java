@@ -1,12 +1,18 @@
 package at.fhhagenberg.sqe.ecc;
 
+import java.util.ArrayList;
+
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import at.fhhagenberg.sqe.ecc.gui.EccGuiLayout;
+import at.fhhagenberg.sqe.ecc.model.EccModel;
+import at.fhhagenberg.sqe.ecc.model.Elevator;
+import at.fhhagenberg.sqe.ecc.model.Floor;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
-public class App extends Application {
+public class App extends Application{
 
 	protected EccController controller;
 
@@ -14,7 +20,7 @@ public class App extends Application {
 	{
 		controller = new EccController();
 	}
-	 
+
 	@Override
 	public void start(Stage stage) {
 
@@ -28,8 +34,6 @@ public class App extends Application {
 		stage.setTitle("Elevator Control Center");
 	    stage.getIcons().add(new Image("icon.bmp"));
 		stage.setScene(layout.getScene());
-		stage.setOnCloseRequest(event -> controller.shutdownScheduler());
-
 	    stage.show();
 	}
 
