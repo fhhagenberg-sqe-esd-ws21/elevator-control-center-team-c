@@ -1,9 +1,11 @@
 package at.fhhagenberg.sqe.ecc;
 
+import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import at.fhhagenberg.sqe.ecc.model.Elevator;
 import at.fhhagenberg.sqe.ecc.model.Floor;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -15,8 +17,7 @@ import java.util.stream.Stream;
 
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,7 +42,7 @@ class EccControllerScheduledExecutorTest {
 
     @Test
     void testScheduleModelUpdate_waitForOneUpdate() {
-        when(wrapper.getElevatorDoorStatus(0)).thenReturn(IElevatorWrapper.DoorState.OPENING);
+        when(wrapper.getElevatorDoorStatus(0)).thenReturn(DoorState.OPENING);
 
         controller.setModel(model);
         controller.setWrapper(wrapper);
@@ -50,27 +51,9 @@ class EccControllerScheduledExecutorTest {
         controller.scheduleModelUpdater();
         await().pollDelay(50, TimeUnit.MILLISECONDS)
                 .atMost(200, TimeUnit.MILLISECONDS)
-                .until(() -> model.getElevator(0).getDoorState(), equalTo(IElevatorWrapper.DoorState.OPENING));
+                .until(() -> model.getElevator(0).getDoorState(), equalTo(DoorState.OPENING));
 
-        assertEquals(IElevatorWrapper.DoorState.OPENING, model.getElevator(0).getDoorState());
-    }
-
-    @Test
-    void testScheduleModelUpdate_waitForTwoUpdates() {
-        when(wrapper.getElevatorDoorStatus(0)).thenReturn(IElevatorWrapper.DoorState.OPENING, IElevatorWrapper.DoorState.CLOSING);
-
-        controller.setModel(model);
-        controller.setWrapper(wrapper);
-        controller.setUpdatePeriod(100);
-
-        controller.scheduleModelUpdater();
-
-        await().pollDelay(50, TimeUnit.MILLISECONDS)
-                .atMost(200, TimeUnit.MILLISECONDS)
-                .until(() -> model.getElevator(0).getDoorState(), equalTo(IElevatorWrapper.DoorState.OPENING));
-        await().pollDelay(50, TimeUnit.MILLISECONDS)
-                .atMost(200, TimeUnit.MILLISECONDS)
-                .until(() -> model.getElevator(0).getDoorState(), equalTo(IElevatorWrapper.DoorState.CLOSING));
+        assertEquals(DoorState.OPENING, model.getElevator(0).getDoorState());
     }
 
     @Test
@@ -87,22 +70,15 @@ class EccControllerScheduledExecutorTest {
 
     @Test
     void testShutdownScheduler() throws InterruptedException {
-        when(wrapper.getElevatorDoorStatus(0)).thenReturn(IElevatorWrapper.DoorState.OPENING, IElevatorWrapper.DoorState.CLOSING);
-
         controller.setModel(model);
         controller.setWrapper(wrapper);
         controller.setUpdatePeriod(100);
 
         controller.scheduleModelUpdater();
-
-        await().pollDelay(50, TimeUnit.MILLISECONDS)
-                .atMost(200, TimeUnit.MILLISECONDS)
-                .until(() -> model.getElevator(0).getDoorState(), equalTo(IElevatorWrapper.DoorState.OPENING));
-
         controller.shutdownScheduler();
 
         // Check if the value stays the same
-        Thread.sleep(100);
-        assertEquals(IElevatorWrapper.DoorState.OPENING, model.getElevator(0).getDoorState());
+        Thread.sleep(110);
+        assertNull(model.getElevator(0).getDoorState());
     }
 }
