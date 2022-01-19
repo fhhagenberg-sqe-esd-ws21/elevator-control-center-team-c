@@ -56,25 +56,6 @@ class EccControllerScheduledExecutorTest {
         assertEquals(DoorState.OPENING, model.getElevator(0).getDoorState());
     }
 
-    @Disabled("Does fail in build pipeline")
-    @Test
-    void testScheduleModelUpdate_waitForTwoUpdates() {
-        when(wrapper.getElevatorDoorStatus(0)).thenReturn(DoorState.OPENING, DoorState.CLOSING);
-
-        controller.setModel(model);
-        controller.setWrapper(wrapper);
-        controller.setUpdatePeriod(100);
-
-        controller.scheduleModelUpdater();
-
-        await().pollDelay(50, TimeUnit.MILLISECONDS)
-                .atMost(200, TimeUnit.MILLISECONDS)
-                .until(() -> model.getElevator(0).getDoorState(), equalTo(DoorState.OPENING));
-        await().pollDelay(50, TimeUnit.MILLISECONDS)
-                .atMost(200, TimeUnit.MILLISECONDS)
-                .until(() -> model.getElevator(0).getDoorState(), equalTo(DoorState.CLOSING));
-    }
-
     @Test
     void testScheduleModelUpdater_withoutWrapper() {
         controller.setModel(model);
