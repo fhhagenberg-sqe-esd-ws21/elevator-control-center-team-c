@@ -38,7 +38,7 @@ public class EccAutomaticMode {
     public int GetNextStopRequest(int elevNum){
         Elevator currElev = model.getElevator(elevNum);
         CommittedDirection dir = currElev.getDirection();
-        int maxFloors = currElev.getNumOfFloors();
+        int maxFloors = model.getNumberOfFloors();
         int startFloor = currElev.getCurrentFloor();
         int nextStopAbove = -1;
         int nextStopBelow = -1;
