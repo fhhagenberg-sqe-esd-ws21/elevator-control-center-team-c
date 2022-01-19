@@ -29,7 +29,6 @@ import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@Disabled
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
 class GuiTests {
