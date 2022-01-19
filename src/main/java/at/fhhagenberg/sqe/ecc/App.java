@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
-public class App extends Application{
+public class App extends Application {
 
 	protected EccController controller;
 
