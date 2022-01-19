@@ -32,8 +32,6 @@ public class App extends Application{
 		var layout = new EccGuiLayout(model, controller);
 
 		stage.setTitle("Elevator Control Center");
-		stage.setWidth(1500);
-	    stage.setHeight(800);
 	    stage.getIcons().add(new Image("icon.bmp"));
 		stage.setScene(layout.getScene());
 		stage.setOnCloseRequest(event -> controller.shutdownScheduler());
