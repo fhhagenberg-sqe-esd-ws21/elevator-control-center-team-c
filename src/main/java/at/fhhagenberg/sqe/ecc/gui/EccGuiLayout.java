@@ -418,10 +418,12 @@ public class EccGuiLayout {
 
 
 			loads.get(i).setStyle(styleArr[rowIdx%2]);
+			loads.get(i).setId("load" + i);
 			grid.add(loads.get(i), colIdx, rowIdx++);
 			GridPane.setColumnSpan(loads.get(i), 2);
 
 			speeds.get(i).setStyle(styleArr[rowIdx%2]);
+			speeds.get(i).setId("speed" + i);
 			grid.add(speeds.get(i), colIdx, rowIdx++);
 			GridPane.setColumnSpan(speeds.get(i), 2);
 
