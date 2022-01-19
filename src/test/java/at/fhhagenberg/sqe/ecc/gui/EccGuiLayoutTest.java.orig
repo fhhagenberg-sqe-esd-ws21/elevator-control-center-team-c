@@ -7,9 +7,12 @@ import java.sql.Wrapper;
 import java.util.ArrayList;
 
 import at.fhhagenberg.sqe.ecc.EccController;
+<<<<<<< HEAD
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.TestableEccController;
+=======
+>>>>>>> master
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +41,7 @@ class EccGuiLayoutTest {
 	EccGuiLayout layout;
 	EccModel model;
 	int elevCnt = 3;
+<<<<<<< HEAD
 	int floorCnt = 3;
 
 	@Start
@@ -98,6 +102,41 @@ class EccGuiLayoutTest {
 
 	@Test
 	void testPositions(FxRobot robot) {
+=======
+ 	int floorCnt = 4;
+
+    @Start
+    public void start(Stage stage) throws Exception {	    
+	    // init model	    
+     	var elevators = new ArrayList<Elevator>();
+    	for(int i = 0; i < elevCnt; i++)
+        {
+    		var elev = new Elevator(floorCnt, 10);
+    		elev.setDoorState(DoorState.CLOSED);
+    		elevators.add(elev);
+        }
+        var floors = new ArrayList<Floor>();
+        for(int i = 0; i < floorCnt; i++)
+        {
+        	floors.add(new Floor());
+        }
+        model = new EccModel(elevators, floors);
+		var controller = new EccController();
+        
+		// init gui with model
+		layout = new EccGuiLayout(model, controller);
+		stage.setWidth(700);
+	    stage.setHeight(500);
+		stage.setScene(layout.getScene());
+	    stage.show();
+    }
+
+	@Disabled("Fails always")
+    @Test
+    void testForCoverage(FxRobot robot) {
+		
+		// change model for test coverage
+>>>>>>> master
 		model.getElevator(0).setCurrentFloor(1);
 		model.getElevator(1).setCurrentFloor(1);
 		model.getElevator(0).setTargetFloor(0);

@@ -34,7 +34,6 @@ public class App extends Application{
 		stage.setTitle("Elevator Control Center");
 	    stage.getIcons().add(new Image("icon.bmp"));
 		stage.setScene(layout.getScene());
-		stage.setOnCloseRequest(event -> controller.shutdownScheduler());
 	    stage.show();
 	}
 
