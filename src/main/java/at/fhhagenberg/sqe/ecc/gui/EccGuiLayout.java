@@ -30,22 +30,6 @@ public class EccGuiLayout {
      private List<TextField> doors = new ArrayList<>();
      private List<Button> modes = new ArrayList<>();
      
-     // style sheet
-     private String defaultStyle = "-fx-background-color: #FFFFFF; -fx-border-radius: 0; -fx-font: 14pt \"Calibri\"; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String lightGrayStyle = "-fx-background-color: #D0CECE; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String darkGrayStyle = "-fx-text-fill: white; -fx-background-color: #595959; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String greenStyle = "-fx-text-fill: white; -fx-background-color: #548235; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String lightGreenStyle = "-fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String redStyle = "-fx-text-fill: white; -fx-background-color: #C00000; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String arrowUpStyle = "-fx-background-image: url(\"big_arrow_up.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String arrowDownStyle = "-fx-background-image: url(\"big_arrow_down.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String smallArrowUpStyle = "-fx-background-image: url(\"small_arrow_up_white.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String smallArrowDownStyle = "-fx-background-image: url(\"small_arrow_down_white.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String smallArrowUpDownStyle = "-fx-background-image: url(\"small_arrow_up_down_white.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String smallArrowUpGrayStyle = "-fx-background-image: url(\"small_arrow_up_gray.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String smallArrowDownGrayStyle = "-fx-background-image: url(\"small_arrow_down_gray.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     private String smallArrowUpDownGrayStyle = "-fx-background-image: url(\"small_arrow_up_down_gray.png\"); -fx-background-color: #C6E0B4; -fx-border-radius: 0; -fx-font: 14pt 'Calibri'; -fx-alignment: CENTER; -fx-border-style: solid;";
-     
      private String manualStr = "Manual";
 	 private String autoStr = "Automatic";
 	
@@ -76,7 +60,8 @@ public class EccGuiLayout {
  				if(btn.getText().equals(manualStr))
  				{
  					btn.setText(autoStr);
- 		 			btn.setStyle(darkGrayStyle);
+ 		 			btn.getStyleClass().clear();
+ 		 			btn.getStyleClass().add("darkGrayStyle");
  		 			// disable manual target selection
  		 			for(var pos : positions.get(elev))
  		 			{
@@ -88,7 +73,8 @@ public class EccGuiLayout {
  				else
  				{
  					btn.setText(manualStr);
- 		 			btn.setStyle(lightGrayStyle);
+ 		 			btn.getStyleClass().clear();
+ 		 			btn.getStyleClass().add("lightGrayStyle");
  		 			// enable manual target selection
  		 			for(var pos : positions.get(elev))
  		 			{
@@ -159,27 +145,30 @@ public class EccGuiLayout {
 	    	 for(int j = 0; j < floorCnt; j++)
 	         {
 	    		 // reset
+    			 positions.get(i).get(j).getStyleClass().clear();
 	    		 if((floorCnt-j)%2==0) // white background for even rows
 		    	 {
-	    			 positions.get(i).get(j).setStyle(defaultStyle);
+	    			 positions.get(i).get(j).getStyleClass().add("defaultStyle");
 		    	 }
 	    		 else // gray background for odd rows
 	    		 {
-	    			 positions.get(i).get(j).setStyle(lightGrayStyle);
+	    			 positions.get(i).get(j).getStyleClass().add("lightGrayStyle");
 	    		 }
 	         }
-	    	 positions.get(i).get(nextFloor).setStyle(lightGreenStyle);	 
+	    	 positions.get(i).get(nextFloor).getStyleClass().clear(); 
+	    	 positions.get(i).get(currentFloor).getStyleClass().clear();
+	    	 positions.get(i).get(nextFloor).getStyleClass().add("lightGreenStyle");	 
 	    	 if(nextFloor > currentFloor) // arrow up
 	    	 {
-	    		 positions.get(i).get(currentFloor).setStyle(arrowUpStyle);
+	    		 positions.get(i).get(currentFloor).getStyleClass().add("arrowUpStyle");
 	    	 }
 	    	 else if(nextFloor < currentFloor) // arrow down
 	    	 {
-	    		 positions.get(i).get(currentFloor).setStyle(arrowDownStyle);
+	    		 positions.get(i).get(currentFloor).getStyleClass().add("arrowDownStyle");
 	    	 }
 	    	 else
 	    	 {
-	    		 positions.get(i).get(currentFloor).setStyle(greenStyle);
+	    		 positions.get(i).get(currentFloor).getStyleClass().add("greenStyle");
 	    	 }
 	     }
      }
@@ -189,18 +178,19 @@ public class EccGuiLayout {
 	     {	    	 
 	    	 for(int j = 0; j < floorCnt; j++)
 	         {
+	    		 stops.get(i).get(j).getStyleClass().clear();
 
 		    	 if(model.getElevator(i).isButtonPressed(j))
 		    	 {
-		    		 stops.get(i).get(j).setStyle(redStyle);
+		    		 stops.get(i).get(j).getStyleClass().add("redStyle");
 		    	 }
 		    	 else if((floorCnt-j)%2==0) // white background for even rows
 		    	 {
-		    		 stops.get(i).get(j).setStyle(defaultStyle);
+		    		 stops.get(i).get(j).getStyleClass().add("defaultStyle");
 		    	 }
 		    	 else // gray background for even rows
 		    	 {
-		    		 stops.get(i).get(j).setStyle(lightGrayStyle);
+		    		 stops.get(i).get(j).getStyleClass().add("lightGrayStyle");
 		    	 }
 	         }   	 
 	     }
@@ -210,19 +200,21 @@ public class EccGuiLayout {
     	 for(int i = 0; i < elevCnt; i++)
     	 {
     		 DoorState state = model.getElevator(i).getDoorState();
+
+			 doors.get(i).getStyleClass().clear();
     		 switch(state)
     		 {
 				 case OPEN:
-					 doors.get(i).setStyle(greenStyle);
+					 doors.get(i).getStyleClass().add("greenStyle");
 					 break;
 				 case OPENING:
-					 doors.get(i).setStyle(lightGreenStyle);
+					 doors.get(i).getStyleClass().add("lightGreenStyle");
 					 break;
 				 case CLOSED:
-					 doors.get(i).setStyle(redStyle);
+					 doors.get(i).getStyleClass().add("redStyle");
 					 break;
 				 case CLOSING:
-					 doors.get(i).setStyle(greenStyle);
+					 doors.get(i).getStyleClass().add("lightGreenStyle");
 					 break;
 				 default:
 					break;    			 
@@ -235,42 +227,43 @@ public class EccGuiLayout {
     	 {
     		 var up = model.getFloor(i).isUpButtonPressed();
     		 var down = model.getFloor(i).isDownButtonPressed();
+    		 calls.get(i).getStyleClass().clear();
     		 if((floorCnt-i)%2==0) // white background for even rows
     		 {
 	    		 if(up && down)
 	    		 {
-	    			 calls.get(i).setStyle(smallArrowUpDownStyle);
+	    			 calls.get(i).getStyleClass().add("smallArrowUpDownStyle");
 	    		 }
 	    		 else if(up)
 	    		 {
-	    			 calls.get(i).setStyle(smallArrowUpStyle);
+	    			 calls.get(i).getStyleClass().add("smallArrowUpStyle");
 	    		 }
 	    		 else if(down)
 	    		 {
-	    			 calls.get(i).setStyle(smallArrowDownStyle);    			 
+	    			 calls.get(i).getStyleClass().add("smallArrowDownStyle");    			 
 	    		 }
 	    		 else
 	    		 {
-	    			 calls.get(i).setStyle(defaultStyle);    			 
+	    			 calls.get(i).getStyleClass().add("defaultStyle");    			 
 	    		 }
     		 }
     		 else // gray background for odd rows
     		 {
 	    		 if(up && down)
 	    		 {
-	    			 calls.get(i).setStyle(smallArrowUpDownGrayStyle);
+	    			 calls.get(i).getStyleClass().add("smallArrowUpDownGrayStyle");
 	    		 }
 	    		 else if(up)
 	    		 {
-	    			 calls.get(i).setStyle(smallArrowUpGrayStyle);
+	    			 calls.get(i).getStyleClass().add("smallArrowUpGrayStyle");
 	    		 }
 	    		 else if(down)
 	    		 {
-	    			 calls.get(i).setStyle(smallArrowDownGrayStyle);    			 
+	    			 calls.get(i).getStyleClass().add("smallArrowDownGrayStyle");    			 
 	    		 }
 	    		 else
 	    		 {
-	    			 calls.get(i).setStyle(lightGrayStyle);    			 
+	    			 calls.get(i).getStyleClass().add("lightGrayStyle");    			 
 	    		 }
     		 }
     	 }
@@ -278,20 +271,24 @@ public class EccGuiLayout {
 	 public Scene getScene()
 	 {		 
 		Scene scene = new Scene(new Group());
-		    
+		scene.getStylesheets().add("/stylesheet.css");
+		
 		GridPane grid = new GridPane();
 		
 		// generate upper part
 		//---------------------------------------------------
 		// add headings for floors and calls
 		var floorsHeading = new TextField("Floors");
-		floorsHeading.setStyle(lightGrayStyle);
+		floorsHeading.getStyleClass().clear();
+		floorsHeading.getStyleClass().add("lightGrayStyle");
 		floorsHeading.setEditable(false);
 		var nrHeading = new TextField("Nr.");
-		nrHeading.setStyle(defaultStyle);
+		nrHeading.getStyleClass().clear();
+		nrHeading.getStyleClass().add("defaultStyle");
 		nrHeading.setEditable(false);
 		var callHeading = new TextField("Call");
-		callHeading.setStyle(defaultStyle);
+		callHeading.getStyleClass().clear();
+		callHeading.getStyleClass().add("defaultStyle");
 		callHeading.setEditable(false);
 		
 		grid.add(floorsHeading, 0, 0);
@@ -310,13 +307,16 @@ public class EccGuiLayout {
 		for(int i = 0; i < elevCnt; i++)
 		{
 			var elevHeading = new TextField("Elevator " + i);
-			elevHeading.setStyle(lightGrayStyle);
+			elevHeading.getStyleClass().clear();
+			elevHeading.getStyleClass().add("lightGrayStyle");
 			elevHeading.setEditable(false);
 			var posHeading = new TextField("Position");
-			posHeading.setStyle(defaultStyle);
+			posHeading.getStyleClass().clear();
+			posHeading.getStyleClass().add("defaultStyle");
 			posHeading.setEditable(false);
 			var stopHeading = new TextField("Stop");
-			stopHeading.setStyle(defaultStyle);
+			stopHeading.getStyleClass().clear();
+			stopHeading.getStyleClass().add("defaultStyle");
 			stopHeading.setEditable(false);
 			
 			int colIdx = i*2+2;
@@ -330,29 +330,31 @@ public class EccGuiLayout {
 		}
 		
 		// add row for each floor
-		String[] styleArr = {defaultStyle, lightGrayStyle};
+		String[] styleArr = {"defaultStyle", "lightGrayStyle"};
 		for(int i = floorCnt-1; i >=0; i--)
 		{
 			int colIdx = 0;
 			int rowIdx = floorCnt - i + 2;
 			var floorNr = new TextField("" + i);
-			floorNr.setStyle(styleArr[rowIdx%2]);
+			floorNr.getStyleClass().clear();
+			floorNr.getStyleClass().add(styleArr[rowIdx%2]);
 			floorNr.setEditable(false);
 			
 			grid.add(floorNr, colIdx++, rowIdx);
-			calls.get(i).setStyle(styleArr[rowIdx%2]);
+			calls.get(i).getStyleClass().clear();
+			calls.get(i).getStyleClass().add(styleArr[rowIdx%2]);
 			calls.get(i).setEditable(false);
 			calls.get(i).setId("calls" + i);
 			grid.add(calls.get(i), colIdx++, rowIdx);
 			
 			for(int j = 0; j < elevCnt; j++)
 			{
-				positions.get(j).get(i).setStyle(styleArr[rowIdx%2]);
+				positions.get(j).get(i).getStyleClass().add(styleArr[rowIdx%2]);
 				positions.get(j).get(i).setPrefWidth(100);
 				positions.get(j).get(i).setId("position_e" + j + "_f" + i);
 				grid.add(positions.get(j).get(i), colIdx++, rowIdx);				
 				
-				stops.get(j).get(i).setStyle(styleArr[rowIdx%2]);
+				stops.get(j).get(i).getStyleClass().add(styleArr[rowIdx%2]);
 				stops.get(j).get(i).setEditable(false);
 				stops.get(j).get(i).setId("stop_e" + j + "_f" + i);
 				grid.add(stops.get(j).get(i), colIdx++, rowIdx);
@@ -370,23 +372,27 @@ public class EccGuiLayout {
 		var modeHeading = new TextField("Mode");
 		
 		int rowIdx = floorCnt+3;
-		
-		loadHeading.setStyle(styleArr[rowIdx%2]);	
+
+		loadHeading.getStyleClass().clear();
+		loadHeading.getStyleClass().add(styleArr[rowIdx%2]);	
 		loadHeading.setEditable(false);
 		grid.add(loadHeading, 0, rowIdx++);
 		GridPane.setColumnSpan(loadHeading, 2);
 		
-		speedHeading.setStyle(styleArr[rowIdx%2]);
+		speedHeading.getStyleClass().clear();
+		speedHeading.getStyleClass().add(styleArr[rowIdx%2]);
 		speedHeading.setEditable(false);
 		grid.add(speedHeading, 0, rowIdx++);
 		GridPane.setColumnSpan(speedHeading, 2);
 		
-		doorsHeading.setStyle(styleArr[rowIdx%2]);
+		doorsHeading.getStyleClass().clear();
+		doorsHeading.getStyleClass().add(styleArr[rowIdx%2]);
 		doorsHeading.setEditable(false);
 		grid.add(doorsHeading, 0, rowIdx++);
 		GridPane.setColumnSpan(doorsHeading, 2);
 		
-		modeHeading.setStyle(styleArr[rowIdx%2]);
+		modeHeading.getStyleClass().clear();
+		modeHeading.getStyleClass().add(styleArr[rowIdx%2]);
 		modeHeading.setEditable(false);
 		grid.add(modeHeading, 0, rowIdx);
 		GridPane.setColumnSpan(modeHeading, 2);
@@ -399,19 +405,22 @@ public class EccGuiLayout {
 			rowIdx = floorCnt+3;
 			
 
-			loads.get(i).setStyle(styleArr[rowIdx%2]);
+			loads.get(i).getStyleClass().add(styleArr[rowIdx%2]);
+			loads.get(i).setId("load" + i);
 			grid.add(loads.get(i), colIdx, rowIdx++);
 			GridPane.setColumnSpan(loads.get(i), 2);
 
-			speeds.get(i).setStyle(styleArr[rowIdx%2]);
+			speeds.get(i).getStyleClass().add(styleArr[rowIdx%2]);
+			speeds.get(i).setId("speed" + i);
 			grid.add(speeds.get(i), colIdx, rowIdx++);
 			GridPane.setColumnSpan(speeds.get(i), 2);
 
-			doors.get(i).setStyle(styleArr[rowIdx%2]);
+			doors.get(i).getStyleClass().add(styleArr[rowIdx%2]);
+			doors.get(i).setId("door" + i);
 			grid.add(doors.get(i), colIdx, rowIdx++);
 			GridPane.setColumnSpan(doors.get(i), 2);
 
-			modes.get(i).setStyle(lightGrayStyle);
+			modes.get(i).getStyleClass().add("lightGrayStyle");
 			modes.get(i).setPrefWidth(165);
 			modes.get(i).setId("mode" + i);
 			grid.add(modes.get(i), colIdx, rowIdx);

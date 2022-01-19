@@ -1,0 +1,137 @@
+.defaultStyle {
+	-fx-min-height: 40;
+	-fx-background-color: #FFFFFF;
+	-fx-border-radius: 0;
+	-fx-font: 14pt "Calibri";
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.lightGrayStyle {
+	-fx-min-height: 40;
+	-fx-background-color: #D0CECE;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.darkGrayStyle {
+	-fx-min-height: 40;
+	-fx-text-fill: white;
+	-fx-background-color: #595959;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.greenStyle {
+	-fx-min-height: 40;
+	-fx-text-fill: white;
+	-fx-background-color: #540235;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.lightGreenStyle {
+	-fx-min-height: 40;
+	-fx-background-color: #C6E0B4;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.redStyle {
+	-fx-min-height: 40;
+	-fx-text-fill: white;
+	-fx-background-color: #C00000;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.arrowUpStyle {
+	-fx-min-height: 40;
+	-fx-background-image: url("big_arrow_up.png");
+	-fx-background-color: #C6E0B4;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.arrowDownStyle {
+	-fx-min-height: 40;
+	-fx-background-image: url("big_arrow_down.png");
+	-fx-background-color: #C6E0B4;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.smallArrowUpStyle {
+	-fx-min-height: 40;
+	-fx-background-image: url("small_arrow_up_white.png");
+	-fx-background-color: #C6E0B4;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.smallArrowDownStyle {
+	-fx-min-height: 40;
+	-fx-background-image: url("small_arrow_down_white.png");
+	-fx-background-color: #C6E0B4;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.smallArrowUpDownStyle {
+	-fx-min-height: 40;
+	-fx-background-image: url("small_arrow_up_down_white.png");
+	-fx-background-color: #C6E0B4;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.smallArrowUpGrayStyle {
+	-fx-min-height: 40;
+	-fx-background-image: url("small_arrow_up_gray.png");
+	-fx-background-color: #C6E0B4;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.smallArrowDownGrayStyle {
+	-fx-min-height: 40;
+	-fx-background-image: url("small_arrow_down_gray.png");
+	-fx-background-color: #C6E0B4;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
+.smallArrowUpDownGrayStyle {
+	-fx-min-height: 40;
+	-fx-background-image: url("small_arrow_up_down_gray.png");
+	-fx-background-color: #C6E0B4;
+	-fx-border-radius: 0;
+	-fx-font: 14pt 'Calibri';
+	-fx-alignment: CENTER;
+	-fx-border-style: solid;
+}
+
