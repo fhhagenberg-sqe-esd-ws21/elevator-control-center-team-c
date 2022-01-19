@@ -9,12 +9,19 @@ import at.fhhagenberg.sqe.ecc.IElevatorWrapper.CommittedDirection;
 import at.fhhagenberg.sqe.ecc.IElevatorWrapper.DoorState;
 import at.fhhagenberg.sqe.ecc.model.EccModel;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 
 public class EccGuiLayout {
@@ -290,8 +297,6 @@ public class EccGuiLayout {
 	 }
 	 public Scene getScene()
 	 {
-		Scene scene = new Scene(new Group());
-
 		GridPane grid = new GridPane();
 
 		// generate upper part
@@ -436,8 +441,17 @@ public class EccGuiLayout {
 		callHandler();
 		doorHandler();
 
-		grid.setPadding(new Insets(10, 0, 0, 10));
-		((Group) scene.getRoot()).getChildren().add(grid);
+		grid.setPadding(new Insets(10, 10, 10, 10));
+		var disconnectedText = new Label("disconnected");
+		disconnectedText.setFont(Font.font(disconnectedText.getFont().getFamily(), FontWeight.BOLD, 50.0));
+		disconnectedText.setTextFill(Color.RED);
+		StackPane.setAlignment(disconnectedText, Pos.CENTER);
+
+		var group = new StackPane(grid, disconnectedText);
+		var scene = new Scene(group);
+
+		grid.disableProperty().bind(controller.connectedProperty().not());
+		disconnectedText.visibleProperty().bind(controller.connectedProperty().not());
 
 		return scene;
 	 }
