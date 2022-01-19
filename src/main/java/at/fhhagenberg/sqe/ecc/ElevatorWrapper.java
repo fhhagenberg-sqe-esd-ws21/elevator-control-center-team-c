@@ -227,7 +227,7 @@ public class ElevatorWrapper implements IElevatorWrapper {
     }
 
     public void setTarget(int elevatorNumber, int target) {
-        try{
+        try {
             elevatorCenter.setTarget(elevatorNumber, target);
         }
         catch(RemoteException ex){

@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sqelevator.IElevator;
 
+import java.rmi.RemoteException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +25,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class EccControllerScheduledExecutorTest {
 
+    @Mock
+    IElevator ielev;
     @Mock
     IElevatorWrapper wrapper;
 
@@ -38,6 +42,20 @@ class EccControllerScheduledExecutorTest {
         elev = new Elevator(1, 3);
         floor = new Floor();
         model = new EccModel(Stream.of(elev).collect(Collectors.toList()), Stream.of(floor).collect(Collectors.toList()));
+    }
+
+    @Test
+    void reconnectTest() throws RemoteException {
+        controller.setIElevator(ielev);
+        controller.setModel(model);
+        controller.setUpdatePeriod(100);
+        when(ielev.getCommittedDirection(0)).thenThrow(RemoteException.class);
+
+        controller.connect();
+        controller.scheduleModelUpdater();
+
+        await().until(() -> !controller.isConnected());
+        await().until(() -> controller.isConnected());
     }
 
     @Test
@@ -79,6 +97,6 @@ class EccControllerScheduledExecutorTest {
 
         // Check if the value stays the same
         Thread.sleep(110);
-        assertNull(model.getElevator(0).getDoorState());
+        assertEquals(DoorState.CLOSED, model.getElevator(0).getDoorState());
     }
 }

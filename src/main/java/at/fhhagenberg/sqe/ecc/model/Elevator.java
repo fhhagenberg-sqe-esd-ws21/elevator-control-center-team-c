@@ -14,15 +14,15 @@ public class Elevator {
     private final int floors;
 
     // dynamic parameters
-    private final ObjectProperty<CommittedDirection> direction = new SimpleObjectProperty<>();
+    private final ObjectProperty<CommittedDirection> direction = new SimpleObjectProperty<>(CommittedDirection.UNCOMMITTED);
     private final DoubleProperty speed = new SimpleDoubleProperty();
     private final DoubleProperty acceleration = new SimpleDoubleProperty();
-    private final ObjectProperty<DoorState> doorState = new SimpleObjectProperty<>();
+    private final ObjectProperty<DoorState> doorState = new SimpleObjectProperty<>(DoorState.CLOSED);
     private final IntegerProperty currentFloor = new SimpleIntegerProperty();
     private final DoubleProperty position = new SimpleDoubleProperty();
     private final DoubleProperty currentPassengerWeight = new SimpleDoubleProperty();
     private final IntegerProperty targetFloor = new SimpleIntegerProperty();
-    private final ObjectProperty<List<Boolean>> buttonsPressed = new SimpleObjectProperty<>();
+    private final ObjectProperty<List<BooleanProperty>> buttonsPressed = new SimpleObjectProperty<>();
 
 
     // Setters and Getters (property based)
@@ -97,9 +97,10 @@ public class Elevator {
     }
     public IntegerProperty targetFloorProperty() { return targetFloor; }
 
-    public boolean isButtonPressed(int floor) { return buttonsPressed.get().get(floor); }
-    public void setButtonPressed(int floor, boolean value) { buttonsPressed.get().set(floor, value); }
-    public ObjectProperty<List<Boolean>> buttonsPressedProperty() { return buttonsPressed; }
+    public boolean isButtonPressed(int floor) { return buttonsPressed.get().get(floor).get(); }
+    public void setButtonPressed(int floor, boolean value) { buttonsPressed.get().get(floor).set(value); }
+    public BooleanProperty buttonPressedProperty(int floor) { return buttonsPressed.get().get(floor); }
+    public ObjectProperty<List<BooleanProperty>> buttonsPressedProperty() { return buttonsPressed; }
 
 
     // constructor
@@ -118,7 +119,7 @@ public class Elevator {
 
         buttonsPressed.set(new ArrayList<>(floors));
         for (int i = 0; i < floors; i++) {
-            buttonsPressed.get().add(false);
+            buttonsPressed.get().add(new SimpleBooleanProperty());
         }
     }
 
@@ -135,7 +136,7 @@ public class Elevator {
         currentPassengerWeight.set(other.currentPassengerWeight.get());
         targetFloor.set(other.targetFloor.get());
 
-        var buttonList = new ArrayList<Boolean>(floors);
+        var buttonList = new ArrayList<BooleanProperty>(floors);
         buttonList.addAll(other.buttonsPressed.get());
         this.buttonsPressed.set(buttonList);
     }

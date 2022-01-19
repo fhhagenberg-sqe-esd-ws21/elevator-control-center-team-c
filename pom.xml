@@ -85,9 +85,29 @@
                 <version>0.0.8</version>
                 <configuration>
                     <launcher>launcher</launcher>
-                    <mainClass>at.fhhagenberg.sqe.App</mainClass>
+                    <mainClass>at.fhhagenberg.sqe.ecc.App</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>at.fhhagenberg.sqe.ecc.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
