@@ -5,6 +5,8 @@ import at.fhhagenberg.sqe.ecc.model.EccModel;
 import at.fhhagenberg.sqe.ecc.model.EccModelFactory;
 import at.fhhagenberg.sqe.ecc.model.EccModelUpdater;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Alert;
 import sqelevator.IElevator;
 
@@ -26,7 +28,22 @@ public class EccController {
     ScheduledFuture<?> updateTaskFuture;
     ScheduledFuture<?> reconnectTaskFuture;
     private long updatePeriod = 500;
-    private long reconnectPeriod= 1000;
+    private final long reconnectPeriod = 1000;
+
+    private final BooleanProperty connected = new SimpleBooleanProperty();
+
+    public boolean isConnected() {
+        return connected.get();
+    }
+
+    public BooleanProperty connectedProperty() {
+        return connected;
+    }
+
+    protected void setConnected(boolean connected) {
+        this.connected.set(connected);
+    }
+
 
     public EccController() {
         var executor = new ScheduledThreadPoolExecutor(1);
@@ -62,11 +79,11 @@ public class EccController {
         }
     }
 
-    public boolean connect() {
+    public void connect() {
         try {
             IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
             wrapper = new ElevatorWrapper(controller);
-            return true;
+            setConnected(true);
         } catch (NotBoundException e) {
             new Alert(Alert.AlertType.ERROR, "Remote server not started. " + e.getMessage()).showAndWait();
         } catch (MalformedURLException e) {
@@ -74,8 +91,6 @@ public class EccController {
         } catch (RemoteException e) {
             new Alert(Alert.AlertType.ERROR, "Some remote exception on connecting: " + e.getMessage()).showAndWait();
         }
-
-        return false;
     }
 
     public EccModel createModel() {
@@ -112,6 +127,7 @@ public class EccController {
             updater.updateModel();
         }
         catch (RuntimeException ex) {
+            setConnected(false);
             updateTaskFuture.cancel(false);
             reconnectTaskFuture = scheduledExecutor.scheduleAtFixedRate(this::reconnect, 0, reconnectPeriod, TimeUnit.MILLISECONDS);
         }
@@ -125,6 +141,7 @@ public class EccController {
 
             reconnectTaskFuture.cancel(false);
             updateTaskFuture = scheduledExecutor.scheduleAtFixedRate(this::updateModel, 0, updatePeriod, TimeUnit.MILLISECONDS);
+            setConnected(true);
         } catch (NotBoundException | MalformedURLException | RemoteException ignored) {
         }
     }
